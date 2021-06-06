@@ -28,4 +28,13 @@ public class TipoVisita {
 				"nombre=" + nombre +
 				'}';
 	}
+
+	public boolean esCompleta() {
+		return nombre.equals("Completa");
+	}
+
+	public boolean esPorExposicion() {
+		return nombre.equals("Por Exposición");
+	}
+
 }//end TipoVisita

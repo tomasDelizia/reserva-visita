@@ -1,6 +1,10 @@
 package negocio;
 
 import java.lang.reflect.Array;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,13 +98,18 @@ public class Sede {
 
 	public Sede getSede() {return this;}
 
-	public ArrayList<Exposicion> buscarExposicionesTemporalesYVigentes(){
-		ArrayList<Exposicion> exposicionesTempYVig = new ArrayList<Exposicion>();
-		for (Exposicion e:
+	public List<Exposicion> buscarExposicionesTemporalesYVigentes(){
+		// Método para encontrar las exposiciones temporales y vigentes de una sede
+		// Se inicializa una lista para almacenar las exposiciones deseadas
+		List<Exposicion> exposicionesTempYVig = new ArrayList<>();
+		// Recorro todas las exposiciones de una sede
+		for (Exposicion expo:
 			 exposicion) {
-			if (e.esVigenteYTemporal())
-				exposicionesTempYVig.add(e);
+			// A cada exposición le pregunto si es temporal y vigente. Si lo es, la agrego a la lista
+			if (expo.esVigenteYTemporal())
+				exposicionesTempYVig.add(expo);
 		}
+		// Retorno la lista con las exposiciones resultantes de la iteración
 		return exposicionesTempYVig;
 	}
 
@@ -117,21 +126,33 @@ public class Sede {
 
 	}
 
-	public int calcularDuracionEstimadaVisita(ArrayList<Exposicion> exposiciones){
-		int duracion = 0;
-		for (Exposicion e:
+	public Duration calcularDuracionEstimadaVisita(List<Exposicion> exposiciones, TipoVisita tipoVisita){
+		Duration duracionVisita = Duration.parse("00:00:00");
+		for (Exposicion expo:
 			 exposiciones) {
-			duracion += e.calcularDuracionExposicion();
+			Duration duracionExpo = expo.calcularDuracionExposicion(tipoVisita);
+			duracionVisita.plus(duracionExpo);
 		}
-		return duracion;
+		return duracionVisita;
 	}
 
-	/*
-	public void superaLimiteVisitantesParaFechaYHora(){
-		for (ReservaVisita r:
-			 reserva) {
-
-		}
+	public boolean esTuReserva(ReservaVisita reservaVisita) {
+		// Método que dice si la reserva pasada por parámetro es de esta reserva
+		return reservaVisita.esTuSede(this);
 	}
-	*/
+
+	public int getCantidadVisitantesParaFechaYHora(LocalDateTime fechaYHora, List<ReservaVisita> reservasVisitas) {
+		int cantVisitantes = 0;
+		for (ReservaVisita reservaVisita:
+			 reservasVisitas) {
+			if (reservaVisita.esTuSede(this) && reservaVisita.esEnDiaYHora(fechaYHora))
+				cantVisitantes += reservaVisita.getCantidadAlumnos();
+		}
+		return cantVisitantes;
+	}
+
+	public boolean superaLimiteVisitantesParaFechaYHora(int cantidadVisitantesReserva, LocalDateTime fechaYHora, List<ReservaVisita> reservaVisitas){
+		return cantidadVisitantesReserva + getCantidadVisitantesParaFechaYHora(fechaYHora, reservaVisitas) > capacidadMaxVisitantes;
+	}
+
 }//end Sede

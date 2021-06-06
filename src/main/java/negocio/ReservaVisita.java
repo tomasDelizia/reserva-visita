@@ -12,13 +12,9 @@ import java.util.List;
  */
 public class ReservaVisita {
 
-	private int cantidadAlumnos;
-	private int cantidadAlumnosConfirmada;
-	private int duracionEstimada;
-	private LocalDateTime fechaYHoraCreacion;
-	private LocalDateTime fechaYHoraReserva;
-	private LocalTime horaFinReal;
-	private LocalTime horaInicioReal;
+	private int cantidadAlumnos, cantidadAlumnosConfirmada, duracionEstimada;
+	private LocalDateTime fechaYHoraCreacion, fechaYHoraReserva;
+	private LocalTime horaFinReal, horaInicioReal;
 	private int numeroReserva;
 	private TipoVisita tipoVisita;
 	private Escuela escuela;
@@ -184,11 +180,17 @@ public class ReservaVisita {
 	}
 
 	public boolean esEnDiaYHora(LocalDateTime fechaYHora){
+		// Método que dice si la reserva es en el día y la hora pasada por parámetro
 		LocalDate fecha = fechaYHora.toLocalDate();
 		LocalTime hora = fechaYHora.toLocalTime();
 		return (fecha.compareTo(this.fechaYHoraReserva.toLocalDate()) == 0
 			&& hora.isAfter(fechaYHoraReserva.toLocalTime())
 			&& hora.isBefore(fechaYHoraReserva.toLocalTime().plusMinutes(duracionEstimada)));
+	}
+
+	public boolean esTuSede(Sede sede) {
+		// Dice si la sede pasada por parámetro es la misma que tiene asociada este objeto sede
+		return sede == this.sede;
 	}
 
 	public void anularReservaVisitaGuiada(){

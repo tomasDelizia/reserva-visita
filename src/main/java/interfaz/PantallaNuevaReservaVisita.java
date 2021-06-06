@@ -4,8 +4,10 @@ package interfaz;
 import controlador.ControladorNuevaReservaVisita;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.ConditionalOnMissingFilterBean;
 import org.springframework.stereotype.Component;
+import repo.ITipoDeVisitaRepo;
 
 /**
  * @author tomid
@@ -20,11 +22,6 @@ public class PantallaNuevaReservaVisita {
 	private ControladorNuevaReservaVisita controladorNuevaReservaVisita;
 
 	public PantallaNuevaReservaVisita(){
-
-	}
-
-	@FXML
-	public void initialize() {
 
 	}
 

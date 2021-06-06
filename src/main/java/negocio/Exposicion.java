@@ -1,5 +1,6 @@
 package negocio;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalTime;
@@ -154,32 +155,52 @@ public class Exposicion {
 			return this.fechaFinReplanificada.compareTo(ld) >= 0;
 	}
 
-	public ArrayList<String> getNombresPublicoDestino() {
-		ArrayList<String> nombresPublicos = new ArrayList<String>();
-		for (PublicoDestino o:
+	public List<String> getNombresPublicoDestino() {
+		// Método que retorna una lista con todos los nombres de los públicos destino de la exposición
+		// Inicialización de lista que contendrá los nombres
+		List<String> nombresPublicos = new ArrayList<>();
+		// Iteramos mientras la exposición tenga públicos destino asociados
+		for (PublicoDestino publicoDest:
 				publicoDestino) {
-			String nombre = o.getNombre();
-			nombresPublicos.add(nombre);
+			nombresPublicos.add(publicoDest.getNombre());
 		}
 		return nombresPublicos;
 	}
 
-	public ArrayList<LocalTime> getHorarioExposicionTemporal () {
-		ArrayList<LocalTime> horario = new ArrayList<LocalTime>();
-		if (this.tipoExposicion.esTemporal()) {
-			horario.add(this.horaApertura);
-			horario.add(this.horaCierre);
+	public List<LocalTime> getHorarioExposicionTemporal () {
+		// Método para obtener los horarios en los que funciona una exposición temporal
+		List<LocalTime> horario = new ArrayList<>();
+		// Si la exposición es temporal, añadimos sus horarios de apertura y cierre a una lista de horarios
+		if (tipoExposicion.esTemporal()) {
+			horario.add(horaApertura);
+			horario.add(horaCierre);
 		}
 		return horario;
 	}
 
-	public int calcularDuracionExposicion() {
-		int duracion = 0;
-		for (DetalleExposicion de:
-			 detalleExposicion) {
-			duracion += de.getObra().getDuracionExtendida();
+//	public int calcularDuracionExposicion() {
+//		// Método para obtener la duración en minutos de una exposición
+//		int duracion = 0;
+//		for (DetalleExposicion de:
+//			 detalleExposicion) {
+//			duracion += de.getObra().getDuracionExtendida();
+//		}
+//		return duracion;
+//	}
+
+	public Duration calcularDuracionExposicion(TipoVisita tipoVisita) {
+		// Método para obtener la duración en minutos y segundos de una exposición
+		// Inicializamos una duración de 00hs 00min 00seg
+		Duration duracionExposicion = Duration.parse("00:00:00");
+		// Mientras la obra tenga exposiciones, obtenemos su duración
+		if (tipoVisita.esCompleta()) {
+			for (DetalleExposicion detalleExpo:
+					detalleExposicion) {
+				Duration duracionExtendida = detalleExpo.getObra().getDuracionExtendida();
+				duracionExposicion.plus(duracionExtendida);
+			}
 		}
-		return duracion;
+		return duracionExposicion;
 	}
 
 }//end Exposicion

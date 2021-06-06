@@ -3,6 +3,7 @@ package interfaz;
 import controlador.ControladorNuevaReservaVisita;
 import negocio.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -64,9 +65,11 @@ public class Test {
 
         publi = new PublicoDestino("APTO PARA TODES","APT");
 
-        obra1 = new Obra(80, 50, 123, "desc1", 20, 5,
-                ld, ld, ld, "Mauro", 90, 150.60, archivo, estilo, tecnica, tematica,
-                artista, emp1);
+        Duration dur1 = Duration.parse("00:05:00");
+        Duration dur2 = Duration.parse("00:06:30");
+
+        obra1 = new Obra("Mauro", 80, 50, 123, 90, dur1, dur2,
+                ld, ld, ld, "desc1", 90, emp1);
         List<PublicoDestino> publiArray = new ArrayList<>();
         publiArray.add(publi);
 
@@ -94,9 +97,9 @@ public class Test {
 
         System.out.println(expo1.getNombresPublicoDestino());
 
-        System.out.println(expo1.calcularDuracionExposicion());
 
-        controlador.buscarEscuelas();
+
+        //controlador.buscarEscuelas();
         System.out.println(controlador.getEscuelas());
 
         LocalTime t0 = LocalTime.now();
@@ -113,8 +116,18 @@ public class Test {
         System.out.println(t2);
         System.out.println(t3);
 
-        controlador.buscarTiposDeVisita();
-        System.out.println(controlador.getTiposDeVisita());
+        TipoVisita tipoVisita = new TipoVisita("Por Exposición");
+        System.out.println(expo1.calcularDuracionExposicion(tipoVisita));
+        Duration d1 = Duration.parse("00:05:30");
+        Duration d2 = Duration.parse("01:50:00");
+        System.out.println(d1.plus(d2));
+
+
+//        controlador.addtipo3();
+//        controlador.buscarTiposDeVisita();
+//        System.out.println(controlador.getTiposDeVisita());
+
+
 
     }
 

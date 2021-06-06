@@ -1,6 +1,8 @@
 package negocio;
 
 
+import javax.persistence.Entity;
+
 /**
  * @author tomid
  * @version 1.0
