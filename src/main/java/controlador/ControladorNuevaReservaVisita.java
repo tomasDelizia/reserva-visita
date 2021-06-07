@@ -50,23 +50,23 @@ public class ControladorNuevaReservaVisita {
 	}
 
 
-//	public void buscarEscuelas(){
-//		String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=museo_pictorico;integratedSecurity=true";
-//		try (Connection con = DriverManager.getConnection(connectionUrl);
-//			 Statement stmt = con.createStatement();) {
-//			String SQL = "SELECT * FROM ESCUELAS";
-//			ResultSet rs = stmt.executeQuery(SQL);
-//			while (rs.next()) {
-//				Escuela escuela = new Escuela(rs.getString("nombre"), rs.getString("mail"),
-//						rs.getString("calle_nombre"), rs.getInt("calle_numero"),
-//						rs.getString("telefono_celular"), rs.getString("telefono_fijo"));
-//				escuelas.add(escuela);
-//			}
-//		}
-//		catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void buscarEscuelas(){
+		String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=museo_pictorico;integratedSecurity=true";
+		try (Connection con = DriverManager.getConnection(connectionUrl);
+			 Statement stmt = con.createStatement();) {
+			String SQL = "SELECT * FROM ESCUELAS";
+			ResultSet rs = stmt.executeQuery(SQL);
+			while (rs.next()) {
+				Escuela escuela = new Escuela(rs.getString("nombre"), rs.getString("mail"),
+						rs.getString("calle_nombre"), rs.getInt("calle_numero"),
+						rs.getString("telefono_celular"), rs.getString("telefono_fijo"));
+				escuelas.add(escuela);
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public List<Escuela> getEscuelas() {
 		return escuelas;

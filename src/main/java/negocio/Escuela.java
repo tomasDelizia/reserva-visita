@@ -57,6 +57,6 @@ public class Escuela {
 				", calleNumero=" + calleNumero + '\'' +
 				", telefonoCelular='" + telefonoCelular + '\'' +
 				", telefonoFijo='" + telefonoFijo +
-				'}';
+				"}\n";
 	}
 }//end Escuela

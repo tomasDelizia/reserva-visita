@@ -5,6 +5,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaz.PantallaNuevaReservaVisita">
    <children>
-      <Label fx:id="lblHola" layoutX="282.0" layoutY="172.0" text="¡Hola, Mundo!" />
+      <ComboBox fx:id="cboEscuelas" layoutX="164.0" layoutY="36.0" onAction="#presentarEscuelas" prefHeight="25.0" prefWidth="194.0" />
+      <Label layoutX="28.0" layoutY="40.0" text="Seleccione una escuela:" />
    </children>
 </AnchorPane>

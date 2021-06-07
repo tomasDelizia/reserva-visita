@@ -1,5 +1,8 @@
 package negocio;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,193 +12,125 @@ import java.util.List;
  */
 public class Empleado {
 
-	private String apellido;
-	private int codigoValidacion;
-	private int cuit;
 	private int dni;
-	private LocalDate fechaIngreso;
-	private LocalDate fechaNacimiento;
-	private String mail;
-	private String nombre;
-	private String sexo;
-	private int telefono;
+	private String cuit, nombre, apellido, mail;
 	private Cargo cargo;
+	private Sede sedeDondeTrabaja;
+	private LocalDate fechaNacimiento, fechaIngreso;
 	private String calleNombre;
 	private int calleNumero;
+	private String telefono, sexo;
+	private int codigoValidacion;
 	private List<HorarioEmpleado> horarioEmpleado;
-	private Sede sedeDondeTrabaja;
 
-	public Empleado(String apellido, int codigoValidacion, int cuit, int dni, LocalDate fechaIngreso,
-					LocalDate fechaNacimiento, String mail, String nombre, String sexo, int telefono,
-					Cargo cargo, String calleNombre, int calleNumero, List<HorarioEmpleado> horarioEmpleado,
-					Sede sedeDondeTrabaja) {
-		this.apellido = apellido;
-		this.codigoValidacion = codigoValidacion;
-		this.cuit = cuit;
+	public Empleado(int dni, String cuit, String nombre, String apellido, String mail, Cargo cargo,
+					Sede sedeDondeTrabaja, LocalDate fechaNacimiento, LocalDate fechaIngreso,
+					String calleNombre, int calleNumero, String telefono, String sexo, int codigoValidacion,
+					List<HorarioEmpleado> horarioEmpleado) {
 		this.dni = dni;
-		this.fechaIngreso = fechaIngreso;
-		this.fechaNacimiento = fechaNacimiento;
-		this.mail = mail;
+		this.cuit = cuit;
 		this.nombre = nombre;
-		this.sexo = sexo;
-		this.telefono = telefono;
+		this.apellido = apellido;
+		this.mail = mail;
 		this.cargo = cargo;
+		this.sedeDondeTrabaja = sedeDondeTrabaja;
+		this.fechaNacimiento = fechaNacimiento;
+		this.fechaIngreso = fechaIngreso;
 		this.calleNombre = calleNombre;
 		this.calleNumero = calleNumero;
-		this.horarioEmpleado = horarioEmpleado;
-		this.sedeDondeTrabaja = sedeDondeTrabaja;
-	}
-
-	public String getApellido() {
-		return apellido;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-
-	public int getCodigoValidacion() {
-		return codigoValidacion;
-	}
-
-	public void setCodigoValidacion(int codigoValidacion) {
+		this.telefono = telefono;
+		this.sexo = sexo;
 		this.codigoValidacion = codigoValidacion;
-	}
-
-	public int getCuit() {
-		return cuit;
-	}
-
-	public void setCuit(int cuit) {
-		this.cuit = cuit;
+		this.horarioEmpleado = horarioEmpleado;
 	}
 
 	public int getDni() {
 		return dni;
 	}
 
-	public void setDni(int dni) {
-		this.dni = dni;
-	}
-
-	public LocalDate getFechaIngreso() {
-		return fechaIngreso;
-	}
-
-	public void setFechaIngreso(LocalDate fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
-	}
-
-	public LocalDate getFechaNacimiento() {
-		return fechaNacimiento;
-	}
-
-	public void setFechaNacimiento(LocalDate fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
-
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
+	public String getCuit() {
+		return cuit;
 	}
 
 	public String getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public String getApellido() {
+		return apellido;
 	}
 
-	public String getSexo() {
-		return sexo;
-	}
-
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
-	}
-
-	public int getTelefono() {
-		return telefono;
-	}
-
-	public void setTelefono(int telefono) {
-		this.telefono = telefono;
+	public String getMail() {
+		return mail;
 	}
 
 	public Cargo getCargo() {
 		return cargo;
 	}
 
-	public void setCargo(Cargo cargo) {
-		this.cargo = cargo;
+	public Sede getSedeDondeTrabaja() {
+		return sedeDondeTrabaja;
+	}
+
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public LocalDate getFechaIngreso() {
+		return fechaIngreso;
 	}
 
 	public String getCalleNombre() {
 		return calleNombre;
 	}
 
-	public void setCalleNombre(String calleNombre) {
-		this.calleNombre = calleNombre;
-	}
-
 	public int getCalleNumero() {
 		return calleNumero;
 	}
 
-	public void setCalleNumero(int calleNumero) {
-		this.calleNumero = calleNumero;
+	public String getTelefono() {
+		return telefono;
 	}
 
-	public List<HorarioEmpleado> getHorarioEmpleado() {
-		return horarioEmpleado;
+	public String getSexo() {
+		return sexo;
 	}
 
-	public void addHorario(HorarioEmpleado he) {
-		horarioEmpleado.add(he);
-	}
-
-	public Sede getSedeDondeTrabaja() {
-		return sedeDondeTrabaja;
-	}
-
-	public void setSedeDondeTrabaja(Sede sedeDondeTrabaja) {
-		this.sedeDondeTrabaja = sedeDondeTrabaja;
-	}
-
-	@Override
-	public String toString() {
-		return "Empleado{" +
-				"apellido='" + apellido + '\'' +
-				", codigoValidacion=" + codigoValidacion +
-				", cuit=" + cuit +
-				", dni=" + dni +
-				", fechaIngreso=" + fechaIngreso +
-				", fechaNacimiento=" + fechaNacimiento +
-				", mail='" + mail + '\'' +
-				", nombre='" + nombre + '\'' +
-				", sexo='" + sexo + '\'' +
-				", telefono=" + telefono +
-				", cargo=" + cargo +
-				", calleNombre='" + calleNombre + '\'' +
-				", calleNumero=" + calleNumero +
-				", horarioEmpleado=" + horarioEmpleado +
-				", sedeDondeTrabaja=" + sedeDondeTrabaja +
-				'}';
+	public int getCodigoValidacion() {
+		return codigoValidacion;
 	}
 
 	public boolean esGuia(){
 		return this.cargo.esGuia();
 	}
 
+
+
 	public void tieneAsignacionParaDiaYHora(){
 
 	}
 
-	public void trabajaDentroDeDiaYHorario(){
+	public void trabajaDentroDeDiaYHorario(LocalDate fechaYHora){ //me cansé xd
+		int dia = fechaYHora.getDayOfWeek().getValue();
+//		LocalTime hora = LocalTime.of(fechaYHora.to)
+//		for (HorarioEmpleado horarioEmpleado:
+//			 horarioEmpleado) {
+//			if (fechaYHora.isAfter() && fechaYHora.isBefore())
+//		}
 
+	}
+
+	public boolean esTuSede(Sede sede) {
+		return sede == sedeDondeTrabaja;
+	}
+
+	public List <DiaSemana> getDiasCuandoTrabaja() {
+		List <DiaSemana> diasCuandoTrabaja = new ArrayList<>();
+		for (HorarioEmpleado horarioEmpleado:
+			 horarioEmpleado) {
+			List <DiaSemana> diasSemana = horarioEmpleado.getDiaSemana();
+			diasCuandoTrabaja.addAll(diasSemana);
+		}
+		return diasCuandoTrabaja;
 	}
 }//end Empleado

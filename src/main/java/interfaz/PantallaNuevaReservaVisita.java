@@ -2,12 +2,20 @@ package interfaz;
 
 
 import controlador.ControladorNuevaReservaVisita;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.servlet.ConditionalOnMissingFilterBean;
+import negocio.Escuela;
 import org.springframework.stereotype.Component;
-import repo.ITipoDeVisitaRepo;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+//import java.awt.event.ActionEvent;
 
 /**
  * @author tomid
@@ -16,10 +24,11 @@ import repo.ITipoDeVisitaRepo;
  */
 @Component
 public class PantallaNuevaReservaVisita {
+	private final ControladorNuevaReservaVisita controlador = new ControladorNuevaReservaVisita();
 
 	@FXML
-	public Label lblHola;
-	private ControladorNuevaReservaVisita controladorNuevaReservaVisita;
+	public ComboBox<Escuela> cboEscuelas;
+
 
 	public PantallaNuevaReservaVisita(){
 
@@ -33,7 +42,15 @@ public class PantallaNuevaReservaVisita {
 
 	}
 
-	public void presentarEscuelas(){
+	public void presentarEscuelas(ActionEvent actionEvent) {
+		controlador.buscarEscuelas();
+		ObservableList<Escuela> ol = FXCollections.observableArrayList(controlador.getEscuelas());
+		cboEscuelas.setItems(ol);
+	}
+
+
+	public void tomarSeleccionEscuela(ActionEvent actionEvent){
+		ObservableList<Escuela> observableList;
 
 	}
 
@@ -101,9 +118,7 @@ public class PantallaNuevaReservaVisita {
 
 	}
 
-	public void tomarSeleccionEscuela(){
 
-	}
 
 	public void tomarSeleccionExposiciones(){
 
@@ -116,4 +131,6 @@ public class PantallaNuevaReservaVisita {
 	public void tomarTipoVisita(){
 
 	}
+
+
 }//end interfaz.PantallaNuevaReservaVisita

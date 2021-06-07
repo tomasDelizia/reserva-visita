@@ -51,9 +51,8 @@ public class Test {
         he.add(horarioEmp);
         Sede sede1 = new Sede(150, 100, "Sede 1", horarioSedeArray,
                 "calle 1", 150);
-        Empleado emp1 = new Empleado("Messi", 150, 15201, 201, ld, ld,
-                "liomessi@gmail.com", "Leo", "onvre", 123, cargo, "calle2",
-                15, he, sede1);
+        Empleado emp1 = new Empleado(150, "150", "Messi", "Leo", "liomessi@gmail.com", cargo,
+                sede1, ld, ld, "calle1", 150, "452365", "masc", 15231, he);
 
         archivo = new Archivo("obra1", "C:/obra1xd");
         estilo = new EstiloObra("al olieo", "al olieao");
@@ -65,10 +64,9 @@ public class Test {
 
         publi = new PublicoDestino("APTO PARA TODES","APT");
 
-        Duration dur1 = Duration.parse("00:05:00");
-        Duration dur2 = Duration.parse("00:06:30");
 
-        obra1 = new Obra("Mauro", 80, 50, 123, 90, dur1, dur2,
+
+        obra1 = new Obra("Mauro", 80, 50, 123, 90, Duration.ofMinutes(5), Duration.ofHours(1),
                 ld, ld, ld, "desc1", 90, emp1);
         List<PublicoDestino> publiArray = new ArrayList<>();
         publiArray.add(publi);
@@ -117,18 +115,21 @@ public class Test {
         System.out.println(t3);
 
         TipoVisita tipoVisita = new TipoVisita("Por Exposición");
-        System.out.println(expo1.calcularDuracionExposicion(tipoVisita));
-        Duration d1 = Duration.parse("00:05:30");
-        Duration d2 = Duration.parse("01:50:00");
-        System.out.println(d1.plus(d2));
+//        System.out.println(expo1.calcularDuracionExposicion(tipoVisita));
+//        Duration d1 = Duration.parse("00:05:30");
+//        Duration d2 = Duration.parse("01:50:00");
+//        System.out.println(d1.plus(d2));
 
+        DiaSemana lunes = new DiaSemana("Sábado");
+        System.out.println(lunes.getValue());
 
 //        controlador.addtipo3();
 //        controlador.buscarTiposDeVisita();
 //        System.out.println(controlador.getTiposDeVisita());
 
 
-
+        controlador.buscarEscuelas();
+        System.out.println(controlador.getEscuelas());
     }
 
 

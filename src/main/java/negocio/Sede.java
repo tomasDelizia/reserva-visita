@@ -1,10 +1,7 @@
 package negocio;
 
 import java.lang.reflect.Array;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,5 +151,14 @@ public class Sede {
 	public boolean superaLimiteVisitantesParaFechaYHora(int cantidadVisitantesReserva, LocalDateTime fechaYHora, List<ReservaVisita> reservaVisitas){
 		return cantidadVisitantesReserva + getCantidadVisitantesParaFechaYHora(fechaYHora, reservaVisitas) > capacidadMaxVisitantes;
 	}
+
+//	public List<Empleado> buscarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime fechaYHora, List<Empleado> empleados) {
+//
+//		for (Empleado empleado:
+//			 empleados) {
+//			if (empleado.esTuSede(this) && empleado.esGuia())
+//
+//		}
+//	}
 
 }//end Sede

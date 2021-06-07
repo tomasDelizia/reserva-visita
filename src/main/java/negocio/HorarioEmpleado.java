@@ -51,4 +51,5 @@ public class HorarioEmpleado {
 				", diaSemana=" + diaSemana +
 				'}';
 	}
+
 }
