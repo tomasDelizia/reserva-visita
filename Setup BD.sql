@@ -34,18 +34,16 @@ CREATE TABLE EMPLEADOS (
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     mail VARCHAR(50),
-    id_cargo TINYINT,
-    id_sede INT,
-    fecha_nacimiento DATE,
-    fecha_ingreso DATE,
+    id_cargo TINYINT NOT NULL,
+    id_sede INT NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    fecha_ingreso DATE  NOT NULL,
     calle_nombre VARCHAR(50),
     calle_numero INT,
     telefono VARCHAR(30),
     id_sexo TINYINT,
     codigo_validacion VARCHAR(50),
     CONSTRAINT empleados_id_empleado_pk PRIMARY KEY(id_empleado),
-    CONSTRAINT empleados_dni_uq UNIQUE(dni),
-    CONSTRAINT empleados_cuit_uq UNIQUE(cuit)
 );
 
 CREATE TABLE SEXOS (
@@ -69,8 +67,8 @@ ALTER TABLE EMPLEADOS
 CREATE TABLE SEDES (
     id_sede INT IDENTITY,
     nombre VARCHAR(50) NOT NULL,
-    cantidad_maxima_visitantes INT,
-    cantidad_maxima_por_guia INT,
+    cantidad_maxima_visitantes INT NOT NULL,
+    cantidad_maxima_por_guia INT NOT NULL,
     calle_nombre VARCHAR(50),
     calle_numero INT,
     CONSTRAINT id_sede_pk PRIMARY KEY(id_sede)
@@ -85,7 +83,7 @@ ALTER TABLE EMPLEADOS
 CREATE TABLE EXPOSICIONES (
     id_exposicion INT IDENTITY,
     nombre VARCHAR(50) NOT NULL,
-    id_tipo_exposicion TINYINT,
+    id_tipo_exposicion TINYINT NOT NULL,
     fecha_inicio DATE,
     fecha_fin DATE,
     fecha_inicio_replanificada DATE,
@@ -133,7 +131,7 @@ CREATE TABLE OBRAS (
     id_tematica TINYINT,
     descripcion VARCHAR(MAX),
     codigo_sensor INT,
-    id_empleado_creador INT,
+    id_empleado_creador INT NOT NULL,
     CONSTRAINT obras_id_obra_pk PRIMARY KEY(id_obra)
 );
 
@@ -174,10 +172,10 @@ CREATE TABLE USUARIOS (
     nombre_usuario VARCHAR(50) NOT NULL,
     contrasena VARCHAR(50) NOT NULL,
     caducidad DATE,
-    id_empleado INT,
+    id_empleado INT NOT NULL,,
     CONSTRAINT usuarios_id_usuario_pk PRIMARY KEY(id_usuario),
     CONSTRAINT usuarios_id_empleado_fk FOREIGN KEY(id_empleado) REFERENCES EMPLEADOS(id_empleado)
-        ON UPDATE CASCADE ON DELETE SET NULL
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE SESIONES (
@@ -186,7 +184,7 @@ CREATE TABLE SESIONES (
     fecha_hora_fin DATETIME,
     CONSTRAINT sesiones_id_usuario_fecha_hora_inicio_pk PRIMARY KEY(id_usuario, fecha_hora_inicio),
     CONSTRAINT sesiones_id_usuario_fk FOREIGN KEY(id_usuario) REFERENCES USUARIOS(id_usuario)
-        ON UPDATE NO ACTION ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
 );
 
 CREATE TABLE DIAS_DE_SEMANA (
@@ -198,11 +196,11 @@ CREATE TABLE DIAS_DE_SEMANA (
 CREATE TABLE HORARIOS_EMPLEADOS (
     id_empleado INT,
     id_dia TINYINT,
-    horario_ingreso TIME,
-    horario_salida TIME,
+    horario_ingreso TIME NOT NULL,
+    horario_salida TIME NOT NULL,
     CONSTRAINT horarios_empleados_id_emp_id_dia_pk PRIMARY KEY(id_empleado, id_dia),
     CONSTRAINT horarios_empleados_id_emp_fk FOREIGN KEY(id_empleado) REFERENCES EMPLEADOS(id_empleado)
-        ON UPDATE NO ACTION ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT horarios_empleados_id_dia_fk FOREIGN KEY(id_dia) REFERENCES DIAS_DE_SEMANA(id_dia)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -210,27 +208,27 @@ CREATE TABLE HORARIOS_EMPLEADOS (
 CREATE TABLE HORARIOS_SEDE (
     id_sede INT,
     id_dia TINYINT,
-    horario_apertura TIME,
-    horario_cierre TIME,
+    horario_apertura TIME NOT NULL,
+    horario_cierre TIME NOT NULL,
     CONSTRAINT horarios_sedes_id_sede_id_dia_pk PRIMARY KEY(id_sede, id_dia),
     CONSTRAINT horarios_sedes_id_sede_fk FOREIGN KEY(id_sede) REFERENCES SEDES(id_sede)
-        ON UPDATE NO ACTION ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT horarios_sedes_id_dia_fk FOREIGN KEY(id_dia) REFERENCES DIAS_DE_SEMANA(id_dia)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE RESERVAS_DE_VISITA (
     id_reserva INT IDENTITY,
-    cantidad_alumnos INT,
+    cantidad_alumnos INT NOT NULL,
     cantidad_alumnos_confirmada INT,
-    fecha_hora_creacion DATETIME,
-    fecha_hora_reserva DATETIME,
-    duracion_estimada TIME,
+    fecha_hora_creacion DATETIME NOT NULL,
+    fecha_hora_reserva DATETIME NOT NULL,
+    duracion_estimada TIME NOT NULL,
     hora_inicio_real TIME,
     hora_fin_real TIME,
-    id_escuela INT,
-    id_sede INT,
-    id_empleado_creador INT,
+    id_escuela INT NOT NULL,
+    id_sede INT NOT NULL,
+    id_empleado_creador INT NOT NULL,
     CONSTRAINT reservas_de_visita_id_reserva_pk PRIMARY KEY(id_reserva),
     CONSTRAINT reservas_de_visita_id_escuela_fk FOREIGN KEY(id_escuela) REFERENCES ESCUELAS(id_escuela)
         ON UPDATE CASCADE ON DELETE SET NULL,
@@ -243,8 +241,8 @@ CREATE TABLE RESERVAS_DE_VISITA (
 CREATE TABLE ASIGNACIONES_DE_GUIA (
     id_reserva INT,
 	id_guia INT,
-    fecha_hora_inicio DATETIME,
-    fecha_hora_fin DATETIME,
+    fecha_hora_inicio DATETIME NOT NULL,
+    fecha_hora_fin DATETIME NOT NULL,
     CONSTRAINT asig_guia_id_reserva_id_guia_pk PRIMARY KEY(id_reserva, id_guia),
     CONSTRAINT asig_guia_id_reserva_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
         ON UPDATE NO ACTION ON DELETE CASCADE,
@@ -262,13 +260,13 @@ CREATE TABLE ESTADOS_DE_RESERVA (
 CREATE TABLE CAMBIOS_DE_ESTADO_DE_RESERVA (
     id_reserva INT,
     id_estado_reserva TINYINT,
-    fecha_hora_inicio DATETIME,
+    fecha_hora_inicio DATETIME NOT NULL,
     fecha_hora_fin DATETIME,
-    CONSTRAINT cambios_de_estado_res_id_res_id_est_fecha_ini_pk PRIMARY KEY(id_reserva, id_estado_reserva, fecha_hora_inicio),
+    CONSTRAINT cambios_de_estado_res_id_res_id_est_fecha_ini_pk PRIMARY KEY(id_reserva, id_estado_reserva),
     CONSTRAINT cambios_de_estado_res_id_res_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
-        ON UPDATE NO ACTION ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT cambios_de_estado_res_id_est_fk FOREIGN KEY(id_estado_reserva) REFERENCES ESTADOS_DE_RESERVA(id_estado_reserva)
-        ON UPDATE NO ACTION ON DELETE CASCADE
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 

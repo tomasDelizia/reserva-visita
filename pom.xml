@@ -12,7 +12,7 @@
     <artifactId>reserva-visita</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>reserva-visita</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Reserva de Visita Guiada de Museo Pictórico</description>
     <properties>
         <java.version>16</java.version>
     </properties>
@@ -33,14 +33,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-graphics -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>16</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
-            <version>17-ea+11</version>
+            <version>16</version>
         </dependency>
-
     </dependencies>
 
     <build>
