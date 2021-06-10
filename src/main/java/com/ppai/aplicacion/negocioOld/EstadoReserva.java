@@ -1,17 +1,16 @@
-package com.ppai.aplicacion.negocio;
+package com.ppai.aplicacion.negocioOld;
 
 
 /**
  * @author tomid
  * @version 1.0
- * @created 22-May-2021 9:42:31 am
+ * @created 22-May-2021 9:42:45 am
  */
-public class Cargo {
+public class EstadoReserva {
 
-	private String nombre;
-	private String descripcion;
+	private String nombre, descripcion;
 
-	public Cargo(String nombre, String descripcion) {
+	public EstadoReserva(String nombre, String descripcion) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 	}
@@ -34,13 +33,14 @@ public class Cargo {
 
 	@Override
 	public String toString() {
-		return "Cargo{" +
+		return "EstadoReserva{" +
 				"nombre='" + nombre + '\'' +
 				", descripcion='" + descripcion + '\'' +
 				'}';
 	}
 
-	public boolean esGuia() {
-		return this.nombre.equals("Guía");
+	public boolean esPendienteDeConfirmacion(){
+		return nombre.equals("Pendiente de Confirmación");
 	}
-}//end Cargo
+
+}//end EstadoReserva

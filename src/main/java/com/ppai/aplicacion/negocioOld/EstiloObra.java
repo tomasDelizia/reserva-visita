@@ -1,17 +1,17 @@
-package com.ppai.aplicacion.negocio;
+package com.ppai.aplicacion.negocioOld;
 
 
 /**
  * @author tomid
  * @version 1.0
- * @created 22-May-2021 9:42:39 am
+ * @created 22-May-2021 10:42:25 am
  */
-public class TipoExposicion {
+public class EstiloObra {
 
 	private String descripcion;
 	private String nombre;
 
-	public TipoExposicion(String descripcion, String nombre) {
+	public EstiloObra(String descripcion, String nombre) {
 		this.descripcion = descripcion;
 		this.nombre = nombre;
 	}
@@ -34,25 +34,9 @@ public class TipoExposicion {
 
 	@Override
 	public String toString() {
-		return "TipoExposicion{" +
+		return "EstiloObra{" +
 				"descripcion=" + descripcion +
 				", nombre=" + nombre +
 				'}';
 	}
-
-	public void crear(){
-
-	}
-
-	public void esPermanente(){
-
-	}
-
-	public boolean esTemporal(){
-		return this.nombre.equals("Temporal");
-	}
-
-	public void getTipoExposicion(){
-
-	}
-}//end TipoExposicion
+}//end EstiloObra

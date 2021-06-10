@@ -1,7 +1,7 @@
 package com.ppai.aplicacion.servicio;
 
-import com.ppai.aplicacion.persistencia.TipoDeVisita;
-import com.ppai.aplicacion.repo.TipoDeVisitaRepo;
+import com.ppai.aplicacion.negocio.TipoVisita;
+import com.ppai.aplicacion.repo.TipoVisitaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.List;
 public class TipoDeVisitaService implements ITipoDeVisitaService {
 
     @Autowired
-    private TipoDeVisitaRepo tipoDeVisitaRepo;
+    private TipoVisitaRepo tipoVisitaRepo;
 
     @Override
-    public List<TipoDeVisita> findAll() {
-        return (List<TipoDeVisita>) tipoDeVisitaRepo.findAll();
+    public List<TipoVisita> findAll() {
+        return (List<TipoVisita>) tipoVisitaRepo.findAll();
     }
 }

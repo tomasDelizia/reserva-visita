@@ -1,6 +1,6 @@
-CREATE DATABASE museo_pictorico;
+CREATE DATABASE MUSEO_PICTORICO;
 
-USE museo_pictorico;
+USE MUSEO_PICTORICO;
 
 -- DBCC CHECKIDENT ('EMPLEADOS', RESEED, 0);	-- Resetear contador de id de una tabla
 
@@ -34,8 +34,8 @@ CREATE TABLE EMPLEADOS (
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     mail VARCHAR(50),
-    id_cargo TINYINT NOT NULL,
-    id_sede INT NOT NULL,
+    id_cargo TINYINT,
+    id_sede INT,
     fecha_nacimiento DATE NOT NULL,
     fecha_ingreso DATE  NOT NULL,
     calle_nombre VARCHAR(50),
@@ -105,13 +105,13 @@ ALTER TABLE EXPOSICIONES
     ADD CONSTRAINT exposiciones_id_empleado_fk FOREIGN KEY(id_empleado_creador)
         REFERENCES EMPLEADOS(id_empleado)
         ON UPDATE CASCADE
-        ON DELETE SET NULL;
+        ON DELETE NO ACTION;
 
 ALTER TABLE EXPOSICIONES
     ADD CONSTRAINT exposiciones_id_tipo_expo_fk FOREIGN KEY(id_tipo_exposicion)
         REFERENCES TIPOS_DE_EXPOSICION(id_tipo_exposicion)
         ON UPDATE CASCADE
-        ON DELETE SET NULL;
+        ON DELETE NO ACTION;
 
 CREATE TABLE OBRAS (
     id_obra INT IDENTITY ,
@@ -144,11 +144,11 @@ CREATE TABLE DETALLES_DE_EXPOSICION (
 
 ALTER TABLE DETALLES_DE_EXPOSICION
 	ADD CONSTRAINT dt_expo_id_obra_fk FOREIGN KEY(id_obra) REFERENCES OBRAS(id_obra)
-		ON UPDATE NO ACTION ON DELETE CASCADE;
+		ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE DETALLES_DE_EXPOSICION
 	ADD CONSTRAINT dt_expo_id_expo_fk FOREIGN KEY(id_exposicion) REFERENCES EXPOSICIONES(id_exposicion)
-		ON UPDATE NO ACTION ON DELETE CASCADE;
+		ON UPDATE CASCADE ON DELETE CASCADE;
 
 CREATE TABLE PUBLICOS_DESTINO (
     id_publico INT IDENTITY,
@@ -162,9 +162,9 @@ CREATE TABLE PUBLICOS_X_EXPOSICIONES (
     id_publico INT,
     CONSTRAINT publi_x_expo_id_expo_id_publi_pk PRIMARY KEY(id_exposicion, id_publico),
     CONSTRAINT publi_x_expo_id_expo_fk FOREIGN KEY(id_exposicion) REFERENCES EXPOSICIONES(id_exposicion)
-        ON UPDATE NO ACTION ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT publi_x_expo_id_publi_fk FOREIGN KEY(id_publico) REFERENCES PUBLICOS_DESTINO(id_publico)
-        ON UPDATE NO ACTION ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE,
 );
 
 CREATE TABLE USUARIOS (
@@ -172,7 +172,7 @@ CREATE TABLE USUARIOS (
     nombre_usuario VARCHAR(50) NOT NULL,
     contrasena VARCHAR(50) NOT NULL,
     caducidad DATE,
-    id_empleado INT NOT NULL,,
+    id_empleado INT NOT NULL,
     CONSTRAINT usuarios_id_usuario_pk PRIMARY KEY(id_usuario),
     CONSTRAINT usuarios_id_empleado_fk FOREIGN KEY(id_empleado) REFERENCES EMPLEADOS(id_empleado)
         ON UPDATE CASCADE ON DELETE CASCADE
@@ -184,7 +184,7 @@ CREATE TABLE SESIONES (
     fecha_hora_fin DATETIME,
     CONSTRAINT sesiones_id_usuario_fecha_hora_inicio_pk PRIMARY KEY(id_usuario, fecha_hora_inicio),
     CONSTRAINT sesiones_id_usuario_fk FOREIGN KEY(id_usuario) REFERENCES USUARIOS(id_usuario)
-        ON UPDATE CASCADE ON DELETE CASCADE,
+        ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE DIAS_DE_SEMANA (
@@ -198,7 +198,7 @@ CREATE TABLE HORARIOS_EMPLEADOS (
     id_dia TINYINT,
     horario_ingreso TIME NOT NULL,
     horario_salida TIME NOT NULL,
-    CONSTRAINT horarios_empleados_id_emp_id_dia_pk PRIMARY KEY(id_empleado, id_dia),
+    CONSTRAINT horarios_empleados_id_emp_id_dia_pk PRIMARY KEY(id_empleado, id_dia, horario_ingreso),
     CONSTRAINT horarios_empleados_id_emp_fk FOREIGN KEY(id_empleado) REFERENCES EMPLEADOS(id_empleado)
         ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT horarios_empleados_id_dia_fk FOREIGN KEY(id_dia) REFERENCES DIAS_DE_SEMANA(id_dia)
@@ -210,7 +210,7 @@ CREATE TABLE HORARIOS_SEDE (
     id_dia TINYINT,
     horario_apertura TIME NOT NULL,
     horario_cierre TIME NOT NULL,
-    CONSTRAINT horarios_sedes_id_sede_id_dia_pk PRIMARY KEY(id_sede, id_dia),
+    CONSTRAINT horarios_sedes_id_sede_id_dia_pk PRIMARY KEY(id_sede, id_dia, horario_apertura),
     CONSTRAINT horarios_sedes_id_sede_fk FOREIGN KEY(id_sede) REFERENCES SEDES(id_sede)
         ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT horarios_sedes_id_dia_fk FOREIGN KEY(id_dia) REFERENCES DIAS_DE_SEMANA(id_dia)
@@ -231,19 +231,19 @@ CREATE TABLE RESERVAS_DE_VISITA (
     id_empleado_creador INT NOT NULL,
     CONSTRAINT reservas_de_visita_id_reserva_pk PRIMARY KEY(id_reserva),
     CONSTRAINT reservas_de_visita_id_escuela_fk FOREIGN KEY(id_escuela) REFERENCES ESCUELAS(id_escuela)
-        ON UPDATE CASCADE ON DELETE SET NULL,
+        ON UPDATE CASCADE ON DELETE NO ACTION,
     CONSTRAINT reservas_de_visita_id_sede_fk FOREIGN KEY(id_sede) REFERENCES SEDES(id_sede)
-        ON UPDATE CASCADE ON DELETE SET NULL,
+        ON UPDATE CASCADE ON DELETE NO ACTION,
     CONSTRAINT reservas_de_visita_id_empleado_creador_fk FOREIGN KEY(id_empleado_creador)
-        REFERENCES EMPLEADOS(id_empleado) ON UPDATE NO ACTION ON DELETE SET NULL,
+        REFERENCES EMPLEADOS(id_empleado) ON UPDATE NO ACTION ON DELETE NO ACTION,
 );
 
 CREATE TABLE ASIGNACIONES_DE_GUIA (
-    id_reserva INT,
 	id_guia INT,
     fecha_hora_inicio DATETIME NOT NULL,
     fecha_hora_fin DATETIME NOT NULL,
-    CONSTRAINT asig_guia_id_reserva_id_guia_pk PRIMARY KEY(id_reserva, id_guia),
+	id_reserva INT,
+    CONSTRAINT asig_guia_id_guia_fechahora_inicio_pk PRIMARY KEY(id_guia, fecha_hora_inicio),
     CONSTRAINT asig_guia_id_reserva_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
         ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT asig_guia_id_guia_fk FOREIGN KEY(id_guia) REFERENCES EMPLEADOS(id_empleado)
@@ -364,25 +364,25 @@ VALUES (32650897, '20-32650897-8', 'Mauricio', 'Cuevas', 'mcuevas@gmail.com', 8,
 
 
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES (N'Joaquín', 'ACD8141', '2020-05-02',3);
+VALUES (N'milagros_ramos', 'ACD8141', '2022-05-02',3);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES (N'Martín', 'AXQ8541', '2019-07-03',5);
+VALUES (N'eduardo_suarez', 'AXQ8541', '2021-07-03',5);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES ('Victoria', 'AHG7252', '2018-02-01',7);
+VALUES ('juan_chavez', 'AHG7252', '2022-02-01',7);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES ('Candela', 'AFB7841', '2015-04-09',4);
+VALUES ('raul_gonzalez', 'AFB7841', '2022-04-09',4);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES (N'Tomás', 'AMW7486', '2012-08-10',8);
+VALUES (N'mbelen_lopez', 'AMW7486', '202108-10',8);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES (N'Agustín', 'NDF5418', '2016-10-21',2);
+VALUES (N'lautaro_rodriguez', 'NDF5418', '2021-10-21',2);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES ('Franco', 'HGD2541', '2020-09-17',6);
+VALUES ('agustina_gomez', 'HGD2541', '2021-09-17',6);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES ('Abril', 'HGT2514', '2020-03-17',9);
+VALUES ('carla_juarez', 'HGT2514', '2022-03-17',9);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES ('Mauro', 'KJL3671', '2016-03-17',1);
+VALUES ('maria_robles', 'KJL3671', '2022-03-17',1);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES ('Federico', 'JGT2410', '2013-07-20',10);
+VALUES ('mauricio_cuevas', 'JGT2410', '2021-07-20',10);
 
 INSERT INTO SESIONES (id_usuario, fecha_hora_inicio, fecha_hora_fin)
 VALUES (1, '2020-05-20 09:00:00','2020-05-20 09:30:00');

@@ -1,5 +1,7 @@
-package com.ppai.aplicacion.negocio;
+package com.ppai.aplicacion.negocioOld;
 
+
+import com.ppai.aplicacion.negocio.Empleado;
 
 import java.time.LocalDate;
 

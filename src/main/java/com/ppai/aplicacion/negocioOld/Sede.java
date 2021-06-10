@@ -1,4 +1,6 @@
-package com.ppai.aplicacion.negocio;
+package com.ppai.aplicacion.negocioOld;
+
+import com.ppai.aplicacion.negocio.TipoVisita;
 
 import java.time.*;
 import java.util.ArrayList;
@@ -126,8 +128,8 @@ public class Sede {
 		Duration duracionVisita = Duration.parse("00:00:00");
 		for (Exposicion expo:
 			 exposiciones) {
-			Duration duracionExpo = expo.calcularDuracionExposicion(tipoVisita);
-			duracionVisita.plus(duracionExpo);
+			//Duration duracionExpo = expo.calcularDuracionExposicion(tipoVisita);
+			//duracionVisita.plus(duracionExpo);
 		}
 		return duracionVisita;
 	}

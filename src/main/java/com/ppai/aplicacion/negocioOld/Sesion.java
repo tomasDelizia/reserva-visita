@@ -1,4 +1,4 @@
-package com.ppai.aplicacion.negocio;
+package com.ppai.aplicacion.negocioOld;
 
 
 import java.time.LocalDateTime;
@@ -53,12 +53,6 @@ public class Sesion {
 				'}';
 	}
 
-	public Empleado getEmpleadoEnSesion(){
-		return usuario.getEmpleado();
-	}
 
-	public Sesion getSesion(){
-		return this;
-	}
 
 }//end Sesion

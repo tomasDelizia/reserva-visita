@@ -1,4 +1,4 @@
-package interfazOld;
+package com.ppai.aplicacion;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +24,7 @@ public class SpringApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         applicationContext = SpringApplication.run(SpringApp.class);
         FXMLLoader loader = new FXMLLoader(SpringApp.class.getResource("/reservaVisita.fxml"));
-        //loader.setControllerFactory(applicationContext::getBean);   // Escanea toda la aplicación y detecta dependecias
+        loader.setControllerFactory(applicationContext::getBean);   // Escanea toda la aplicación y detecta dependecias
         Scene scene = new Scene(loader.load(), 640, 360, false, SceneAntialiasing.BALANCED);
         primaryStage.setScene(scene);
         primaryStage.show();

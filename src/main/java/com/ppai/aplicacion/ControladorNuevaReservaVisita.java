@@ -1,19 +1,26 @@
 package com.ppai.aplicacion;
 
 
-import com.ppai.aplicacion.repo.TipoDeVisitaRepo;
-import com.ppai.aplicacion.negocio.*;
+import com.ppai.aplicacion.negocio.Empleado;
+import com.ppai.aplicacion.negocio.Escuela;
+import com.ppai.aplicacion.repo.EscuelaRepo;
+import com.ppai.aplicacion.repo.TipoVisitaRepo;
+import com.ppai.aplicacion.negocioOld.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.ppai.aplicacion.persistencia.TipoDeVisita;
+import com.ppai.aplicacion.negocio.TipoVisita;
 
+import java.net.URL;
 import java.sql.*;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * @author tomid
@@ -23,50 +30,46 @@ import java.util.List;
 @Component
 public class ControladorNuevaReservaVisita {
 
-	private final List<Escuela> escuelas = new ArrayList<>();
+	//public PantallaNuevaReservaVisita pantalla;
+
+	private List<Escuela> escuelas;
 	private Escuela escuelaSeleccionada;
 	private List<Sede> sedes;
 	private Sede sedeSeleccionada;
-	private List<TipoDeVisita> tiposDeVisita;
-	private TipoDeVisita tipoVisitaSeleccionado;
+	private List<TipoVisita> tiposDeVisita;
+	private TipoVisita tipoVisitaSeleccionado;
 	private int cantGuiasNecesarios, cantidadVisitantes;
 	private List<Exposicion> exposicionesTemporalesYVigentes, exposicionesSeleccionadas;
 	private LocalDateTime fechaYHoraReservaSeleccionada;
-	private LocalTime duracionEstimadaExposicion;
+	private Duration duracionEstimadaExposicion;
 	private List<Empleado> guiasDisponibles, guiasSeleccionados;
 	private EstadoReserva estadoPendiente;
 
 	@Autowired
-	private TipoDeVisitaRepo tipoDeVisitaRepo;
+	private EscuelaRepo escuelaRepo;
 
-	public void buscarTiposDeVisita() {
-		tiposDeVisita = tipoDeVisitaRepo.findAll();
-	}
+
+//	public ControladorNuevaReservaVisita(PantallaNuevaReservaVisita pantallaNuevaReservaVisita) {
+//		this.pantalla = pantallaNuevaReservaVisita;
+//	}
+
+//	public void setPantalla(PantallaNuevaReservaVisita pantallaNuevaReservaVisita) {
+//		this.pantalla = pantallaNuevaReservaVisita;
+//	}
+//
+//	public void initialize() {
+//		this.buscarEscuelas(escuelaRepo);
+//		pantalla.presentarEscuelasAlt(this.escuelas);
+//	}
 
 	public void opcionRegistrarReservaVisita(){
-
+		//this.buscarEscuelas(escuelaRepo);
+		//pantalla.presentarEscuelas(escuelas);
 	}
 
-	public ObservableList<Escuela> buscarEscuelas(){
-		ObservableList<Escuela> ol = FXCollections.observableArrayList();
-
-		String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=museo_pictorico;integratedSecurity=true";
-		try (Connection con = DriverManager.getConnection(connectionUrl);
-			 Statement stmt = con.createStatement();) {
-			String SQL = "SELECT * FROM ESCUELAS";
-			ResultSet rs = stmt.executeQuery(SQL);
-			while (rs.next()) {
-				Escuela escuela = new Escuela(rs.getString("nombre"), rs.getString("mail"),
-						rs.getString("calle_nombre"), rs.getInt("calle_numero"),
-						rs.getString("telefono_celular"), rs.getString("telefono_fijo"));
-				ol.add(escuela);
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ol;
-	}
+//	public void buscarEscuelas(EscuelaRepo escuelaRepo){
+//		this.escuelas = escuelaRepo.findAll();
+//	}
 
 	public List<Escuela> getEscuelas() {
 		return escuelas;
@@ -88,6 +91,10 @@ public class ControladorNuevaReservaVisita {
 
 	}
 
+	public void buscarTiposDeVisita() {
+		//tiposDeVisita = tipoVisitaRepo.findAll();
+	}
+
 //	public void buscarTiposDeVisita(){
 //		String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=museo_pictorico;integratedSecurity=true";
 //		try (Connection con = DriverManager.getConnection(connectionUrl);
@@ -104,7 +111,7 @@ public class ControladorNuevaReservaVisita {
 //		}
 //	}
 
-	public List<TipoDeVisita> getTiposDeVisita() {
+	public List<TipoVisita> getTiposDeVisita() {
 		return tiposDeVisita;
 	}
 
@@ -160,11 +167,11 @@ public class ControladorNuevaReservaVisita {
 
 	}
 
-	public void getEmpleadoEnSesion(){
+	public void getEmpleadoEnSesion() {
 
 	}
 
-	public LocalDateTime obtenerFechaHoraActual(){
+	public LocalDateTime getFechaYHoraActual(){
 		return LocalDateTime.now();
 	}
 
@@ -185,23 +192,6 @@ public class ControladorNuevaReservaVisita {
 		}
 	}
 
-	public void buscarEstadoPendienteDeConfirmacionAlt(){	// Eliminar a la bosta
-		String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=museo_pictorico;integratedSecurity=true";
-		try (Connection con = DriverManager.getConnection(connectionUrl);
-			 Statement stmt = con.createStatement();) {
-			String SQL = "SELECT * FROM ESTADOS_DE_RESERVA WHERE nombre = N'Pendiente de Confirmación'";
-			ResultSet rs = stmt.executeQuery(SQL);
-			while (rs.next()) {
-				EstadoReserva estado = new EstadoReserva(rs.getString("nombre"), rs.getString("descripcion"));
-				if (estado.esPendienteDeConfirmacion())
-					estadoPendiente = estado;
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public EstadoReserva getEstadoPendiente() {
 		return estadoPendiente;
 	}
@@ -209,4 +199,6 @@ public class ControladorNuevaReservaVisita {
 	public void finCU(){
 
 	}
+
+
 }//end ControladorNuevaReservaVisita

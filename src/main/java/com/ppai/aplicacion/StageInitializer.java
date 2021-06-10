@@ -42,7 +42,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             //stage.setMaximized(true);    // Tamaño de ventana completo
             stage.show();
         } catch (IOException e) {
-            throw new RuntimeException();
+            e.printStackTrace();
         }
     }
 }

@@ -1,13 +1,16 @@
 package interfazOld;
 
 import com.ppai.aplicacion.ControladorNuevaReservaVisita;
-import com.ppai.aplicacion.negocio.*;
+import com.ppai.aplicacion.negocio.Escuela;
+import com.ppai.aplicacion.negocio.TipoVisita;
+import com.ppai.aplicacion.negocioOld.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -27,10 +30,10 @@ public class Test {
         Scanner teclado = new Scanner(System.in);
         Exposicion expo1;
         TipoExposicion tipoExpo;
-        Empleado e1;
+        //Empleado e1;
         PublicoDestino publi;
         Escuela escuela;
-        ControladorNuevaReservaVisita controlador = new ControladorNuevaReservaVisita();
+        //ControladorNuevaReservaVisita controlador = new ControladorNuevaReservaVisita();
 
 
         LocalDate fecha = LocalDate.of(2021, 5, 23);
@@ -51,8 +54,8 @@ public class Test {
         he.add(horarioEmp);
         Sede sede1 = new Sede(150, 100, "Sede 1", horarioSedeArray,
                 "calle 1", 150);
-        Empleado emp1 = new Empleado(150, "150", "Messi", "Leo", "liomessi@gmail.com", cargo,
-                sede1, ld, ld, "calle1", 150, "452365", "masc", 15231, he);
+//        Empleado emp1 = new Empleado(150, "150", "Messi", "Leo", "liomessi@gmail.com", cargo,
+//                sede1, ld, ld, "calle1", 150, "452365", "masc", 15231, he);
 
         archivo = new Archivo("obra1", "C:/obra1xd");
         estilo = new EstiloObra("al olieo", "al olieao");
@@ -66,50 +69,50 @@ public class Test {
 
 
 
-        obra1 = new Obra("Mauro", 80, 50, 123, 90, Duration.ofMinutes(5), Duration.ofHours(1),
-                ld, ld, ld, "desc1", 90, emp1);
-        List<PublicoDestino> publiArray = new ArrayList<>();
-        publiArray.add(publi);
+//        obra1 = new Obra("Mauro", 80, 50, 123, 90, Duration.ofMinutes(5), Duration.ofHours(1),
+//                ld, ld, ld, "desc1", 90, emp1);
+//        List<PublicoDestino> publiArray = new ArrayList<>();
+//        publiArray.add(publi);
+//
+//        deta = new DetalleExposicion(454, obra1);
+//        DetalleExposicion deta1 = new DetalleExposicion(454, obra1);
+//        List<DetalleExposicion> detaArray = new ArrayList<>();
+//        detaArray.add(deta); detaArray.add(deta1);
 
-        deta = new DetalleExposicion(454, obra1);
-        DetalleExposicion deta1 = new DetalleExposicion(454, obra1);
-        List<DetalleExposicion> detaArray = new ArrayList<>();
-        detaArray.add(deta); detaArray.add(deta1);
+//        expo1 = new Exposicion(fecha, null, ld, ld, lt, lt, "La mejor expo!!", tipoExpo,
+//                emp1, publiArray, detaArray);
+//        expo1.addDetalleExposicion(deta);
+//        expo1.addDetalleExposicion(deta1);
+//        expo1.addPublicoDestino(publi);
+//
+//        System.out.println(expo1.toString());
 
-        expo1 = new Exposicion(fecha, null, ld, ld, lt, lt, "La mejor expo!!", tipoExpo,
-                emp1, publiArray, detaArray);
-        expo1.addDetalleExposicion(deta);
-        expo1.addDetalleExposicion(deta1);
-        expo1.addPublicoDestino(publi);
-
-        System.out.println(expo1.toString());
-
-        System.out.println(emp1.esGuia());
+        //System.out.println(emp1.esGuia());
 
         System.out.println(escuela1.getEscuela());
         System.out.println(escuela1);
 
         System.out.println(ld.compareTo(ld));
 
-        System.out.println(expo1.esVigente());
+//        System.out.println(expo1.esVigente());
 
-        System.out.println(expo1.getNombresPublicoDestino());
+       // System.out.println(expo1.getNombresPublicoDestino());
 
 
 
         //controlador.buscarEscuelas();
-        System.out.println(controlador.getEscuelas());
+        //System.out.println(controlador.getEscuelas());
 
         LocalTime t0 = LocalTime.now();
-        controlador.buscarEstadoPendienteDeConfirmacion();
-        System.out.println(controlador.getEstadoPendiente());
+        //controlador.buscarEstadoPendienteDeConfirmacion();
+        //System.out.println(controlador.getEstadoPendiente());
         LocalTime t1 = LocalTime.now();
         System.out.println(t0);
         System.out.println(t1);
 
         LocalTime t2 = LocalTime.now();
-        controlador.buscarEstadoPendienteDeConfirmacionAlt();
-        System.out.println(controlador.getEstadoPendiente());
+        //controlador.buscarEstadoPendienteDeConfirmacionAlt();
+        //System.out.println(controlador.getEstadoPendiente());
         LocalTime t3 = LocalTime.now();
         System.out.println(t2);
         System.out.println(t3);
@@ -127,6 +130,22 @@ public class Test {
 //        controlador.buscarTiposDeVisita();
 //        System.out.println(controlador.getTiposDeVisita());
 
+
+        Duration d1 = Duration.ofMinutes(5);
+        System.out.println(d1.plus(d1).getSeconds());
+        // Formato Duration (solo minutos y segundos): "PTnMnS"
+        System.out.println(Duration.parse("PT2M30S").getSeconds());
+        System.out.println(lt.plus(d1));    // Ahora + 5 minutos
+
+
+        LocalTime tiempo = LocalTime.of(0, 2, 30);
+        StringBuilder tiemp = new StringBuilder();
+        tiemp.append(tiempo.toString().substring(3,4));
+                //+ tiempo.toString().substring(3,4) + "M" + tiempo.toString().substring(6,7) + "S";
+        System.out.println(tiempo);
+        System.out.println(tiemp);
+
+        // PROBAR CLASE Timestamp
 
 
 
