@@ -1,17 +1,11 @@
-package com.ppai.aplicacion;
+package pruebas;
 
-import com.ppai.aplicacion.negocio.Empleado;
 import com.ppai.aplicacion.negocio.Escuela;
-import com.ppai.aplicacion.negocio.TipoVisita;
-import com.ppai.aplicacion.repo.EmpleadoRepo;
-import com.ppai.aplicacion.repo.EscuelaRepo;
-import com.ppai.aplicacion.repo.TipoVisitaRepo;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;

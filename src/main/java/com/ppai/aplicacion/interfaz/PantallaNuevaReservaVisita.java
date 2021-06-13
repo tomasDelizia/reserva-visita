@@ -1,16 +1,17 @@
-package com.ppai.aplicacion;
+package com.ppai.aplicacion.interfaz;
 
+import com.ppai.aplicacion.controlador.ControladorNuevaReservaVisita;
 import com.ppai.aplicacion.negocio.Empleado;
 import com.ppai.aplicacion.negocio.Escuela;
+import com.ppai.aplicacion.negocio.Exposicion;
 import com.ppai.aplicacion.negocio.TipoVisita;
-import com.ppai.aplicacion.repo.EmpleadoRepo;
-import com.ppai.aplicacion.repo.EscuelaRepo;
-import com.ppai.aplicacion.repo.TipoVisitaRepo;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.net.URL;
@@ -20,8 +21,12 @@ import java.util.ResourceBundle;
 @Component
 public class PantallaNuevaReservaVisita implements Initializable {
 
-	//@FXML
-	//private ControladorNuevaReservaVisita controlador;
+
+
+	private ControladorNuevaReservaVisita controlador;
+
+	@FXML
+	public TextArea txtExpo;
 
 	@FXML
 	public ComboBox<Escuela> cboEscuelas;
@@ -32,41 +37,38 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	@FXML
 	public ComboBox<Empleado> cboEmpleados;
 
-	@Autowired
-	private TipoVisitaRepo tipoVisitaRepo;
+	@FXML
+	public ComboBox<Exposicion> cboExpo;
 
 	@Autowired
-	private EscuelaRepo escuelaRepo;
+	public void setControlador(ControladorNuevaReservaVisita controlador) {
+		this.controlador = controlador;
+	}
 
-	@Autowired
-	private EmpleadoRepo empleadoRepo;
+	public ControladorNuevaReservaVisita getControlador() {
+		return controlador;
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		//controlador.setPantalla(this);
 		opcionNuevaReservaVisita();
 	}
 
 	public void opcionNuevaReservaVisita(){ // Los objetos pantalla y gestor se crean cuando presionamos el botón nuevaReservaVisita
-		//this.controlador.setPantalla(this);
-		//controlador.opcionRegistrarReservaVisita();
-		//List<Escuela> escuelas = controlador.opcionRegistrarReservaVisita(escuelaRepo);
-		presentarEscuelas();
-		presentarGuiasDisponibles();
+		habilitarPantalla();
+		controlador.opcionRegistrarReservaVisita();
 	}
 
 	public void habilitarPantalla(){
 
 	}
 
-	public void presentarEscuelasAlt(List<Escuela> listaEscuelas) {
-		//cboEscuelas.setItems(FXCollections.observableArrayList(listaEscuelas));
+	public void presentarEscuelas(ActionEvent actionEvent) {
+
 	}
 
-	public void presentarEscuelas() {
-		cboEscuelas.setItems(FXCollections.observableArrayList(escuelaRepo.findAll()));
-		//ObservableList<Escuela> observableListEscuelas = controlador.buscarEscuelas();
-		//this.cboEscuelas.setItems(observableListEscuelas);
+	public void presentarEscuelas(List<Escuela> listaEscuelas) {
+		cboEscuelas.setItems(FXCollections.observableArrayList(listaEscuelas));
 	}
 
 	public void tomarSeleccionEscuela(){
@@ -78,7 +80,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	}
 
 	public void presentarGuiasDisponibles(){
-		//cboEmpleados.setItems(FXCollections.observableArrayList(empleadoRepo.findAll()));
+
 	}
 
 	public void presentarSedes(){
@@ -148,8 +150,23 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 
 	public void presentarTiposDeVisita(){
-		cboTiposDeVisita.setItems(FXCollections.observableArrayList(tipoVisitaRepo.findAll()));
 	}
 
+	// probando empleados
+
+    public void mostrarEmpleados(ActionEvent actionEvent) {
+    }
+
+    public void mostrarEmpleados(List<Empleado> listaEmpleados) {
+		cboEmpleados.setItems(FXCollections.observableArrayList(listaEmpleados));
+	}
+
+
+	public void mostrarExpo(MouseEvent actionEvent) {
+	}
+
+	public void mostrarExpo(List<Exposicion> listaExposiciones) {
+		txtExpo.setText(listaExposiciones.toString());
+	}
 
 }//end com.ppai.reservavisita.PantallaNuevaReservaVisita

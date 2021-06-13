@@ -47,8 +47,8 @@ CREATE TABLE EMPLEADOS (
 );
 
 CREATE TABLE SEXOS (
-    id_sexo TINYINT IDENTITY,
-    nombre VARCHAR(50) NOT NULL,
+    id_sexo TINYINT,
+    nombre VARCHAR(30) NOT NULL,
     CONSTRAINT sexos_id_sexo_pk PRIMARY KEY(id_sexo)
 );
 
@@ -269,6 +269,25 @@ CREATE TABLE CAMBIOS_DE_ESTADO_DE_RESERVA (
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE EXPOSICIONES_X_SEDES (
+    id_sede INT,
+    id_exposicion INT,
+    CONSTRAINT expo_x_sede_id_sede_id_expo_pk PRIMARY KEY(id_sede, id_exposicion),
+    CONSTRAINT expo_x_sede_id_sede_fk FOREIGN KEY(id_sede) REFERENCES SEDES(id_sede)
+        ON UPDATE NO ACTION ON DELETE CASCADE,
+    CONSTRAINT expo_x_sede_id_expo_fk FOREIGN KEY(id_exposicion) REFERENCES EXPOSICIONES(id_exposicion)
+        ON UPDATE NO ACTION ON DELETE CASCADE,
+);
+
+CREATE TABLE EXPOSICIONES_X_RESERVAS (
+    id_reserva INT,
+    id_exposicion INT,
+    CONSTRAINT expo_x_reserva_id_reserva_id_expo_pk PRIMARY KEY(id_reserva, id_exposicion),
+    CONSTRAINT expo_x_reserva_id_reserva_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
+        ON UPDATE NO ACTION ON DELETE CASCADE,
+    CONSTRAINT expo_x_reserva_id_expo_fk FOREIGN KEY(id_exposicion) REFERENCES EXPOSICIONES(id_exposicion)
+        ON UPDATE NO ACTION ON DELETE CASCADE,
+);
 
 -- POBLAMIENTO TABLAS
 
@@ -284,8 +303,8 @@ INSERT INTO CARGOS (nombre, descripcion) VALUES(N'Guía', N'Encargado de explicar
 INSERT INTO TIPOS_DE_VISITA (nombre) VALUES ('Completa');
 INSERT INTO TIPOS_DE_VISITA (nombre) VALUES (N'Por Exposición');
 
-INSERT INTO SEXOS (nombre) VALUES ('Masculino');
-INSERT INTO SEXOS (nombre) VALUES ('Femenino');
+INSERT INTO SEXOS (id_sexo, nombre) VALUES (0, 'MASCULINO');
+INSERT INTO SEXOS (id_sexo, nombre) VALUES (1, 'FEMENINO');
 
 INSERT INTO ESTADOS_DE_RESERVA (nombre, descripcion) VALUES (N'Pendiente de Confirmación', 'Estado que se asigna incialmente cuando la escuela efectua una reserva.');
 INSERT INTO ESTADOS_DE_RESERVA (nombre, descripcion) VALUES ('Escuela Notificada', N'Estado que se asgina de no confirmar la reserva una semana antes de la fecha programada, al enviar automáticamente un recordatorio a la escuela mediante e-mail y WhatsApp.');
@@ -342,37 +361,37 @@ INSERT INTO SEDES (nombre, cantidad_maxima_visitantes, cantidad_maxima_por_guia,
 INSERT INTO SEDES (nombre, cantidad_maxima_visitantes, cantidad_maxima_por_guia, calle_nombre, calle_numero) VALUES ('Sede Zona Norte', 320, 45, 'Obispo Lascano', 2448);
 
 INSERT INTO EMPLEADOS (dni , cuit , nombre, apellido , mail, id_cargo, id_sede , fecha_nacimiento , fecha_ingreso , calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (39895674 , '23-39895674-3' , N'María' , 'Robles' , 'mrobles@hotmail.com', 1 , 1 , '1995-04-09', '2010-08-05', 'Francisco Aston', 3190 ,'3515459874' , 2, 1234);
+VALUES (39895674 , '23-39895674-3' , N'María' , 'Robles' , 'mrobles@hotmail.com', 1 , 1 , '1995-04-09', '2010-08-05', 'Francisco Aston', 3190 ,'3515459874' , 1, 1234);
 INSERT INTO EMPLEADOS (dni , cuit , nombre, apellido , mail, id_cargo, id_sede , fecha_nacimiento , fecha_ingreso , calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (40156147 , '23-40156147-4', 'Lautaro' , 'Rodriguez' , 'lautiro@hotmail.com' , 2, 2 , '1996-12-12', '2018-01-02', 'Felix Olmedo', 4578, '3513140012', 1, 5678);
+VALUES (40156147 , '23-40156147-4', 'Lautaro' , 'Rodriguez' , 'lautiro@hotmail.com' , 2, 2 , '1996-12-12', '2018-01-02', 'Felix Olmedo', 4578, '3513140012', 0, 5678);
 INSERT INTO EMPLEADOS (dni , cuit , nombre, apellido , mail, id_cargo, id_sede , fecha_nacimiento, fecha_ingreso , calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (41256365, '23-41256365-3', 'Milagros' , 'Ramos' , 'miliramos@hotmail.com' , 3, 3, '1997-06-04', '2016-04-01', 'Melincue', 7894, '3513140165', 2, 1423);
+VALUES (41256365, '23-41256365-3', 'Milagros' , 'Ramos' , 'miliramos@hotmail.com' , 3, 3, '1997-06-04', '2016-04-01', 'Melincue', 7894, '3513140165', 1, 1423);
 INSERT INTO EMPLEADOS (dni , cuit , nombre, apellido , mail, id_cargo, id_sede , fecha_nacimiento , fecha_ingreso , calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (42217998, '23-42217991-3', N'Raúl' , 'Gonzalez', 'raulgonzalez@hotmail.com', 4 , 4, '1998-11-11', '2021-01-01', 'Guemes' , 7415 , '351605738', 1, 3512);
+VALUES (42217998, '23-42217991-3', N'Raúl' , 'Gonzalez', 'raulgonzalez@hotmail.com', 4 , 4, '1998-11-11', '2021-01-01', 'Guemes' , 7415 , '351605738', 0, 3512);
 INSERT INTO EMPLEADOS (dni , cuit , nombre, apellido , mail, id_cargo, id_sede , fecha_nacimiento ,fecha_ingreso , calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (43512364, '23-43512364-2', 'Eduardo' , 'Suarez', 'edusuarez@hotmail.com' , 5 , 5,  '1999-08-06', '2020-01-05', 'Lima', 1452, '3514023152', 1, 4521);
+VALUES (43512364, '23-43512364-2', 'Eduardo' , 'Suarez', 'edusuarez@hotmail.com' , 5 , 5,  '1999-08-06', '2020-01-05', 'Lima', 1452, '3514023152', 0, 4521);
 INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (21392420, '27-21392420-4', 'Agustina', 'Gomez', 'agusgomez@gmail.com', 6, 6, '1968-09-05', '2020-11-11', 'General Paz', 1730, '3517157950', 2, 1520);
+VALUES (21392420, '27-21392420-4', 'Agustina', 'Gomez', 'agusgomez@gmail.com', 6, 6, '1968-09-05', '2020-11-11', 'General Paz', 1730, '3517157950', 1, 1520);
 INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (30520687, '20-30520687-2', 'Juan', 'Chavez', 'chavezj@hotmail.com', 7, 7, '1970-10-10', '2016-05-08', 'Buenos Aires', 625, '3516652250', 1, 1568);
+VALUES (30520687, '20-30520687-2', 'Juan', 'Chavez', 'chavezj@hotmail.com', 7, 7, '1970-10-10', '2016-05-08', 'Buenos Aires', 625, '3516652250', 0, 1568);
 INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (19562852, '20-19562852-3', N'María Belen', 'López', 'mblopez@hotmail.com', 8, 8, '1965-04-02', '2016-03-05', 'Marcelo Lopez', 10, '3517689456', 2, 6958);
+VALUES (19562852, '20-19562852-3', N'María Belen', 'López', 'mblopez@hotmail.com', 8, 8, '1965-04-02', '2016-03-05', 'Marcelo Lopez', 10, '3517689456', 1, 6958);
 INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (41562398, '27-41562398-4', 'Carla', 'Juarez', 'chavezj@hotmail.com', 8, 9, '1998-01-02', '2019-03-01', 'Velez Sarsfield', 658, '3517852456', 2, 2589);
+VALUES (41562398, '27-41562398-4', 'Carla', 'Juarez', 'chavezj@hotmail.com', 8, 9, '1998-01-02', '2019-03-01', 'Velez Sarsfield', 658, '3517852456', 1, 2589);
 INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
-VALUES (32650897, '20-32650897-8', 'Mauricio', 'Cuevas', 'mcuevas@gmail.com', 8, 10, '1987-05-20', '2020-02-10', 'Independencia', 210, '3512987562', 1, 1518);
+VALUES (32650897, '20-32650897-8', 'Mauricio', 'Cuevas', 'mcuevas@gmail.com', 8, 10, '1987-05-20', '2020-02-10', 'Independencia', 210, '3512987562', 0, 1518);
 
 
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES (N'milagros_ramos', 'ACD8141', '2022-05-02',3);
+VALUES ('milagros_ramos', 'ACD8141', '2022-05-02',3);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES (N'eduardo_suarez', 'AXQ8541', '2021-07-03',5);
+VALUES ('eduardo_suarez', 'AXQ8541', '2021-07-03',5);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
 VALUES ('juan_chavez', 'AHG7252', '2022-02-01',7);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
 VALUES ('raul_gonzalez', 'AFB7841', '2022-04-09',4);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
-VALUES (N'mbelen_lopez', 'AMW7486', '202108-10',8);
+VALUES ('mbelen_lopez', 'AMW7486', '2021-08-10',8);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
 VALUES (N'lautaro_rodriguez', 'NDF5418', '2021-10-21',2);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
@@ -578,3 +597,47 @@ INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUE
 INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (2, 3, 1);
 INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (5, 4, 5);
 INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (3, 7, 4);
+
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (1, 1);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (1, 2);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (1, 3);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (2, 4);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (2, 5);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (3, 6);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (3, 1);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (3, 2);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (4, 3);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (4, 4);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (5, 5);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (5, 6);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (5, 1);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (6, 2);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (6, 3);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (6, 4);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (7, 5);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (7, 6);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (8, 1);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (8, 2);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (9, 3);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (9, 4);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (10, 5);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (10, 6);
+INSERT INTO EXPOSICIONES_X_SEDES VALUES (10, 1);
+
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (1, 4);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (1, 5);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (2, 3);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (2, 4);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (3, 6);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (3, 2);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (4, 5);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (4, 6);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (5, 4);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (5, 5);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (6, 2);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (6, 3);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (7, 1);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (7, 2);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (8, 6);
+INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (8, 1);
+

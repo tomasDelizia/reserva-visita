@@ -1,6 +1,5 @@
-package interfazOld;
+package pruebas;
 
-import com.ppai.aplicacion.ControladorNuevaReservaVisita;
 import com.ppai.aplicacion.negocio.Escuela;
 import com.ppai.aplicacion.negocio.TipoVisita;
 import com.ppai.aplicacion.negocioOld.*;
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

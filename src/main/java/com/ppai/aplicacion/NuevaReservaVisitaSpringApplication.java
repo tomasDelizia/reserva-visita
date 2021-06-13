@@ -10,5 +10,4 @@ public class NuevaReservaVisitaSpringApplication {
     public static void main(String[] args) {
         Application.launch(NuevaReservaVisitaFXApplication.class, args);
     }
-
 }

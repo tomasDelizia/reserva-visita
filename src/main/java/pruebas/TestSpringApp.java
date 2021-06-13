@@ -1,4 +1,4 @@
-package com.ppai.aplicacion;
+package pruebas;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import com.ppai.aplicacion.SpringApp;
 
 @SpringBootApplication
 public class TestSpringApp extends Application {

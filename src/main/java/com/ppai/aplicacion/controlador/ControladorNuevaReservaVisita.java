@@ -1,26 +1,20 @@
-package com.ppai.aplicacion;
+package com.ppai.aplicacion.controlador;
 
 
+import com.ppai.aplicacion.interfaz.PantallaNuevaReservaVisita;
 import com.ppai.aplicacion.negocio.Empleado;
 import com.ppai.aplicacion.negocio.Escuela;
+import com.ppai.aplicacion.negocio.Exposicion;
 import com.ppai.aplicacion.repo.EscuelaRepo;
 import com.ppai.aplicacion.repo.TipoVisitaRepo;
 import com.ppai.aplicacion.negocioOld.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.ppai.aplicacion.negocio.TipoVisita;
-
-import java.net.URL;
 import java.sql.*;
 import java.time.Duration;
-import java.time.LocalTime;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * @author tomid
@@ -30,8 +24,7 @@ import java.util.ResourceBundle;
 @Component
 public class ControladorNuevaReservaVisita {
 
-	//public PantallaNuevaReservaVisita pantalla;
-
+	private PantallaNuevaReservaVisita pantalla;
 	private List<Escuela> escuelas;
 	private Escuela escuelaSeleccionada;
 	private List<Sede> sedes;
@@ -48,31 +41,25 @@ public class ControladorNuevaReservaVisita {
 	@Autowired
 	private EscuelaRepo escuelaRepo;
 
+	@Autowired
+	private TipoVisitaRepo tipoVisitaRepo;
 
-//	public ControladorNuevaReservaVisita(PantallaNuevaReservaVisita pantallaNuevaReservaVisita) {
-//		this.pantalla = pantallaNuevaReservaVisita;
-//	}
 
-//	public void setPantalla(PantallaNuevaReservaVisita pantallaNuevaReservaVisita) {
-//		this.pantalla = pantallaNuevaReservaVisita;
-//	}
-//
-//	public void initialize() {
-//		this.buscarEscuelas(escuelaRepo);
-//		pantalla.presentarEscuelasAlt(this.escuelas);
-//	}
 
-	public void opcionRegistrarReservaVisita(){
-		//this.buscarEscuelas(escuelaRepo);
-		//pantalla.presentarEscuelas(escuelas);
+	@Autowired
+	public void setPantalla(PantallaNuevaReservaVisita pantalla) {
+		this.pantalla = pantalla;
 	}
 
-//	public void buscarEscuelas(EscuelaRepo escuelaRepo){
-//		this.escuelas = escuelaRepo.findAll();
-//	}
+	public void opcionRegistrarReservaVisita(){
+		buscarEscuelas();
+		pantalla.presentarEscuelas(escuelas);
 
-	public List<Escuela> getEscuelas() {
-		return escuelas;
+
+	}
+
+	public void buscarEscuelas() {
+		escuelas = escuelaRepo.findAll();
 	}
 
 	public void escuelaSeleccionada(){
@@ -92,27 +79,7 @@ public class ControladorNuevaReservaVisita {
 	}
 
 	public void buscarTiposDeVisita() {
-		//tiposDeVisita = tipoVisitaRepo.findAll();
-	}
-
-//	public void buscarTiposDeVisita(){
-//		String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=museo_pictorico;integratedSecurity=true";
-//		try (Connection con = DriverManager.getConnection(connectionUrl);
-//			 Statement stmt = con.createStatement();) {
-//			String SQL = "SELECT * FROM TIPOS_DE_EXPOSICION";
-//			ResultSet rs = stmt.executeQuery(SQL);
-//			while (rs.next()) {
-//				TipoVisita tipVis = new TipoVisita(rs.getString("nombre"));
-//				tiposDeVisita.add(tipVis);
-//			}
-//		}
-//		catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-	public List<TipoVisita> getTiposDeVisita() {
-		return tiposDeVisita;
+		tiposDeVisita = tipoVisitaRepo.findAll();
 	}
 
 	public void tipoVisitaSeleccionada(){
@@ -192,13 +159,10 @@ public class ControladorNuevaReservaVisita {
 		}
 	}
 
-	public EstadoReserva getEstadoPendiente() {
-		return estadoPendiente;
-	}
-
 	public void finCU(){
 
 	}
+
 
 
 }//end ControladorNuevaReservaVisita

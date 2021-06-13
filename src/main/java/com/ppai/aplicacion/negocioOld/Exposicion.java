@@ -2,7 +2,6 @@ package com.ppai.aplicacion.negocioOld;
 
 import com.ppai.aplicacion.negocio.Empleado;
 import com.ppai.aplicacion.negocio.TipoVisita;
-
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;

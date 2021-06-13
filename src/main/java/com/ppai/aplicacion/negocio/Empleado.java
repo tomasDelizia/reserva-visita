@@ -1,8 +1,8 @@
 package com.ppai.aplicacion.negocio;
 
-import com.ppai.aplicacion.negocioOld.DiaSemana;
-import com.ppai.aplicacion.negocioOld.HorarioEmpleado;
-import com.ppai.aplicacion.negocioOld.Sede;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -37,6 +37,14 @@ public class Empleado {
     @Column(name = "mail")
     private String mail;
 
+    @OneToOne
+    @JoinColumn(name = "id_cargo", referencedColumnName = "id_cargo")
+    private Cargo cargo;
+
+    @OneToOne
+    @JoinColumn(name = "id_sede", referencedColumnName = "id_sede")
+    private Sede sedeDondeTrabaja;
+
     @Basic
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
@@ -57,24 +65,23 @@ public class Empleado {
     @Column(name = "telefono")
     private String telefono;
 
+    @Basic
+    @Column(name = "id_sexo")
     @Enumerated(EnumType.ORDINAL)
     private Sexo sexo;
+
+    public enum Sexo {MASCULINO, FEMENINO}
 
     @Basic
     @Column(name = "codigo_validacion")
     private String codigoValidacion;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy="idEmpleado")
+    private List<HorarioEmpleado> horarioEmpleado;
+
 
     public Empleado() {}
-
-    public int getIdEmpleado() {
-        return idEmpleado;
-    }
-
-    public void setIdEmpleado(int idEmpleado) {
-        this.idEmpleado = idEmpleado;
-    }
-
 
     public int getDni() {
         return dni;
@@ -84,7 +91,6 @@ public class Empleado {
         this.dni = dni;
     }
 
-
     public String getCuit() {
         return cuit;
     }
@@ -92,7 +98,6 @@ public class Empleado {
     public void setCuit(String cuit) {
         this.cuit = cuit;
     }
-
 
     public String getNombre() {
         return nombre;
@@ -102,7 +107,6 @@ public class Empleado {
         this.nombre = nombre;
     }
 
-
     public String getApellido() {
         return apellido;
     }
@@ -111,95 +115,23 @@ public class Empleado {
         this.apellido = apellido;
     }
 
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-
-    public LocalDate getFechaIngreso() {
-        return fechaIngreso;
-    }
-
-    public void setFechaIngreso(LocalDate fechaIngreso) {
-        this.fechaIngreso = fechaIngreso;
-    }
-
-
-    public String getCalleNombre() {
-        return calleNombre;
-    }
-
-    public void setCalleNombre(String calleNombre) {
-        this.calleNombre = calleNombre;
-    }
-
-
-    public Integer getCalleNumero() {
-        return calleNumero;
-    }
-
-    public void setCalleNumero(Integer calleNumero) {
-        this.calleNumero = calleNumero;
-    }
-
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-
-    public Sexo getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(Sexo sexo) {
-        this.sexo = sexo;
-    }
-
-    public String getCodigoValidacion() {
-        return codigoValidacion;
-    }
-
-    public void setCodigoValidacion(String codigoValidacion) {
-        this.codigoValidacion = codigoValidacion;
-    }
-
-
     @Override
     public String toString() {
         return "Empleado{" +
-                "nombre='" + nombre + '\'' +
+                "dni=" + dni +
+                ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
-                ", sexo='" + sexo + '\'' +
+                ", cargo=" + cargo +
+                ", sedeDondeTrabaja=" + sedeDondeTrabaja.getNombre() +
+                ", sexo=" + sexo +
+                ", horarioEmpleado=" + horarioEmpleado +
                 '}';
     }
 
-    public enum Sexo {MASCULINO, FEMENINO}
-//
-//    public boolean esGuia(){
-//        return this.cargo.esGuia();
-//    }
-//
-//
-//
+    public boolean esGuia(){
+        return this.cargo.esGuia();
+    }
+
 //    public void tieneAsignacionParaDiaYHora(){
 //
 //    }
@@ -227,4 +159,4 @@ public class Empleado {
 //        }
 //        return diasCuandoTrabaja;
 //    }
-}
+}//end Empleado
