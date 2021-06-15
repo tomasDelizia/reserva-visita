@@ -2,11 +2,11 @@ package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.Objects;
+
 
 @Entity
 @Table(name = "HORARIOS", schema = "dbo", catalog = "MUSEO_PICTORICO")
-public class HorarioEmpleado {
+public class HorarioSede {
     @Id
     @Column(name = "id_horario")
     private int idHorario;
@@ -27,10 +27,11 @@ public class HorarioEmpleado {
 
     @Override
     public String toString() {
-        return "HorarioEmpleado{" +
+        return "HorarioSede{" +
                 "horaInicio=" + horaInicio +
                 ", horaFin=" + horaFin +
                 ", diaSemana=" + diaSemana +
                 '}';
     }
-}
+
+}//end HorarioSede

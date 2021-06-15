@@ -8,8 +8,4 @@
     <Label layoutX="28.0" layoutY="40.0" text="Seleccione una escuela:" />
     <Label layoutX="28.0" layoutY="94.0" text="Seleccione un tipo de visita:" />
     <ComboBox fx:id="cboTiposDeVisita" layoutX="208.0" layoutY="90.0" onAction="#presentarTiposDeVisita" prefWidth="150.0" />
-   <ComboBox fx:id="cboEmpleados" layoutX="208.0" layoutY="155.0" onAction="#mostrarEmpleados" prefWidth="150.0" />
-   <Label layoutX="88.0" layoutY="159.0" text="Empleados:" />
-   <Label layoutX="119.0" layoutY="222.0" text="Exposiciones" />
-   <TextArea fx:id="txtExpo" layoutX="366.0" layoutY="155.0" onDragDetected="#mostrarExpo" prefHeight="200.0" prefWidth="200.0" />
 </AnchorPane>

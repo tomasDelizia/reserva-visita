@@ -1,6 +1,7 @@
 package com.ppai.aplicacion.negocio;
 
 
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -77,8 +78,12 @@ public class Empleado {
     private String codigoValidacion;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy="idEmpleado")
-    private List<HorarioEmpleado> horarioEmpleado;
+    @ManyToMany
+    @JoinTable(
+            name = "HORARIOS_DE_EMPLEADOS",
+            joinColumns = @JoinColumn(name = "id_empleado"),
+            inverseJoinColumns = @JoinColumn(name = "id_horario"))
+    private final List<HorarioEmpleado> horarioEmpleado = new ArrayList<>();
 
 
     public Empleado() {}

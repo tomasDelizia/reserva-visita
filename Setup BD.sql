@@ -188,34 +188,46 @@ CREATE TABLE SESIONES (
 );
 
 CREATE TABLE DIAS_DE_SEMANA (
-    id_dia TINYINT IDENTITY,
+    id_dia TINYINT,
     nombre VARCHAR(10) NOT NULL,
     CONSTRAINT dias_de_semana_id_dia_pk PRIMARY KEY(id_dia)
 );
 
-CREATE TABLE HORARIOS_EMPLEADOS (
-    id_empleado INT,
-    id_dia TINYINT,
-    horario_ingreso TIME NOT NULL,
-    horario_salida TIME NOT NULL,
-    CONSTRAINT horarios_empleados_id_emp_id_dia_pk PRIMARY KEY(id_empleado, id_dia, horario_ingreso),
-    CONSTRAINT horarios_empleados_id_emp_fk FOREIGN KEY(id_empleado) REFERENCES EMPLEADOS(id_empleado)
+CREATE TABLE HORARIOS (
+id_horario INT IDENTITY,
+hora_inicio TIME,
+hora_fin TIME,
+id_dia TINYINT
+CONSTRAINT horarios_pk PRIMARY KEY(id_horario),
+CONSTRAINT horarios_id_dia FOREIGN KEY(id_dia)
+REFERENCES DIAS_DE_SEMANA(id_dia)
+);
+
+
+CREATE TABLE HORARIOS_DE_EMPLEADOS (
+	id_empleado INT,
+	id_horario INT,
+    CONSTRAINT horarios_de_empleados_id_emp_id_horario_pk PRIMARY KEY(id_empleado, id_horario),
+    CONSTRAINT horarios_de_empleados_id_emp_fk FOREIGN KEY(id_empleado)
+	REFERENCES EMPLEADOS(id_empleado)
         ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT horarios_empleados_id_dia_fk FOREIGN KEY(id_dia) REFERENCES DIAS_DE_SEMANA(id_dia)
+	CONSTRAINT horarios_de_empleados_id_horario_fk FOREIGN KEY(id_horario)
+	REFERENCES HORARIOS(id_horario)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE HORARIOS_SEDE (
-    id_sede INT,
-    id_dia TINYINT,
-    horario_apertura TIME NOT NULL,
-    horario_cierre TIME NOT NULL,
-    CONSTRAINT horarios_sedes_id_sede_id_dia_pk PRIMARY KEY(id_sede, id_dia, horario_apertura),
-    CONSTRAINT horarios_sedes_id_sede_fk FOREIGN KEY(id_sede) REFERENCES SEDES(id_sede)
+CREATE TABLE HORARIOS_DE_SEDES (
+	id_sede INT,
+	id_horario INT,
+    CONSTRAINT horarios_de_sedes_id_sede_id_horario_pk PRIMARY KEY(id_sede, id_horario),
+    CONSTRAINT horarios_de_sedes_id_emp_fk FOREIGN KEY(id_sede)
+	REFERENCES SEDES(id_sede)
         ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT horarios_sedes_id_dia_fk FOREIGN KEY(id_dia) REFERENCES DIAS_DE_SEMANA(id_dia)
+	CONSTRAINT horarios_de_sedes_id_horario_fk FOREIGN KEY(id_horario)
+	REFERENCES HORARIOS(id_horario)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
+
 
 CREATE TABLE RESERVAS_DE_VISITA (
     id_reserva INT IDENTITY,
@@ -289,6 +301,7 @@ CREATE TABLE EXPOSICIONES_X_RESERVAS (
         ON UPDATE NO ACTION ON DELETE CASCADE,
 );
 
+
 -- POBLAMIENTO TABLAS
 
 INSERT INTO CARGOS (nombre, descripcion) VALUES('Responsable de Obras', N'Persona responsable de registrar la adquisición de las Obras, y la parametrización de la información necesaria para su administración.');
@@ -313,13 +326,151 @@ INSERT INTO ESTADOS_DE_RESERVA (nombre, descripcion) VALUES ('Anulada', 'Estado 
 INSERT INTO ESTADOS_DE_RESERVA (nombre, descripcion) VALUES ('Confirmada', 'Estado que se asigna cuando la escuela confirma la reserva mediante e-mail o Whatsapp');
 INSERT INTO ESTADOS_DE_RESERVA (nombre, descripcion) VALUES ('Visita Realizada', 'Estado que se asigna cuando finalmente se lleva a cabo la reserva de visita solicitada por la escuela');
 
-INSERT INTO DIAS_DE_SEMANA (nombre) VALUES ('Lunes');
-INSERT INTO DIAS_DE_SEMANA (nombre) VALUES ('Martes');
-INSERT INTO DIAS_DE_SEMANA (nombre) VALUES (N'Miércoles');
-INSERT INTO DIAS_DE_SEMANA (nombre) VALUES ('Jueves');
-INSERT INTO DIAS_DE_SEMANA (nombre) VALUES ('Viernes');
-INSERT INTO DIAS_DE_SEMANA (nombre) VALUES (N'Sábado');
-INSERT INTO DIAS_DE_SEMANA (nombre) VALUES ('Domingo');
+INSERT INTO DIAS_DE_SEMANA (id_dia, nombre) VALUES
+(0, 'LUNES'),
+(1, 'MARTES'),
+(2, 'MIERCOLES'),
+(3, 'JUEVES'),
+(4, 'VIERNES'),
+(5, 'SABADO'),
+(6, 'DOMINGO');
+
+INSERT INTO HORARIOS(hora_inicio, hora_fin, id_dia) VALUES
+('08:00', '16:00', 0),
+('09:00', '17:00', 0),
+('10:00', '18:00', 0),
+('11:00', '19:00', 0),
+('12:00', '20:00', 0),
+('13:00', '21:00', 0),
+('14:00', '22:00', 0),
+('15:00', '23:00', 0),
+('16:00', '00:00', 0),
+('08:00', '12:00', 0),
+('12:00', '16:00', 0),
+('16:00', '20:00', 0),
+('20:00', '00:00', 0),
+
+('08:00', '16:00', 1),
+('09:00', '17:00', 1),
+('10:00', '18:00', 1),
+('11:00', '19:00', 1),
+('12:00', '20:00', 1),
+('13:00', '21:00', 1),
+('14:00', '22:00', 1),
+('15:00', '23:00', 1),
+('16:00', '00:00', 1),
+('08:00', '12:00', 1),
+('12:00', '16:00', 1),
+('16:00', '20:00', 1),
+('20:00', '00:00', 1),
+
+('08:00', '16:00', 2),
+('09:00', '17:00', 2),
+('10:00', '18:00', 2),
+('11:00', '19:00', 2),
+('12:00', '20:00', 2),
+('13:00', '21:00', 2),
+('14:00', '22:00', 2),
+('15:00', '23:00', 2),
+('16:00', '00:00', 2),
+('08:00', '12:00', 2),
+('12:00', '16:00', 2),
+('16:00', '20:00', 2),
+('20:00', '00:00', 2),
+
+('08:00', '16:00', 3),
+('09:00', '17:00', 3),
+('10:00', '18:00', 3),
+('11:00', '19:00', 3),
+('12:00', '20:00', 3),
+('13:00', '21:00', 3),
+('14:00', '22:00', 3),
+('15:00', '23:00', 3),
+('16:00', '00:00', 3),
+('08:00', '12:00', 3),
+('12:00', '16:00', 3),
+('16:00', '20:00', 3),
+('20:00', '00:00', 3),
+
+('08:00', '16:00', 4),
+('09:00', '17:00', 4),
+('10:00', '18:00', 4),
+('11:00', '19:00', 4),
+('12:00', '20:00', 4),
+('13:00', '21:00', 4),
+('14:00', '22:00', 4),
+('15:00', '23:00', 4),
+('16:00', '00:00', 4),
+('08:00', '12:00', 4),
+('12:00', '16:00', 4),
+('16:00', '20:00', 4),
+('20:00', '00:00', 4),
+
+('08:00', '16:00', 5),
+('09:00', '17:00', 5),
+('10:00', '18:00', 5),
+('11:00', '19:00', 5),
+('12:00', '20:00', 5),
+('13:00', '21:00', 5),
+('14:00', '22:00', 5),
+('15:00', '23:00', 5),
+('16:00', '00:00', 5),
+('08:00', '12:00', 5),
+('12:00', '16:00', 5),
+('16:00', '20:00', 5),
+('20:00', '00:00', 5),
+
+('08:00', '16:00', 6),
+('09:00', '17:00', 6),
+('10:00', '18:00', 6),
+('11:00', '19:00', 6),
+('12:00', '20:00', 6),
+('13:00', '21:00', 6),
+('14:00', '22:00', 6),
+('15:00', '23:00', 6),
+('16:00', '00:00', 6),
+('08:00', '12:00', 6),
+('12:00', '16:00', 6),
+('16:00', '20:00', 6),
+('20:00', '00:00', 6),
+
+('08:00', '22:00', 0),
+('08:00', '22:00', 1),
+('08:00', '22:00', 2),
+('08:00', '22:00', 3),
+('08:00', '22:00', 4),
+('08:00', '22:00', 5),
+('08:00', '22:00', 6);
+
+
+
+INSERT INTO HORARIOS_DE_EMPLEADOS VALUES
+(1, 1),
+(2, 2),
+(3, 15),
+(4, 41),
+(5, 61),
+(6, 62),
+(7, 79),
+(8, 32),
+(9, 16),
+(10, 1),
+(10, 75),
+(10, 77);
+
+
+INSERT INTO HORARIOS_DE_SEDES VALUES
+(1, 92), (1, 93), (1, 94), (1, 95), (1, 96), (1, 97), (1, 81),
+(2, 92), (2, 93), (2, 94), (2, 95), (2, 96), (2, 66),
+(3, 92), (3, 93), (3, 94), (3, 95), (3, 96), (3, 66),
+(4, 92), (4, 93), (4, 94), (4, 95), (4, 96), (4, 97),
+(5, 92), (5, 93), (5, 94), (5, 95), (5, 96), (5, 66), (5, 81),
+(6, 92), (6, 93), (6, 94), (6, 95), (6, 96), (6, 66),
+(7, 92), (7, 93), (7, 94), (7, 95), (7, 96), (7, 97), (7, 81),
+(8, 92), (8, 93), (8, 94), (8, 95), (8, 96), (8, 66),
+(9, 92), (9, 93), (9, 94), (9, 95), (9, 96), (9, 66),
+(10, 92), (10, 93), (10, 94), (10, 95), (10, 96), (10, 66), (10, 81);
+
 
 INSERT INTO TIPOS_DE_EXPOSICION (nombre, descripcion) VALUES ('Permanente',
                                                               N'Tienen vigencia durante varios meses y pueden ser visitadas dentro de los horarios de atención de cada sede.');
@@ -641,3 +792,4 @@ INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (7, 2);
 INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (8, 6);
 INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (8, 1);
 
+-- HACER TABLA INTERMEDIA DIAS POR HORARIO

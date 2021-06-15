@@ -5,8 +5,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +44,14 @@ public class Sede {
             inverseJoinColumns = @JoinColumn(name = "id_exposicion"))
     private List<Exposicion> exposicion;
 
-//    private List<HorarioSede> horarioSede;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany
+    @JoinTable(
+            name = "HORARIOS_DE_SEDES",
+            joinColumns = @JoinColumn(name = "id_sede"),
+            inverseJoinColumns = @JoinColumn(name = "id_horario"))
+    private List<HorarioSede> horarioSede;
+
 
     @Override
     public String toString() {
@@ -55,6 +60,7 @@ public class Sede {
                 ", cantidadMaximaVisitantes=" + cantidadMaximaVisitantes +
                 ", cantidadMaximaPorGuia=" + cantidadMaximaPorGuia +
                 ", exposicion=" + exposicion +
+                ", horarioSede=" + horarioSede +
                 '}';
     }
 
