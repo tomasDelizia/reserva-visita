@@ -39,7 +39,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             Stage stage = event.getStage(); // Escena lista para inicializar la IU
             stage.setTitle(applicationTitle);
             stage.setScene(new Scene(root, 640, 360));
-            //stage.setMaximized(true);    // Tamaño de ventana completo
+            stage.setMaximized(true);    // Tamaño de ventana completo
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

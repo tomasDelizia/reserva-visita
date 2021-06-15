@@ -185,17 +185,19 @@ public class Exposicion {
     }
 
     public LocalTime calcularDuracionExposicion() {
-        // Método para obtener la duración en minutos y segundos de una exposición.
+        // Método para obtener la duración en horas, minutos y segundos de una exposición.
+        int horasTotales = 0;
         int minutosTotales = 0;
         int segundosTotales = 0;
         // Mientras la obra tenga exposiciones, obtenemos su duración extendida:
         for (DetalleExposicion detalleExpo:
              detalleExposicion) {
             LocalTime duracionObra = detalleExpo.getObra().getDuracionExtendida();
+            segundosTotales += duracionObra.getHour();
             minutosTotales += duracionObra.getMinute();
             segundosTotales += duracionObra.getSecond();
         }
-        return LocalTime.parse("00:" + minutosTotales + ":" + segundosTotales);
+        return LocalTime.parse(horasTotales + ":" + minutosTotales + ":" + segundosTotales);
     }
 
 }//end Exposicion

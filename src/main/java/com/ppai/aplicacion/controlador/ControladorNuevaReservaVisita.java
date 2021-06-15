@@ -7,16 +7,12 @@ import com.ppai.aplicacion.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.*;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * @author tomid
- * @version 1.0
- * @created 22-May-2021 9:42:37 am
- */
+
 @Component
 public class ControladorNuevaReservaVisita {
 
@@ -54,8 +50,6 @@ public class ControladorNuevaReservaVisita {
 	public void opcionRegistrarReservaVisita(){
 		buscarEscuelas();
 		pantalla.presentarEscuelas(escuelas);
-
-
 	}
 
 	public void buscarEscuelas() {

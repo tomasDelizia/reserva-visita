@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,47 +127,69 @@ public class Sede {
     }
 
         public LocalTime calcularDuracionEstimadaVisitaPorExposicion(List<Exposicion> listaExposiciones){
-        LocalTime inicio = LocalTime.of(0, 0, 0);
-        Duration duracionTotal = Duration.ofSeconds(0);
+            int horasTotales = 0;
+            int minutosTotales = 0;
+            int segundosTotales = 0;
             for (Exposicion exposicion:
                  listaExposiciones) {
-                //LocalTime duracionObra = exposicion.
+                LocalTime duracionExposicion = exposicion.calcularDuracionExposicion();
+                segundosTotales += duracionExposicion.getHour();
+                minutosTotales += duracionExposicion.getMinute();
+                segundosTotales += duracionExposicion.getSecond();
             }
-            return LocalTime.now();
+            return LocalTime.parse(horasTotales + ":" + minutosTotales + ":" + segundosTotales);
     }
 
-//    public void buscarGuiasDisponiblesPorHorarioReserva(){
-//
-//    }
-//
+    public void buscarGuiasDisponiblesPorHorarioReserva(){
 
-//
-//    public boolean esTuReserva(ReservaVisita reservaVisita) {
-//        // Método que dice si la reserva pasada por parámetro es de esta reserva
-//        return reservaVisita.esTuSede(this);
-//    }
-//
-//    public int getCantidadVisitantesParaFechaYHora(LocalDateTime fechaYHora, List<ReservaVisita> reservasVisitas) {
-//        int cantVisitantes = 0;
-//        for (ReservaVisita reservaVisita:
-//                reservasVisitas) {
-//            if (reservaVisita.esTuSede(this) && reservaVisita.esEnDiaYHora(fechaYHora))
-//                cantVisitantes += reservaVisita.getCantidadAlumnos();
-//        }
-//        return cantVisitantes;
-//    }
-//
-//    public boolean superaLimiteVisitantesParaFechaYHora(int cantidadVisitantesReserva, LocalDateTime fechaYHora, List<ReservaVisita> reservaVisitas){
-//        return cantidadVisitantesReserva + getCantidadVisitantesParaFechaYHora(fechaYHora, reservaVisitas) > capacidadMaxVisitantes;
-//    }
+    }
 
-//	public List<Empleado> buscarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime fechaYHora, List<Empleado> empleados) {
-//
-//		for (Empleado empleado:
-//			 empleados) {
-//			if (empleado.esTuSede(this) && empleado.esGuia())
-//
-//		}
-//	}
+    public boolean esTuReserva(ReservaVisita reservaVisita) {
+        // Método que dice si la reserva pasada por parámetro es de esta reserva
+        return reservaVisita.esTuSede(this);
+    }
+
+    public int getCantidadVisitantesParaFechaYHora(LocalDateTime fechaYHora,
+                                                   List<ReservaVisita> listaReservas) {
+        int cantVisitantes = 0;
+        for (ReservaVisita reservaVisita:
+                listaReservas) {
+            if (reservaVisita.esTuSede(this) && reservaVisita.esEnDiaYHora(fechaYHora))
+                if (reservaVisita.getCantidadAlumnosConfirmada() == null)
+                    cantVisitantes += reservaVisita.getCantidadAlumnosConfirmada();
+                else
+                    cantVisitantes += reservaVisita.getCantidadAlumnos();
+        }
+        return cantVisitantes;
+    }
+
+    public boolean superaLimiteVisitantesParaFechaYHora(int cantidadVisitantesReserva,
+                                                        LocalDateTime fechaYHora,
+                                                        List<ReservaVisita> reservaVisitas){
+        // Método que indica si la cantidad de visitantes pasada por parámetro junto con la cantidad de
+        // visitantes que hay en las visitas confirmadas de la sede supera el límite de capacidad para
+        // la sede.
+        return cantidadVisitantesReserva + getCantidadVisitantesParaFechaYHora(fechaYHora, reservaVisitas)
+                > cantidadMaximaVisitantes;
+    }
+
+    public boolean esTuEmpleado(Empleado empleado) {
+        return empleado.esTuSede(this);
+    }
+
+	public List<Empleado> buscarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime fechaYHora,
+                                                                    List<Empleado> empleados,
+                                                                    List<AsignacionGuia> asignacionesGuia) {
+		List<Empleado> guiasDisponibles = new ArrayList<>();
+        for (Empleado empleado:
+			 empleados) {
+			if (esTuEmpleado(empleado)
+                    && empleado.esGuia()
+                    && empleado.trabajaDentroDeDiaYHorario(fechaYHora)
+                    && empleado.tieneAsignacionParaDiaYHora(fechaYHora, asignacionesGuia))
+			    guiasDisponibles.add(empleado);
+		}
+		return guiasDisponibles;
+	}
 
 }//end Sede

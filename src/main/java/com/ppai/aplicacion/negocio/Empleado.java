@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,31 +136,32 @@ public class Empleado {
         return this.cargo.esGuia();
     }
 
-//    public void tieneAsignacionParaDiaYHora(){
-//
-//    }
-//
-//    public void trabajaDentroDeDiaYHorario(LocalDate fechaYHora){ //me cansé xd
-//        int dia = fechaYHora.getDayOfWeek().getValue();
-////		LocalTime hora = LocalTime.of(fechaYHora.to)
-////		for (HorarioEmpleado horarioEmpleado:
-////			 horarioEmpleado) {
-////			if (fechaYHora.isAfter() && fechaYHora.isBefore())
-////		}
-//
-//    }
-//
-//    public boolean esTuSede(Sede sede) {
-//        return sede == sedeDondeTrabaja;
-//    }
-//
-//    public List<DiaSemana> getDiasCuandoTrabaja() {
-//        List <DiaSemana> diasCuandoTrabaja = new ArrayList<>();
-//        for (HorarioEmpleado horarioEmpleado:
-//                horarioEmpleado) {
-//            List <DiaSemana> diasSemana = horarioEmpleado.getDiaSemana();
-//            diasCuandoTrabaja.addAll(diasSemana);
-//        }
-//        return diasCuandoTrabaja;
-//    }
+    public boolean esTuSede(Sede sede) {
+        return sede == sedeDondeTrabaja;
+    }
+
+    public boolean trabajaDentroDeDiaYHorario(LocalDateTime fechaYHora) {
+        // Método que nos dice si el empleado trabaja en el día y hora pasada por parámetro
+        for (HorarioEmpleado horario:
+             horarioEmpleado) {
+            if (horario.estaDentroDeDiaYHorario(fechaYHora))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean esTuAsignacion(AsignacionGuia asignacionGuia) {
+        return asignacionGuia.esTuGuia(this);
+    }
+
+    public boolean tieneAsignacionParaDiaYHora(LocalDateTime fechaYHora, List<AsignacionGuia> asignaciones){
+        // Método que nos dice si el guía tiene asignaciones en el día y hora pasados por parámetro
+        for (AsignacionGuia asignacionGuia:
+                asignaciones) {
+            if (esTuAsignacion(asignacionGuia) && asignacionGuia.esEnDiaYHora(fechaYHora))
+                return true;
+        }
+        return false;
+    }
+
 }//end Empleado

@@ -25,6 +25,16 @@ public class CambioEstadoReserva {
     private LocalDateTime fechaHoraFin;
 
 
+    public CambioEstadoReserva(EstadoReserva estadoReserva) {
+        this.estadoReserva = estadoReserva;
+    }
+
+    public CambioEstadoReserva() {}
+
+    public void setFechaHoraInicio(LocalDateTime fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
+
     @Override
     public String toString() {
         return "CambioEstadoReserva{" +

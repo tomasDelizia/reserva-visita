@@ -29,4 +29,8 @@ public class Sesion {
                 ", usuario=" + usuario +
                 '}';
     }
+
+    public Empleado getEmpleadoEnSesion() {
+        return usuario.getEmpleado();
+    }
 }//end Sesion

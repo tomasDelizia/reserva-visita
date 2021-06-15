@@ -65,7 +65,7 @@ public class ReservaVisita {
             name = "EXPOSICIONES_X_RESERVAS",
             joinColumns = @JoinColumn(name = "id_reserva"),
             inverseJoinColumns = @JoinColumn(name = "id_exposicion"))
-    private final List<Exposicion> exposicion = new ArrayList<>();
+    private List<Exposicion> exposicion = new ArrayList<>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy="idReserva")
@@ -75,6 +75,43 @@ public class ReservaVisita {
     @OneToMany(mappedBy="idReserva")
     private final List<AsignacionGuia> asignacionGuia = new ArrayList<>();
 
+
+    public ReservaVisita() {}
+
+    public int getCantidadAlumnos() {
+        return cantidadAlumnos;
+    }
+
+    public Integer getCantidadAlumnosConfirmada() {
+        return cantidadAlumnosConfirmada;
+    }
+
+    public ReservaVisita(int numeroReserva,
+                         int cantidadAlumnos,
+                         LocalDateTime fechaYHoraCreacion,
+                         LocalDateTime fechaYHoraReserva,
+                         Escuela escuela,
+                         Sede sede,
+                         Empleado empleadoCreo,
+                         List<Exposicion> exposicion,
+                         EstadoReserva estadoPendiente,
+                         List<Empleado> guiasSeleccionados) {
+        this.numeroReserva = numeroReserva;
+        this.cantidadAlumnos = cantidadAlumnos;
+        this.fechaYHoraCreacion = fechaYHoraCreacion;
+        this.fechaYHoraReserva = fechaYHoraReserva;
+        this.escuela = escuela;
+        this.sede = sede;
+        this.empleadoCreo = empleadoCreo;
+        this.exposicion = exposicion;
+        CambioEstadoReserva cambioEstado = new CambioEstadoReserva(estadoPendiente);
+        cambioEstado.setFechaHoraInicio(fechaYHoraCreacion);
+        cambioEstadoReserva.add(cambioEstado);
+        for (Empleado guia:
+             guiasSeleccionados) {
+            AsignacionGuia asignacionGuia = new AsignacionGuia(guia, fechaYHoraCreacion);
+        }
+    }
 
     @Override
     public String toString() {
@@ -92,7 +129,7 @@ public class ReservaVisita {
     }
 
     public boolean esEnDiaYHora(LocalDateTime fechaYHora){
-        // Método que dice si la reserva es en el día y la hora pasada por parámetro
+        // Método que dice si la reserva es en el día y la hora pasada por parámetro.
         LocalDate fecha = fechaYHora.toLocalDate();
         LocalTime hora = fechaYHora.toLocalTime();
         return (fecha.compareTo(this.fechaYHoraReserva.toLocalDate()) == 0
