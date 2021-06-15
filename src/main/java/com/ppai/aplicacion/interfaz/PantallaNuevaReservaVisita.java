@@ -1,20 +1,19 @@
 package com.ppai.aplicacion.interfaz;
 
 import com.ppai.aplicacion.controlador.ControladorNuevaReservaVisita;
-import com.ppai.aplicacion.negocio.Empleado;
-import com.ppai.aplicacion.negocio.Escuela;
-import com.ppai.aplicacion.negocio.Exposicion;
-import com.ppai.aplicacion.negocio.TipoVisita;
+import com.ppai.aplicacion.negocio.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.swing.*;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,14 +21,17 @@ import java.util.ResourceBundle;
 @Component
 public class PantallaNuevaReservaVisita implements Initializable {
 
-	@FXML
-	private CheckBox chkBox;
-	
-	
+
 	private ControladorNuevaReservaVisita controlador;
 
 	@FXML
 	public TextArea txtExpo;
+
+	@FXML
+	public ComboBox<Sede> cboSedes;
+
+	@FXML
+	public Label lblVisitantes;
 
 	@FXML
 	public ComboBox<Escuela> cboEscuelas;
@@ -75,7 +77,8 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	}
 
 	public void tomarSeleccionEscuela(){
-
+		Escuela escuela = cboEscuelas.getValue();
+		controlador.escuelaSeleccionada(escuela);
 	}
 
 	public void presentarExposicionesTemporalesYVigentes(){
@@ -86,8 +89,11 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 	}
 
-	public void presentarSedes(){
+	public void presentarSedes(ActionEvent actionEvent) {
+	}
 
+	public void presentarSedes(List<Sede> listaSedes){
+		cboSedes.setItems(FXCollections.observableArrayList(listaSedes));
 	}
 
 	public void solicitarCantidadVisitantes(){
@@ -123,7 +129,8 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	}
 
 	public void tomarCantidadVisitantes(){
-
+		int visitantes = Integer.parseInt(lblVisitantes.getText());
+		controlador.cantidadVisitantesIngresados(visitantes);
 	}
 
 	public void tomarConfirmacionReserva() {
@@ -135,7 +142,8 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	}
 
 	public void tomarSede(){
-
+		Sede sede = cboSedes.getValue();
+		controlador.sedeSeleccionada(sede);
 	}
 
 
@@ -172,6 +180,4 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		txtExpo.setText(listaExposiciones.toString());
 	}
 
-	public void tomarSeleccionChkBox(ActionEvent actionEvent) {
-	}
 }//end com.ppai.reservavisita.PantallaNuevaReservaVisita

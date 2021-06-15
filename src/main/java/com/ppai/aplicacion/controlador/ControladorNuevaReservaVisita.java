@@ -62,20 +62,21 @@ public class ControladorNuevaReservaVisita {
 		escuelas = escuelaRepo.findAll();
 	}
 
-	public void escuelaSeleccionada(){
-
+	public void escuelaSeleccionada(Escuela escuelaSeleccionada){
+		this.escuelaSeleccionada =	escuelaSeleccionada;
+		pantalla.solicitarCantidadVisitantes();
 	}
 
-	public void cantidadVisitantesIngresados(){
-
+	public void cantidadVisitantesIngresados(int cantidadVisitantes){
+		this.cantidadVisitantes = cantidadVisitantes;
 	}
 
 	public void buscarSedes(){
 		sedes = sedeRepo.findAll();
 	}
 
-	public void sedeSeleccionada(){
-
+	public void sedeSeleccionada(Sede sedeSeleccionada){
+		this.sedeSeleccionada = sedeSeleccionada;
 	}
 
 	public void buscarTiposDeVisita() {
