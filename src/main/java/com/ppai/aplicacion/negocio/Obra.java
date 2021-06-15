@@ -82,73 +82,20 @@ public class Obra {
                 '}';
     }
 
-    public int getIdObra() {
-        return idObra;
+    public LocalTime getDuracionResumida() {
+        return duracionResumida;
     }
 
-    public void setIdObra(int idObra) {
-        this.idObra = idObra;
+    public void setDuracionResumida(LocalTime duracionResumida) {
+        this.duracionResumida = duracionResumida;
     }
 
-    public String getNombreObra() {
-        return nombreObra;
+    public LocalTime getDuracionExtendida() {
+        return duracionExtendida;
     }
 
-    public void setNombreObra(String nombreObra) {
-        this.nombreObra = nombreObra;
-    }
-
-    public BigDecimal getAlto() {
-        return alto;
-    }
-
-    public void setAlto(BigDecimal alto) {
-        this.alto = alto;
-    }
-
-    public BigDecimal getAncho() {
-        return ancho;
-    }
-
-    public void setAncho(BigDecimal ancho) {
-        this.ancho = ancho;
-    }
-
-    public BigDecimal getPeso() {
-        return peso;
-    }
-
-    public void setPeso(BigDecimal peso) {
-        this.peso = peso;
-    }
-
-    public BigDecimal getValuacion() {
-        return valuacion;
-    }
-
-    public void setValuacion(BigDecimal valuacion) {
-        this.valuacion = valuacion;
-    }
-
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public Integer getCodigoSensor() {
-        return codigoSensor;
-    }
-
-    public void setCodigoSensor(Integer codigoSensor) {
-        this.codigoSensor = codigoSensor;
-    }
-
-    public void newCambioEstado(){
-
+    public void setDuracionExtendida(LocalTime duracionExtendida) {
+        this.duracionExtendida = duracionExtendida;
     }
 
     public void estaDiponibleParaExposicionEnPeriodo(){

@@ -4,20 +4,15 @@ package com.ppai.aplicacion.negocio;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-
+import org.javatuples.Pair;
 import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-/**
- * @author tomid
- * @version 1.0
- * @created 22-May-2021 9:44:08 am
- */
+
 @Entity
 @Table(name = "EXPOSICIONES", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class Exposicion {
@@ -40,11 +35,11 @@ public class Exposicion {
             name = "PUBLICOS_X_EXPOSICIONES",
             joinColumns = @JoinColumn(name = "id_exposicion"),
             inverseJoinColumns = @JoinColumn(name = "id_publico"))
-    private List<PublicoDestino> publicoDestino;
+    private final List<PublicoDestino> publicoDestino = new ArrayList<>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy="idExposicion")
-    private List<DetalleExposicion> detalleExposicion;
+    private final List<DetalleExposicion> detalleExposicion = new ArrayList<>();
 
     @Basic
     @Column(name = "fecha_inicio")
@@ -151,63 +146,56 @@ public class Exposicion {
     }
 
     public boolean esVigenteYTemporal() {
+        // Devuelve verdadero si la exposición es vigente y temporal:
         return this.tipoExposicion.esTemporal() && this.esVigente();
     }
 
     public boolean esVigente() {
-        LocalDate ld = LocalDate.now();
+        // Devuelve verdadero si la exposición es vigente. Primero, se obtiene la fecha actual:
+        LocalDate fechaActual = LocalDate.now();
+        // Si no fue replanificada, pregunto si la fechaActual es menor a la fechaFin original:
         if (this.fechaFinReplanificada == null)
-            return this.fechaFin.compareTo(ld) >= 0;
+            return this.fechaFin.compareTo(fechaActual) >= 0;
+        // Si fue replanificada, pregunto si la fechaActual es menor a la fechaFin replanificada:
         else
-            return this.fechaFinReplanificada.compareTo(ld) >= 0;
+            return this.fechaFinReplanificada.compareTo(fechaActual) >= 0;
     }
 
-//    public List<String> getNombresPublicoDestino() {
-//        // Método que retorna una lista con todos los nombres de los públicos destino de la exposición
-//        // Inicialización de lista que contendrá los nombres
-//        List<String> nombresPublicos = new ArrayList<>();
-//        // Iteramos mientras la exposición tenga públicos destino asociados
-//        for (PublicoDestino publicoDest:
-//                publicoDestino) {
-//            nombresPublicos.add(publicoDest.getNombre());
-//        }
-//        return nombresPublicos;
-//    }
-
-    public List<LocalTime> getHorarioExposicionTemporal () {
-        // Método para obtener los horarios en los que funciona una exposición temporal
-        List<LocalTime> horario = new ArrayList<>();
-        // Si la exposición es temporal, añadimos sus horarios de apertura y cierre a una lista de horarios
-        if (tipoExposicion.esTemporal()) {
-            horario.add(horaApertura);
-            horario.add(horaCierre);
+    public List<String> getNombresPublicoDestino() {
+        // Método que retorna una lista con todos los nombres de los públicos destino de la exposición.
+        // Inicialización de lista que contendrá los nombres:
+        List<String> nombresPublicos = new ArrayList<>();
+        // Iteramos mientras la exposición tenga públicos destino asociados
+        for (PublicoDestino publicoDest:
+                publicoDestino) {
+            // Si la lista aún no contiene el nombre del público destino de la iteración,
+            // lo agrego a la lista:
+            if (!nombresPublicos.contains(publicoDest.getNombre()))
+                nombresPublicos.add(publicoDest.getNombre());
         }
-        return horario;
+        return nombresPublicos;
     }
 
-//	public int calcularDuracionExposicion() {
-//		// Método para obtener la duración en minutos de una exposición
-//		int duracion = 0;
-//		for (DetalleExposicion de:
-//			 detalleExposicion) {
-//			duracion += de.getObra().getDuracionExtendida();
-//		}
-//		return duracion;
-//	}
+    public Pair<LocalTime, LocalTime> getHorarioExposicionTemporal () {
+        // Método para obtener los horarios en los que funciona una exposición temporal.
+        // Añadimos sus horarios de apertura y cierre de una exposición temporal a una tupla de horarios:
+        Pair<LocalTime, LocalTime> horarios;
+        horarios = Pair.with(horaApertura, horaCierre);
+        return horarios;
+    }
 
-//    public Duration calcularDuracionExposicion(TipoVisita tipoVisita) {
-//        // Método para obtener la duración en minutos y segundos de una exposición
-//        // Inicializamos una duración de 00hs 00min 00seg
-//        Duration duracionExposicion = Duration.parse("00:00:00");
-//        // Mientras la obra tenga exposiciones, obtenemos su duración
-//        if (tipoVisita.esCompleta()) {
-//            for (DetalleExposicion detalleExpo:
-//                    detalleExposicion) {
-//                Duration duracionExtendida = detalleExpo.getObra().getDuracionExtendida();
-//                duracionExposicion.plus(duracionExtendida);
-//            }
-//        }
-//        return duracionExposicion;
-//    }
+    public LocalTime calcularDuracionExposicion() {
+        // Método para obtener la duración en minutos y segundos de una exposición.
+        int minutosTotales = 0;
+        int segundosTotales = 0;
+        // Mientras la obra tenga exposiciones, obtenemos su duración extendida:
+        for (DetalleExposicion detalleExpo:
+             detalleExposicion) {
+            LocalTime duracionObra = detalleExpo.getObra().getDuracionExtendida();
+            minutosTotales += duracionObra.getMinute();
+            segundosTotales += duracionObra.getSecond();
+        }
+        return LocalTime.parse("00:" + minutosTotales + ":" + segundosTotales);
+    }
 
 }//end Exposicion

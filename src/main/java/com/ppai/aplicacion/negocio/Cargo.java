@@ -1,11 +1,7 @@
 package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
-/**
- * @author tomid
- * @version 1.0
- * @created 22-May-2021 9:42:31 am
- */
+
 @Entity
 @Table(name = "CARGOS", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class Cargo {
@@ -57,4 +53,4 @@ public class Cargo {
     public boolean esGuia() {
         return this.nombre.equals("Guía");
     }
-}
+}//end Cargo

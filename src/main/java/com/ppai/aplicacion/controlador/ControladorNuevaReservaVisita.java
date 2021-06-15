@@ -2,15 +2,11 @@ package com.ppai.aplicacion.controlador;
 
 
 import com.ppai.aplicacion.interfaz.PantallaNuevaReservaVisita;
-import com.ppai.aplicacion.negocio.Empleado;
-import com.ppai.aplicacion.negocio.Escuela;
-import com.ppai.aplicacion.negocio.Exposicion;
-import com.ppai.aplicacion.repo.EscuelaRepo;
-import com.ppai.aplicacion.repo.TipoVisitaRepo;
-import com.ppai.aplicacion.negocioOld.*;
+import com.ppai.aplicacion.negocio.*;
+import com.ppai.aplicacion.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.ppai.aplicacion.negocio.TipoVisita;
+
 import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -42,7 +38,11 @@ public class ControladorNuevaReservaVisita {
 	private EscuelaRepo escuelaRepo;
 
 	@Autowired
+	private SedeRepo sedeRepo;
+
+	@Autowired
 	private TipoVisitaRepo tipoVisitaRepo;
+
 
 
 
@@ -71,7 +71,7 @@ public class ControladorNuevaReservaVisita {
 	}
 
 	public void buscarSedes(){
-
+		sedes = sedeRepo.findAll();
 	}
 
 	public void sedeSeleccionada(){
@@ -143,20 +143,6 @@ public class ControladorNuevaReservaVisita {
 	}
 
 	public void buscarEstadoPendienteDeConfirmacion(){
-		String connectionUrl = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=museo_pictorico;integratedSecurity=true";
-		try (Connection con = DriverManager.getConnection(connectionUrl);
-			 Statement stmt = con.createStatement();) {
-			String SQL = "SELECT * FROM ESTADOS_DE_RESERVA";
-			ResultSet rs = stmt.executeQuery(SQL);
-			while (rs.next()) {
-				EstadoReserva estado = new EstadoReserva(rs.getString("nombre"), rs.getString("descripcion"));
-				if (estado.esPendienteDeConfirmacion())
-					estadoPendiente = estado;
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void finCU(){

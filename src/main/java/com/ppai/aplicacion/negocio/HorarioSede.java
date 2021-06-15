@@ -34,4 +34,7 @@ public class HorarioSede {
                 '}';
     }
 
+    public DiaSemana getDiaSemana() {
+        return diaSemana;
+    }
 }//end HorarioSede

@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
@@ -21,8 +22,10 @@ import java.util.ResourceBundle;
 @Component
 public class PantallaNuevaReservaVisita implements Initializable {
 
-
-
+	@FXML
+	private CheckBox chkBox;
+	
+	
 	private ControladorNuevaReservaVisita controlador;
 
 	@FXML
@@ -169,4 +172,6 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		txtExpo.setText(listaExposiciones.toString());
 	}
 
+	public void tomarSeleccionChkBox(ActionEvent actionEvent) {
+	}
 }//end com.ppai.reservavisita.PantallaNuevaReservaVisita

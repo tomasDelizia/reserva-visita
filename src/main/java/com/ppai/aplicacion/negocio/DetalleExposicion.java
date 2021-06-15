@@ -52,4 +52,4 @@ public class DetalleExposicion {
     }
 
 
-}
+}//end DetalleExposicion

@@ -8,4 +8,5 @@
     <Label layoutX="28.0" layoutY="40.0" text="Seleccione una escuela:" />
     <Label layoutX="28.0" layoutY="94.0" text="Seleccione un tipo de visita:" />
     <ComboBox fx:id="cboTiposDeVisita" layoutX="208.0" layoutY="90.0" onAction="#presentarTiposDeVisita" prefWidth="150.0" />
+   <CheckBox fx:id="chkBox" layoutX="72.0" layoutY="141.0" mnemonicParsing="false" onAction="#tomarSeleccionChkBox" text="CheckBox" />
 </AnchorPane>

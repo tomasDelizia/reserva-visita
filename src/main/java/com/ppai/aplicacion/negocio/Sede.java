@@ -5,6 +5,8 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class Sede {
             name = "EXPOSICIONES_X_SEDES",
             joinColumns = @JoinColumn(name = "id_sede"),
             inverseJoinColumns = @JoinColumn(name = "id_exposicion"))
-    private List<Exposicion> exposicion;
+    private final List<Exposicion> exposicion = new ArrayList<>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
@@ -50,7 +52,7 @@ public class Sede {
             name = "HORARIOS_DE_SEDES",
             joinColumns = @JoinColumn(name = "id_sede"),
             inverseJoinColumns = @JoinColumn(name = "id_horario"))
-    private List<HorarioSede> horarioSede;
+    private final List<HorarioSede> horarioSede = new ArrayList<>();
 
 
     @Override
@@ -97,42 +99,47 @@ public class Sede {
     }
 
     public List<Exposicion> buscarExposicionesTemporalesYVigentes(){
-        // Método para encontrar las exposiciones temporales y vigentes de una sede
-        // Se inicializa una lista para almacenar las exposiciones deseadas
+        // Método para encontrar las exposiciones temporales y vigentes de una sede.
+        // Se inicializa una lista para almacenar dichas exposiciones:
         List<Exposicion> exposicionesTempYVig = new ArrayList<>();
-        // Recorro todas las exposiciones de una sede
+        // Recorro todas las exposiciones de una sede:
         for (Exposicion expo:
                 exposicion) {
-            // A cada exposición le pregunto si es temporal y vigente. Si lo es, la agrego a la lista
+            // A cada exposición le pregunto si es temporal y vigente. Si lo es, la agrego a la lista:
             if (expo.esVigenteYTemporal())
                 exposicionesTempYVig.add(expo);
         }
         // Retorno la lista con las exposiciones resultantes de la iteración
         return exposicionesTempYVig;
     }
-//
-//    public List<DiaSemana> getDiasAtencionSede() {
-//        List<DiaSemana> dias = new ArrayList<>();
-//        for (HorarioSede horario:
-//                horarioSede) {
-//            dias.addAll(horario.getDiaSemana());
-//        }
-//        return dias;
-//    }
-//
+
+    public List<DiaSemana> getDiasAtencionSede() {
+        // Método que permite obtener los días de la semana cuándo funciona la sede.
+        List<DiaSemana> diasDeAtencion = new ArrayList<>();
+        // Guardamos en una lista de días todos los días de la semana habilitados para la sede:
+        for (HorarioSede horario:
+                horarioSede) {
+            if (!diasDeAtencion.contains(horario.getDiaSemana()))
+                diasDeAtencion.add(horario.getDiaSemana());
+        }
+        return diasDeAtencion;
+    }
+
+        public LocalTime calcularDuracionEstimadaVisitaPorExposicion(List<Exposicion> listaExposiciones){
+        LocalTime inicio = LocalTime.of(0, 0, 0);
+        Duration duracionTotal = Duration.ofSeconds(0);
+            for (Exposicion exposicion:
+                 listaExposiciones) {
+                //LocalTime duracionObra = exposicion.
+            }
+            return LocalTime.now();
+    }
+
 //    public void buscarGuiasDisponiblesPorHorarioReserva(){
 //
 //    }
 //
-//    public Duration calcularDuracionEstimadaVisita(List<com.ppai.aplicacion.negocioOld.Exposicion> exposiciones, TipoVisita tipoVisita){
-//        Duration duracionVisita = Duration.parse("00:00:00");
-//        for (com.ppai.aplicacion.negocioOld.Exposicion expo:
-//                exposiciones) {
-//            //Duration duracionExpo = expo.calcularDuracionExposicion(tipoVisita);
-//            //duracionVisita.plus(duracionExpo);
-//        }
-//        return duracionVisita;
-//    }
+
 //
 //    public boolean esTuReserva(ReservaVisita reservaVisita) {
 //        // Método que dice si la reserva pasada por parámetro es de esta reserva

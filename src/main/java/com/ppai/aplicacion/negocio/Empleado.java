@@ -4,7 +4,6 @@ package com.ppai.aplicacion.negocio;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -86,7 +85,6 @@ public class Empleado {
     private final List<HorarioEmpleado> horarioEmpleado = new ArrayList<>();
 
 
-    public Empleado() {}
 
     public int getDni() {
         return dni;

@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 
 @SpringBootApplication
@@ -14,17 +16,18 @@ public class Playground implements CommandLineRunner {
 
     @Autowired
     private SedeRepo sedeRepo;
-//
-//    @Autowired
-//    private EscuelaRepo escuelaRepo;
-//
-//    @Autowired
-//    private SesionRepo sesionRepo;
+
+    @Autowired
+    private EscuelaRepo escuelaRepo;
+
+    @Autowired
+    private SesionRepo sesionRepo;
 
     @Autowired
     private EmpleadoRepo empleadoRepo;
 
-
+    @Autowired
+    private ReservaVisitaRepo reservaVisitaRepo;
 
     public static void main(String[] args) {
         SpringApplication.run(Playground.class, args);
@@ -33,8 +36,8 @@ public class Playground implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        List<Escuela> escuelas = escuelaRepo.findAll();
-        List<Sede> sedes = sedeRepo.findAll();
-        List<Empleado> empleados = empleadoRepo.findAll();
+//        List<Sede> sedes = sedeRepo.findAll();
+//        List<Empleado> empleados = empleadoRepo.findAll();
 //        List<Sesion> sesiones = sesionRepo.findAll();
 //
 //
@@ -43,10 +46,10 @@ public class Playground implements CommandLineRunner {
 //            System.out.println(e + "\n");
 //        }
 //
-        for (Sede s:
-             sedes) {
-            System.out.println(s + "\n");
-        }
+//        for (Sede s:
+//             sedes) {
+//            System.out.println(s + "\n");
+//        }
 //
 //        for (Sesion s:
 //                sesiones) {
@@ -54,13 +57,21 @@ public class Playground implements CommandLineRunner {
 //        }
 
 
+//
+//        for (Empleado e:
+//             empleados) {
+//            System.out.println(e + "\n");
+//        }
 
-        for (Empleado e:
-             empleados) {
-            System.out.println(e + "\n");
+        List<ReservaVisita> reservaVisitaList = reservaVisitaRepo.findAll();
+        for (ReservaVisita rv:
+             reservaVisitaList) {
+            System.out.println(rv + "\n");
         }
 
+        LocalTime start = LocalTime.of(1, 20, 25, 1024);
+        LocalTime end = LocalTime.of(3, 22, 27, 1544);
 
-
+        System.out.println(Duration.between(start, end).toString());
     }
 }

@@ -33,4 +33,4 @@ public class HorarioEmpleado {
                 ", diaSemana=" + diaSemana +
                 '}';
     }
-}
+}//end HorarioEmpleado
