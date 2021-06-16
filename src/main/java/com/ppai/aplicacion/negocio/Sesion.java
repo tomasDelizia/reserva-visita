@@ -33,4 +33,9 @@ public class Sesion {
     public Empleado getEmpleadoEnSesion() {
         return usuario.getEmpleado();
     }
+
+    public boolean validarUsuario(String nombreUsuario, String contrasena) {
+        // Método para verificar que el usuario y contraseña ingresados sean los correctos
+        return usuario.correspondeUsuarioYContrasena(nombreUsuario, contrasena);
+    }
 }//end Sesion

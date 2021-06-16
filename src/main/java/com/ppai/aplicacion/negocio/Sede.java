@@ -5,7 +5,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class Sede {
 
     @Basic
     @Column(name = "cantidad_maxima_por_guia")
-    private int cantidadMaximaPorGuia;
+    private int cantidadMaximaVisitantesPorGuia;
 
     @Basic
     @Column(name = "calle_nombre")
@@ -61,7 +60,7 @@ public class Sede {
         return "Sede{" +
                 "nombre='" + nombre + '\'' +
                 ", cantidadMaximaVisitantes=" + cantidadMaximaVisitantes +
-                ", cantidadMaximaPorGuia=" + cantidadMaximaPorGuia +
+                ", cantidadMaximaPorGuia=" + cantidadMaximaVisitantesPorGuia +
                 ", exposicion=" + exposicion +
                 ", horarioSede=" + horarioSede +
                 '}';
@@ -91,12 +90,12 @@ public class Sede {
         this.cantidadMaximaVisitantes = cantidadMaximaVisitantes;
     }
 
-    public int getCantidadMaximaPorGuia() {
-        return cantidadMaximaPorGuia;
+    public int getCantidadMaximaVisitantesPorGuia() {
+        return cantidadMaximaVisitantesPorGuia;
     }
 
-    public void setCantidadMaximaPorGuia(int cantidadMaximaPorGuia) {
-        this.cantidadMaximaPorGuia = cantidadMaximaPorGuia;
+    public void setCantidadMaximaVisitantesPorGuia(int cantidadMaximaPorGuia) {
+        this.cantidadMaximaVisitantesPorGuia = cantidadMaximaPorGuia;
     }
 
     public List<Exposicion> buscarExposicionesTemporalesYVigentes(){
@@ -140,10 +139,6 @@ public class Sede {
             return LocalTime.parse(horasTotales + ":" + minutosTotales + ":" + segundosTotales);
     }
 
-    public void buscarGuiasDisponiblesPorHorarioReserva(){
-
-    }
-
     public boolean esTuReserva(ReservaVisita reservaVisita) {
         // Método que dice si la reserva pasada por parámetro es de esta reserva
         return reservaVisita.esTuSede(this);
@@ -155,7 +150,7 @@ public class Sede {
         for (ReservaVisita reservaVisita:
                 listaReservas) {
             if (reservaVisita.esTuSede(this) && reservaVisita.esEnDiaYHora(fechaYHora))
-                if (reservaVisita.getCantidadAlumnosConfirmada() == null)
+                if (reservaVisita.getCantidadAlumnosConfirmada() != null)
                     cantVisitantes += reservaVisita.getCantidadAlumnosConfirmada();
                 else
                     cantVisitantes += reservaVisita.getCantidadAlumnos();
@@ -180,6 +175,7 @@ public class Sede {
 	public List<Empleado> buscarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime fechaYHora,
                                                                     List<Empleado> empleados,
                                                                     List<AsignacionGuia> asignacionesGuia) {
+        // Método para buscar los guías disponibles para una sede en una fecha y hora pasadas por parámetro.
 		List<Empleado> guiasDisponibles = new ArrayList<>();
         for (Empleado empleado:
 			 empleados) {
@@ -191,5 +187,9 @@ public class Sede {
 		}
 		return guiasDisponibles;
 	}
+
+	public int calcularGuiasNecesariosParaVisitantesIngresados(int cantidadVisitantes) {
+        return cantidadVisitantes / cantidadMaximaVisitantesPorGuia;
+    }
 
 }//end Sede

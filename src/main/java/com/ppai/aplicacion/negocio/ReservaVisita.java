@@ -110,6 +110,7 @@ public class ReservaVisita {
         for (Empleado guia:
              guiasSeleccionados) {
             AsignacionGuia asignacionGuia = new AsignacionGuia(guia, fechaYHoraCreacion);
+            this.asignacionGuia.add(asignacionGuia);
         }
     }
 
@@ -140,6 +141,10 @@ public class ReservaVisita {
     public boolean esTuSede(Sede sede) {
         // Dice si la sede pasada por parámetro es la misma que tiene asociada este objeto sede
         return sede == this.sede;
+    }
+
+    public int getNumeroReserva() {
+        return numeroReserva;
     }
 
     public void anularReservaVisitaGuiada(){

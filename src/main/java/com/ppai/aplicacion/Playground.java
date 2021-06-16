@@ -29,6 +29,9 @@ public class Playground implements CommandLineRunner {
     @Autowired
     private ReservaVisitaRepo reservaVisitaRepo;
 
+    @Autowired
+    private AsignacionGuiaRepo asignacionGuiaRepo;
+
     public static void main(String[] args) {
         SpringApplication.run(Playground.class, args);
     }
@@ -69,9 +72,17 @@ public class Playground implements CommandLineRunner {
             System.out.println(rv + "\n");
         }
 
+        List<AsignacionGuia> asignacionGuias = asignacionGuiaRepo.findAll();
+        for (AsignacionGuia ag:
+                asignacionGuias) {
+            System.out.println(ag + "\n");
+        }
+
         LocalTime start = LocalTime.of(1, 20, 25, 1024);
         LocalTime end = LocalTime.of(3, 22, 27, 1544);
 
         System.out.println(Duration.between(start, end).toString());
+
+        System.out.println(100/3);
     }
 }

@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -23,12 +23,14 @@ public class ControladorNuevaReservaVisita {
 	private Sede sedeSeleccionada;
 	private List<TipoVisita> tiposDeVisita;
 	private TipoVisita tipoVisitaSeleccionado;
-	private int cantGuiasNecesarios, cantidadVisitantes;
+	private int cantGuiasNecesarios, cantidadVisitantes, numeroReserva;
 	private List<Exposicion> exposicionesTemporalesYVigentes, exposicionesSeleccionadas;
-	private LocalDateTime fechaYHoraReservaSeleccionada;
-	private Duration duracionEstimadaExposicion;
+	private LocalDateTime fechaYHoraReserva, fechaYHoraActual;
+	private LocalTime duracionEstimadaExposicion;
 	private List<Empleado> guiasDisponibles, guiasSeleccionados;
-	private EstadoReserva estadoPendiente;
+	private EstadoReserva estadoPendienteDeConfirmacion;
+	private Sesion sesion;
+	private Empleado empleadoEnSesion;
 
 	@Autowired
 	private EscuelaRepo escuelaRepo;
@@ -39,7 +41,20 @@ public class ControladorNuevaReservaVisita {
 	@Autowired
 	private TipoVisitaRepo tipoVisitaRepo;
 
+	@Autowired
+	private ReservaVisitaRepo reservaVisitaRepo;
 
+	@Autowired
+	private EmpleadoRepo empleadoRepo;
+
+	@Autowired
+	private AsignacionGuiaRepo asignacionGuiaRepo;
+
+	@Autowired
+	private SesionRepo sesionRepo;
+
+	@Autowired
+	private EstadoReservaRepo estadoReservaRepo;
 
 
 	@Autowired
@@ -50,6 +65,7 @@ public class ControladorNuevaReservaVisita {
 	public void opcionRegistrarReservaVisita(){
 		buscarEscuelas();
 		pantalla.presentarEscuelas(escuelas);
+		pantalla.solicitarSeleccionEscuela();
 	}
 
 	public void buscarEscuelas() {
@@ -67,6 +83,7 @@ public class ControladorNuevaReservaVisita {
 
 	public void buscarSedes(){
 		sedes = sedeRepo.findAll();
+		pantalla.solicitarSeleccionSede();
 	}
 
 	public void sedeSeleccionada(Sede sedeSeleccionada){
@@ -82,7 +99,7 @@ public class ControladorNuevaReservaVisita {
 	}
 
 	public void buscarExposicionesTemporalesYVigentes(){
-
+		exposicionesTemporalesYVigentes = sedeSeleccionada.buscarExposicionesTemporalesYVigentes();
 	}
 
 	public void exposicionesSeleccionadas(){
@@ -94,19 +111,26 @@ public class ControladorNuevaReservaVisita {
 	}
 
 	public void calcularDuracionEstimada(){
-
+		duracionEstimadaExposicion = sedeSeleccionada.
+				calcularDuracionEstimadaVisitaPorExposicion(exposicionesSeleccionadas);
 	}
 
-	public void superaLimiteVisitantes(){
-
+	public boolean superaLimiteVisitantes(){
+		List<ReservaVisita> reservasDeVisita = reservaVisitaRepo.findAll();
+		return sedeSeleccionada.superaLimiteVisitantesParaFechaYHora(
+				cantidadVisitantes, fechaYHoraReserva, reservasDeVisita);
 	}
 
 	public void buscarGuiasDisponiblesPorHorarioReserva(){
-
+		List<Empleado> empleados = empleadoRepo.findAll();
+		List<AsignacionGuia> asignacionesDeGuia = asignacionGuiaRepo.findAll();
+		guiasDisponibles = sedeSeleccionada.buscarGuiasDisponiblesPorHorarioDeReserva(
+				fechaYHoraReserva, empleados, asignacionesDeGuia);
 	}
 
 	public void calcularGuiasNecesarios(){
-
+		cantGuiasNecesarios = sedeSeleccionada.
+				calcularGuiasNecesariosParaVisitantesIngresados(cantidadVisitantes);
 	}
 
 	public void guiasDisponiblesSeleccionados(){
@@ -114,36 +138,62 @@ public class ControladorNuevaReservaVisita {
 	}
 
 	public void confirmacionReservaSeleccionada() {
-
+		crearReserva();
 	}
 
 	public void crearReserva(){
-
+		generarNroReserva();
+		getFechaYHoraActual();
+		getEmpleadoEnSesion();
+		buscarEstadoPendienteDeConfirmacion();
+		ReservaVisita nuevaReserva = new ReservaVisita(
+				numeroReserva,
+				cantidadVisitantes,
+				fechaYHoraActual,
+				fechaYHoraReserva,
+				escuelaSeleccionada,
+				sedeSeleccionada,
+				empleadoEnSesion,
+				exposicionesSeleccionadas,
+				estadoPendienteDeConfirmacion,
+				guiasSeleccionados
+				);
+		reservaVisitaRepo.save(nuevaReserva);
 	}
 
 	public void generarNroReserva(){
-
+		numeroReserva = obtenerUltimoNumeroReserva() + 1;
 	}
 
-	public void obtenerUltimoNumeroReserva(){
-
+	public int obtenerUltimoNumeroReserva(){
+		int ultimoNumeroReserva = 0;
+		List<ReservaVisita> reservasDeVisita = reservaVisitaRepo.findAll();
+		for (ReservaVisita reservaVisita:
+			 reservasDeVisita) {
+			if (reservaVisita.getNumeroReserva() > ultimoNumeroReserva)
+				ultimoNumeroReserva = reservaVisita.getNumeroReserva();
+		}
+		return ultimoNumeroReserva;
 	}
 
 	public void getEmpleadoEnSesion() {
-
+		empleadoEnSesion = sesion.getEmpleadoEnSesion();
 	}
 
-	public LocalDateTime getFechaYHoraActual(){
-		return LocalDateTime.now();
+	public void getFechaYHoraActual(){
+		fechaYHoraActual = LocalDateTime.now();
 	}
 
 	public void buscarEstadoPendienteDeConfirmacion(){
+		List<EstadoReserva> estadosDeReserva = estadoReservaRepo.findAll();
+		for (EstadoReserva estadoReserva:
+			 estadosDeReserva) {
+			if (estadoReserva.esPendienteDeConfirmacion()) {
+				estadoPendienteDeConfirmacion = estadoReserva;
+				break;
+			}
+		}
 	}
 
-	public void finCU(){
-
-	}
-
-
-
+	public void finCU(){}
 }//end ControladorNuevaReservaVisita

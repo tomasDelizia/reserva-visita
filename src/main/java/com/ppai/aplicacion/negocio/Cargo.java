@@ -51,6 +51,10 @@ public class Cargo {
     }
 
     public boolean esGuia() {
-        return this.nombre.equals("Guía");
+        return nombre.equals("Guía");
+    }
+
+    public boolean esResponsableDeVisitas() {
+        return this.nombre.equals("Responsable de Visitas");
     }
 }//end Cargo

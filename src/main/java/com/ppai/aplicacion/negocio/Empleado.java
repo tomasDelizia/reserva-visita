@@ -136,12 +136,14 @@ public class Empleado {
         return this.cargo.esGuia();
     }
 
+    public boolean esResponsableDeVisitas() {return this.cargo.esResponsableDeVisitas();}
+
     public boolean esTuSede(Sede sede) {
         return sede == sedeDondeTrabaja;
     }
 
     public boolean trabajaDentroDeDiaYHorario(LocalDateTime fechaYHora) {
-        // Método que nos dice si el empleado trabaja en el día y hora pasada por parámetro
+        // Método que nos dice si el empleado trabaja en el día y hora pasada por parámetro.
         for (HorarioEmpleado horario:
              horarioEmpleado) {
             if (horario.estaDentroDeDiaYHorario(fechaYHora))
