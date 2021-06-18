@@ -8,63 +8,77 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="360" minWidth="566.0" prefHeight="706.0" prefWidth="566.0" style="-fx-background-color: #bbbaaa;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaNuevaReservaVisita">
+
+<AnchorPane minHeight="360" minWidth="566.0" prefHeight="759.0" prefWidth="952.0" style="-fx-background-color: #bbbaaa;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaNuevaReservaVisita">
     <children>
-        <Region layoutX="14.0" layoutY="115.0" prefHeight="575.0" prefWidth="538.0" style="-fx-background-color: #baaaaa;" />
-        <Region layoutX="14.0" layoutY="14.0" prefHeight="82.0" prefWidth="538.0" style="-fx-background-color: #baaaaa;" />
-        <ComboBox fx:id="cboEscuelas" layoutX="164.0" layoutY="62.0" onAction="#presentarEscuelas" prefWidth="150.0" promptText="Escuela..." />
+        <Button disable="true" layoutX="478.0" layoutY="712.0" mnemonicParsing="false" text="Confirmar" />
+        <Button fx:id="btnCancelar" layoutX="398.0" layoutY="712.0" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+        <Region layoutX="14.0" layoutY="14.0" prefHeight="122.0" prefWidth="899.0" style="-fx-background-color: #baaaaa;" />
         <Label layoutX="24.0" layoutY="26.0" text="Selección de escuela">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
         <Label layoutX="26.0" layoutY="66.0" text="Seleccione una escuela:" />
-        <Label layoutX="341.0" layoutY="66.0" text="Cantidad de visitantes:" />
-        <Button layoutX="471.0" layoutY="652.0" mnemonicParsing="false" text="Confirmar" />
-        <Button layoutX="391.0" layoutY="652.0" mnemonicParsing="false" text="Cancelar" />
-        <TextField layoutX="469.0" layoutY="62.0" prefHeight="18.0" prefWidth="73.0" style="-fx-background-color: white;">
+        <ComboBox fx:id="cboEscuelas" layoutX="174.0" layoutY="62.0" onAction="#tomarSeleccionEscuela" prefHeight="27.0" prefWidth="220.0" promptText="Escuela..." />
+        <Label alignment="TOP_LEFT" layoutX="411.0" layoutY="67.0" text="Ingrese la cantidad de visitantes:" />
+        <TextField fx:id="txtCantidadVisitantes" alignment="CENTER" disable="true" layoutX="610.0" layoutY="63.0" onAction="#tomarCantidadVisitantes" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: white;">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor>
         </TextField>
-        <Label layoutX="29.0" layoutY="178.0" text="Seleccione una sede a visitar:" />
-        <ComboBox layoutX="191.0" layoutY="174.0" prefWidth="150.0" promptText="Sede..." />
-        <RadioButton layoutX="191.0" layoutY="146.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="95.0" text="Completa">
-         <toggleGroup>
-            <ToggleGroup fx:id="tipoVisita" />
-         </toggleGroup></RadioButton>
-        <RadioButton layoutX="283.0" layoutY="146.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="125.0" text="Por Exposición" toggleGroup="$tipoVisita" />
-        <TableView layoutX="24.0" layoutY="248.0" prefHeight="138.0" prefWidth="377.0">
-            <columns>
-                <TableColumn id="Exposicion" prefWidth="75.0" text="Exposición" />
-                <TableColumn prefWidth="105.0" text="Público Destino" />
-                <TableColumn prefWidth="122.0" text="Horarios Habilitados" />
-                <TableColumn minWidth="0.0" prefWidth="73.0" text="Selección" />
-            </columns>
-        </TableView>
-        <DatePicker layoutX="253.0" layoutY="399.0" prefHeight="25.0" prefWidth="125.0" />
-        <Label layoutX="31.0" layoutY="403.0" text="Seleccione la fecha y hora para la visita:" />
-        <Label layoutX="26.0" layoutY="121.0" text="Visita">
+      <Label fx:id="lblCantidadValida" layoutX="411.0" layoutY="107.0" text="Por favor, ingrese una cantidad válida" textFill="RED" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+        <Region layoutX="15.0" layoutY="176.0" prefHeight="575.0" prefWidth="899.0" style="-fx-background-color: #baaaaa;" />
+        <Label layoutX="33.0" layoutY="181.0" text="Visita">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-        <TableView layoutX="24.0" layoutY="526.0" prefHeight="138.0" prefWidth="160.0">
+        <Label layoutX="33.0" layoutY="212.0" text="Seleccione una sede a visitar:" />
+        <ComboBox fx:id="cboSedes" disable="true" layoutX="215.0" layoutY="208.0" onAction="#tomarSede" prefWidth="150.0" promptText="Sede..." />
+      <Label layoutX="31.0" layoutY="248.0" text="Seleccione un tipo de visita:" />
+        <RadioButton fx:id="radioBtnCompleta" disable="true" layoutX="206.0" layoutY="248.0" mnemonicParsing="false" onAction="#tomarTipoVisita" prefHeight="18.0" prefWidth="95.0" text="Completa">
+         <toggleGroup>
+            <ToggleGroup fx:id="tiposDeVisita" />
+         </toggleGroup>
+      </RadioButton>
+        <RadioButton fx:id="radioBtnPorExposicion" disable="true" layoutX="307.0" layoutY="248.0" mnemonicParsing="false" onAction="#tomarTipoVisita" prefHeight="18.0" prefWidth="125.0" text="Por Exposición" toggleGroup="$tiposDeVisita" />
+      <Label fx:id="lblAvisoTipoDeVisita" layoutX="455.0" layoutY="228.0" prefHeight="58.0" prefWidth="220.0" text="Aplicación en etapa de desarrollo. Por favor, seleccione el tipo de visita 'Por Exposición'." textAlignment="CENTER" textFill="#25971b" visible="false" wrapText="true">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+        <TableView fx:id="tablaExposiciones" disable="true" layoutX="31.0" layoutY="308.0" prefHeight="138.0" prefWidth="377.0">
             <columns>
-                <TableColumn prefWidth="75.0" text="Guías" />
-                <TableColumn prefWidth="84.0" text="Selección" />
+                <TableColumn id="Exposicion" fx:id="colExposicion" prefWidth="75.0" text="Exposición" />
+                <TableColumn fx:id="colPublicoDestino" prefWidth="105.0" text="Público Destino" />
+                <TableColumn fx:id="colHorarios" prefWidth="122.0" text="Horarios Habilitados" />
+                <TableColumn minWidth="0.0" prefWidth="73.0" text="Selección" />
             </columns>
         </TableView>
-      <Label layoutX="30.0" layoutY="147.0" text="Seleccione un tipo de visita:" />
-      <Label layoutX="29.0" layoutY="218.0" text="Seleccione las exposiciones a visitar:" />
-      <Label layoutX="31.0" layoutY="452.0" text="Duración estimada de la visita:" />
-      <TextField editable="false" layoutX="209.0" layoutY="448.0" prefHeight="25.0" prefWidth="171.0" />
-      <Label layoutX="31.0" layoutY="496.0" text="Seleccione guías para la reserva:" />
+        <DatePicker disable="true" layoutX="286.0" layoutY="459.0" prefHeight="25.0" prefWidth="125.0" />
+        <Label layoutX="38.0" layoutY="463.0" text="Seleccione la fecha y hora para la visita:" />
+        <TableView disable="true" editable="true" layoutX="31.0" layoutY="586.0" prefHeight="138.0" prefWidth="250.0">
+            <columns>
+                <TableColumn prefWidth="116.0" text="Guías" />
+                <TableColumn minWidth="2.0" prefWidth="133.0" text="Selección" />
+            </columns>
+        </TableView>
+      <Label layoutX="33.0" layoutY="284.0" text="Seleccione las exposiciones a visitar:" />
+      <Label layoutX="38.0" layoutY="512.0" text="Duración estimada de la visita:" />
+      <TextField disable="true" editable="false" layoutX="240.0" layoutY="508.0" prefHeight="25.0" prefWidth="171.0" />
+      <Label layoutX="38.0" layoutY="556.0" text="Seleccione guías para la reserva:" />
+      <TextArea fx:id="cajaPrueba" layoutX="465.0" layoutY="308.0" prefHeight="200.0" prefWidth="200.0" />
     </children>
 </AnchorPane>

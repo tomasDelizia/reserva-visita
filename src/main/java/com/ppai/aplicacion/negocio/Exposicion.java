@@ -141,24 +141,31 @@ public class Exposicion {
                 "nombre='" + nombre + '\'' +
                 ", tipoExposicion=" + tipoExposicion +
                 ", publicoDestino=" + publicoDestino +
-                ", detalleExposicion=" + detalleExposicion +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaFin=" + fechaFin +
+                ", fechaInicioReplanificada=" + fechaInicioReplanificada +
+                ", fechaFinReplanificada=" + fechaFinReplanificada +
                 '}';
     }
 
     public boolean esVigenteYTemporal() {
         // Devuelve verdadero si la exposición es vigente y temporal:
-        return this.tipoExposicion.esTemporal() && this.esVigente();
+        return esTemporal() && esVigente();
+    }
+
+    public boolean esTemporal() {
+        return tipoExposicion.esTemporal();
     }
 
     public boolean esVigente() {
         // Devuelve verdadero si la exposición es vigente. Primero, se obtiene la fecha actual:
         LocalDate fechaActual = LocalDate.now();
         // Si no fue replanificada, pregunto si la fechaActual es menor a la fechaFin original:
-        if (this.fechaFinReplanificada == null)
-            return this.fechaFin.compareTo(fechaActual) >= 0;
+        if (fechaFinReplanificada == null)
+            return fechaActual.compareTo(fechaFin) <= 0;
         // Si fue replanificada, pregunto si la fechaActual es menor a la fechaFin replanificada:
-        else
-            return this.fechaFinReplanificada.compareTo(fechaActual) >= 0;
+        else return (fechaActual.compareTo(fechaInicioReplanificada) >= 0 &&
+                fechaActual.compareTo(fechaFinReplanificada) <= 0);
     }
 
     public List<String> getNombresPublicoDestino() {

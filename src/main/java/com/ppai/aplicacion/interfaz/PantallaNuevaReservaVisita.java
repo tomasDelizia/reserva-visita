@@ -2,18 +2,17 @@ package com.ppai.aplicacion.interfaz;
 
 import com.ppai.aplicacion.controlador.ControladorNuevaReservaVisita;
 import com.ppai.aplicacion.negocio.*;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,18 +21,44 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 	private ControladorNuevaReservaVisita controlador;
 
+	@FXML
+	private TimeSpinner timeSpinner;
+
+	@FXML
+	private TextArea cajaPrueba;
 
 	@FXML
 	private ComboBox<Escuela> cboEscuelas;
 
 	@FXML
-	private ComboBox<TipoVisita> cboTiposDeVisita;
+	private TextField txtCantidadVisitantes;
 
 	@FXML
-	public ComboBox<Sede> cboSedes;
+	private Label lblCantidadValida;
 
 	@FXML
-	public Label lblVisitantes;
+	private ComboBox<Sede> cboSedes;
+
+	@FXML
+	private RadioButton radioBtnCompleta;
+
+	@FXML
+	private RadioButton radioBtnPorExposicion;
+
+	@FXML
+	private Label lblAvisoTipoDeVisita;
+
+	@FXML
+	private TableView<Exposicion> tablaExposiciones;
+
+	@FXML
+	private TableColumn<Exposicion, String> colExposicion;
+
+	@FXML
+	private TableColumn<Exposicion, List<String>> colPublicoDestino;
+
+	@FXML
+	private TableColumn<Exposicion, LocalDate> colHorarios;
 
 
 	@Autowired
@@ -41,10 +66,13 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		this.controlador = controlador;
 	}
 
-
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		opcionNuevaReservaVisita();
+	}
+
+	public void cancelar(ActionEvent actionEvent) {
+		Platform.exit();
 	}
 
 	public void opcionNuevaReservaVisita(){
@@ -54,7 +82,6 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 	public void habilitarPantalla(){}
 
-	public void presentarEscuelas(ActionEvent actionEvent) {}
 
 	public void presentarEscuelas(List<Escuela> listaEscuelas) {
 		cboEscuelas.setItems(FXCollections.observableArrayList(listaEscuelas));
@@ -62,27 +89,32 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 	public void solicitarSeleccionEscuela(){}
 
-	public void tomarSeleccionEscuela(){
+	public void tomarSeleccionEscuela(ActionEvent actionEvent){
 		controlador.escuelaSeleccionada(cboEscuelas.getValue());
 	}
 
-	public void solicitarCantidadVisitantes(){}
-
-	public void tomarCantidadVisitantes(){
-		int visitantes = Integer.parseInt(lblVisitantes.getText());
-		controlador.cantidadVisitantesIngresados(visitantes);
+	public void solicitarCantidadVisitantes(){
+		txtCantidadVisitantes.setDisable(false);
 	}
 
-	public void presentarSedes(){
+	public void tomarCantidadVisitantes(ActionEvent actionEvent){
+		int visitantes = Integer.parseInt(txtCantidadVisitantes.getText());
+		lblCantidadValida.setVisible(visitantes < 1);
+		if (visitantes > 0) {
+			controlador.cantidadDeVisitantesIngresados(visitantes);
+			cajaPrueba.setText(txtCantidadVisitantes.getText());
+		}
 	}
 
 	public void presentarSedes(List<Sede> listaSedes){
 		cboSedes.setItems(FXCollections.observableArrayList(listaSedes));
 	}
 
-	public void solicitarSeleccionSede(){}
+	public void solicitarSeleccionSede(){
+		cboSedes.setDisable(false);
+	}
 
-	public void tomarSede(){
+	public void tomarSede(ActionEvent actionEvent){
 		Sede sede = cboSedes.getValue();
 		controlador.sedeSeleccionada(sede);
 	}
@@ -91,14 +123,22 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 	}
 
-	public void solicitarTipoVisita(){}
-
-	public void tomarTipoVisita(){
-
+	public void solicitarSeleccionTipoVisita(){
+		radioBtnCompleta.setDisable(false);
+		radioBtnPorExposicion.setDisable(false);
 	}
 
-	public void presentarExposicionesTemporalesYVigentes(){
+	public void tomarTipoVisita(ActionEvent actionEvent){
+		if (radioBtnPorExposicion.isSelected())
+			lblAvisoTipoDeVisita.setVisible(false);
+			controlador.tipoVisitaSeleccionada(radioBtnPorExposicion.getText());
+		if (radioBtnCompleta.isSelected())
+			lblAvisoTipoDeVisita.setVisible(true);
+	}
 
+	public void presentarExposicionesTemporalesYVigentes(List<Exposicion> listaExposiciones){
+		ObservableList<Exposicion> listaObservableExposiciones =
+				FXCollections.observableArrayList(listaExposiciones);
 	}
 
 	public void solicitarSeleccionExposiciones(){}

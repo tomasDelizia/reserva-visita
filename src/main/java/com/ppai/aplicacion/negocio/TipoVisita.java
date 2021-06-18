@@ -3,12 +3,6 @@ package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
 
-/**
- * @author tomid
- * @version 1.0
- * @created 22-May-2021 9:42:25 am
- */
-
 @Entity
 @Table(name = "TIPOS_DE_VISITA", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class TipoVisita {
@@ -48,6 +42,8 @@ public class TipoVisita {
     public boolean esPorExposicion() {
         return nombre.equals("Por Exposición");
     }
+
+    public boolean esTipoDeVisita(String nombreTipoVisita) {return nombre.equals(nombreTipoVisita);}
 
 
 }//end TipoDeVisita

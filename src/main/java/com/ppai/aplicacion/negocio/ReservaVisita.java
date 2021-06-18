@@ -1,7 +1,10 @@
 package com.ppai.aplicacion.negocio;
 
+import com.ppai.aplicacion.repo.AsignacionGuiaRepo;
+import com.ppai.aplicacion.repo.CambioEstadoReservaRepo;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -75,7 +78,6 @@ public class ReservaVisita {
     @OneToMany(mappedBy="idReserva")
     private final List<AsignacionGuia> asignacionGuia = new ArrayList<>();
 
-
     public ReservaVisita() {}
 
     public int getCantidadAlumnos() {
@@ -104,9 +106,9 @@ public class ReservaVisita {
         this.sede = sede;
         this.empleadoCreo = empleadoCreo;
         this.exposicion = exposicion;
-        CambioEstadoReserva cambioEstado = new CambioEstadoReserva(estadoPendiente);
-        cambioEstado.setFechaHoraInicio(fechaYHoraCreacion);
-        cambioEstadoReserva.add(cambioEstado);
+        CambioEstadoReserva nuevoCambioEstado =
+                new CambioEstadoReserva(estadoPendiente, fechaYHoraCreacion);
+        cambioEstadoReserva.add(nuevoCambioEstado);
         for (Empleado guia:
              guiasSeleccionados) {
             AsignacionGuia asignacionGuia = new AsignacionGuia(guia, fechaYHoraCreacion);
@@ -147,31 +149,4 @@ public class ReservaVisita {
         return numeroReserva;
     }
 
-    public void anularReservaVisitaGuiada(){
-
-    }
-
-    public void buscarGuiasLibresPorHorarioReserva(){
-
-    }
-
-    public void calcularTiempoApreciacionObra(){
-
-    }
-
-    public void cancelarReserva(){
-
-    }
-
-    public void confirmarReserva(){
-
-    }
-
-    public void obtenerDuracion(){
-
-    }
-
-    public void registrarConfirmacionReserva(){
-
-    }
 }//end ReservaVisita

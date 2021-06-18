@@ -77,25 +77,36 @@ public class ControladorNuevaReservaVisita {
 		pantalla.solicitarCantidadVisitantes();
 	}
 
-	public void cantidadVisitantesIngresados(int cantidadVisitantes){
+	public void cantidadDeVisitantesIngresados(int cantidadVisitantes){
 		this.cantidadVisitantes = cantidadVisitantes;
+		buscarSedes();
+		pantalla.presentarSedes(sedes);
+		pantalla.solicitarSeleccionSede();
 	}
 
 	public void buscarSedes(){
 		sedes = sedeRepo.findAll();
-		pantalla.solicitarSeleccionSede();
 	}
 
 	public void sedeSeleccionada(Sede sedeSeleccionada){
 		this.sedeSeleccionada = sedeSeleccionada;
+		buscarTiposDeVisita();
+		pantalla.solicitarSeleccionTipoVisita();
 	}
 
 	public void buscarTiposDeVisita() {
 		tiposDeVisita = tipoVisitaRepo.findAll();
 	}
 
-	public void tipoVisitaSeleccionada(){
-
+	public void tipoVisitaSeleccionada(String nombreTipoVisita){
+		TipoVisita tipoVisita = new TipoVisita(nombreTipoVisita);
+		for (TipoVisita tipoDeVisita:
+			 tiposDeVisita) {
+			if (tipoDeVisita.esTipoDeVisita(nombreTipoVisita))
+				tipoVisitaSeleccionado = tipoDeVisita;
+		}
+		buscarExposicionesTemporalesYVigentes();
+		pantalla.presentarExposicionesTemporalesYVigentes(exposicionesTemporalesYVigentes);
 	}
 
 	public void buscarExposicionesTemporalesYVigentes(){

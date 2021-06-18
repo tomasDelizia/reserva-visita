@@ -57,13 +57,11 @@ public class Sede {
 
     @Override
     public String toString() {
-        return "Sede{" +
-                "nombre='" + nombre + '\'' +
-                ", cantidadMaximaVisitantes=" + cantidadMaximaVisitantes +
-                ", cantidadMaximaPorGuia=" + cantidadMaximaVisitantesPorGuia +
-                ", exposicion=" + exposicion +
-                ", horarioSede=" + horarioSede +
-                '}';
+        return nombre;
+    }
+
+    public List<Exposicion> getExposicion() {
+        return exposicion;
     }
 
     public int getIdSede() {
