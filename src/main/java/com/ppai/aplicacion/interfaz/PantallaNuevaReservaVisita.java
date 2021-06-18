@@ -9,15 +9,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.security.auth.callback.Callback;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
 public class PantallaNuevaReservaVisita implements Initializable {
+
 
 	private ControladorNuevaReservaVisita controlador;
 
@@ -55,10 +60,16 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	private TableColumn<Exposicion, String> colExposicion;
 
 	@FXML
-	private TableColumn<Exposicion, List<String>> colPublicoDestino;
+	private TableColumn<Exposicion, List<PublicoDestino>> colPublicoDestino;
 
 	@FXML
-	private TableColumn<Exposicion, LocalDate> colHorarios;
+	private TableColumn<Exposicion, LocalTime> colHoraApertura;
+
+	@FXML
+	private TableColumn<Exposicion, LocalTime> colHoraCierre;
+
+	//@FXML
+	//private TableColumn<> colSeleccion;
 
 
 	@Autowired
@@ -139,11 +150,22 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	public void presentarExposicionesTemporalesYVigentes(List<Exposicion> listaExposiciones){
 		ObservableList<Exposicion> listaObservableExposiciones =
 				FXCollections.observableArrayList(listaExposiciones);
+		tablaExposiciones.setItems(listaObservableExposiciones);
+		colExposicion.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+		colPublicoDestino.setCellValueFactory(new PropertyValueFactory<>("publicoDestino"));
+		colHoraApertura.setCellValueFactory(new PropertyValueFactory<>("horaApertura"));
+		colHoraCierre.setCellValueFactory(new PropertyValueFactory<>("horaCierre"));
+
+		TableView.TableViewSelectionModel<Exposicion> selectionModel = tablaExposiciones.getSelectionModel();
+		// set selection mode to multiple rows
+		selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
 	}
 
-	public void solicitarSeleccionExposiciones(){}
+	public void solicitarSeleccionExposiciones(){
+		tablaExposiciones.setDisable(false);
+	}
 
-	public void tomarSeleccionExposiciones(){
+	public void tomarSeleccionExposiciones(ActionEvent actionEvent){
 
 	}
 
@@ -173,4 +195,4 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 	}
 
-}//end com.ppai.reservavisita.PantallaNuevaReservaVisita
+}//end PantallaNuevaReservaVisita

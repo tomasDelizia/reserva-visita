@@ -107,6 +107,7 @@ public class ControladorNuevaReservaVisita {
 		}
 		buscarExposicionesTemporalesYVigentes();
 		pantalla.presentarExposicionesTemporalesYVigentes(exposicionesTemporalesYVigentes);
+		pantalla.solicitarSeleccionExposiciones();
 	}
 
 	public void buscarExposicionesTemporalesYVigentes(){

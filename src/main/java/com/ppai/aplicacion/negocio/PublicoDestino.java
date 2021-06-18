@@ -48,8 +48,6 @@ public class PublicoDestino {
 
     @Override
     public String toString() {
-        return "PublicoDestino{" +
-                "nombre='" + nombre + '\'' +
-                '}';
+        return nombre;
     }
 }//end PublicoDestino

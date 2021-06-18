@@ -2,11 +2,11 @@ package com.ppai.aplicacion.negocio;
 
 
 
+import javafx.scene.control.CheckBox;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.javatuples.Pair;
 import javax.persistence.*;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -70,13 +70,6 @@ public class Exposicion {
     private Empleado empleadoCreo;
 
 
-    public int getIdExposicion() {
-        return idExposicion;
-    }
-
-    public void setIdExposicion(int idExposicion) {
-        this.idExposicion = idExposicion;
-    }
 
     public String getNombre() {
         return nombre;
@@ -133,6 +126,11 @@ public class Exposicion {
     public void setHoraCierre(LocalTime horaCierre) {
         this.horaCierre = horaCierre;
     }
+
+    public List<PublicoDestino> getPublicoDestino() {
+        return publicoDestino;
+    }
+
 
 
     @Override
