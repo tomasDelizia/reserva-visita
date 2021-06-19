@@ -611,30 +611,6 @@ INSERT INTO PUBLICOS_DESTINO (nombre, caracteristicas) VALUES
 ('Jubilados', N'Exposición destinada a jubilados'),
 ('Estudiantes de Arte', N'Exposición destinada a estudiantes de carreras de arte');
 
-INSERT INTO HORARIOS_EMPLEADOS VALUES
-(1, 2, '08:00', '16:00'),
-(2, 4, '10:00', '18:00'),
-(3, 7, '09:00', '17:00'),
-(4, 3, '12:00', '20:00'),
-(5, 1, '08:00', '16:00'),
-(6, 5, '11:00', '19:00'),
-(7, 2, '07:00', '15:00'),
-(8, 4, '09:00', '17:00'),
-(9, 5, '11:00', '19:00'),
-(10, 6, '12:00', '20:00');
-
-INSERT INTO HORARIOS_SEDE VALUES
-(1, 1, '08:00', '20:00'),
-(2, 5, '09:00', '21:00'),
-(3, 4, '08:00', '20:00'),
-(4, 7, '07:00', '21:00'),
-(5, 3, '09:00', '21:00'),
-(6, 2, '07:00', '19:00'),
-(7, 1, '08:00', '20:00'),
-(8, 7, '08:00', '20:00'),
-(9, 6, '09:00', '21:00'),
-(10, 2, '08:00', '20:00');
-
 INSERT INTO EXPOSICIONES (nombre,id_tipo_exposicion,fecha_inicio,fecha_fin,fecha_inicio_replanificada,fecha_fin_replanificada,hora_apertura,hora_cierre,id_empleado_creador) VALUES
 (N'Contemporanea',1,'2021-06-01','2021-07-26', null, null,'08:00:00','17:00:00',3),
 ('Abstracta',2,'2021-05-01','2021-09-06', null, null,'9:00:00','18:00:00',1),

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,7 +25,8 @@ public class ControladorNuevaReservaVisita {
 	private List<TipoVisita> tiposDeVisita;
 	private TipoVisita tipoVisitaSeleccionado;
 	private int cantGuiasNecesarios, cantidadVisitantes, numeroReserva;
-	private List<Exposicion> exposicionesTemporalesYVigentes, exposicionesSeleccionadas;
+	private List<Exposicion> exposicionesTemporalesYVigentes;
+	private final List<Exposicion> exposicionesSeleccionadas = new ArrayList<>();
 	private LocalDateTime fechaYHoraReserva, fechaYHoraActual;
 	private LocalTime duracionEstimadaExposicion;
 	private List<Empleado> guiasDisponibles, guiasSeleccionados;
@@ -112,6 +114,11 @@ public class ControladorNuevaReservaVisita {
 
 	public void buscarExposicionesTemporalesYVigentes(){
 		exposicionesTemporalesYVigentes = sedeSeleccionada.buscarExposicionesTemporalesYVigentes();
+	}
+
+	public void addExposicionSeleccionada(Exposicion exposicionSeleccionada) {
+		exposicionesSeleccionadas.add(exposicionSeleccionada);
+		pantalla.solicitarFechaYHoraReserva();
 	}
 
 	public void exposicionesSeleccionadas(){

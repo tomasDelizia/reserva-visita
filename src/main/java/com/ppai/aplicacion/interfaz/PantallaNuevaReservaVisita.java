@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.criteria.Selection;
 import javax.security.auth.callback.Callback;
 import java.net.URL;
 import java.time.LocalTime;
@@ -27,10 +28,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	private ControladorNuevaReservaVisita controlador;
 
 	@FXML
-	private TimeSpinner timeSpinner;
-
-	@FXML
-	private TextArea cajaPrueba;
+	private TextArea cajaPruebas;
 
 	@FXML
 	private ComboBox<Escuela> cboEscuelas;
@@ -68,8 +66,11 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	@FXML
 	private TableColumn<Exposicion, LocalTime> colHoraCierre;
 
-	//@FXML
-	//private TableColumn<> colSeleccion;
+	@FXML
+	private DatePicker dateFechaVisita;
+
+	@FXML
+	private Button btnSeleccionarExposicion;
 
 
 	@Autowired
@@ -113,7 +114,6 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		lblCantidadValida.setVisible(visitantes < 1);
 		if (visitantes > 0) {
 			controlador.cantidadDeVisitantesIngresados(visitantes);
-			cajaPrueba.setText(txtCantidadVisitantes.getText());
 		}
 	}
 
@@ -155,21 +155,24 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		colPublicoDestino.setCellValueFactory(new PropertyValueFactory<>("publicoDestino"));
 		colHoraApertura.setCellValueFactory(new PropertyValueFactory<>("horaApertura"));
 		colHoraCierre.setCellValueFactory(new PropertyValueFactory<>("horaCierre"));
-
-		TableView.TableViewSelectionModel<Exposicion> selectionModel = tablaExposiciones.getSelectionModel();
-		// set selection mode to multiple rows
-		selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
 	}
 
 	public void solicitarSeleccionExposiciones(){
+		btnSeleccionarExposicion.setDisable(false);
 		tablaExposiciones.setDisable(false);
 	}
 
 	public void tomarSeleccionExposiciones(ActionEvent actionEvent){
-
+//		TableView.TableViewSelectionModel<Exposicion> selectionModel = tablaExposiciones.getSelectionModel();
+//		selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
+//		List<Exposicion> exposicionSeleccionada = selectionModel.getSelectedItems();
+		controlador.addExposicionSeleccionada(tablaExposiciones.getSelectionModel().getSelectedItem());
+		tablaExposiciones.getItems().removeAll(tablaExposiciones.getSelectionModel().getSelectedItem());
 	}
 
-	public void solicitarFechaYHoraReserva(){}
+	public void solicitarFechaYHoraReserva(){
+		dateFechaVisita.setDisable(false);
+	}
 
 	public void tomarFechaYHoraReserva(){
 

@@ -85,23 +85,23 @@
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></RadioButton>
-        <TableView fx:id="tablaExposiciones" disable="true" layoutX="31.0" layoutY="271.0" prefHeight="138.0" prefWidth="681.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
+        <TableView fx:id="tablaExposiciones" disable="true" layoutX="31.0" layoutY="271.0" prefHeight="138.0" prefWidth="523.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
             <columns>
-                <TableColumn id="Exposicion" fx:id="colExposicion" prefWidth="138.0" text="Exposición" />
-                <TableColumn fx:id="colPublicoDestino" prefWidth="277.0" text="Público Destino" />
-                <TableColumn fx:id="colHoraApertura" prefWidth="129.0" text="Hora apertura" />
-                <TableColumn fx:id="colHoraCierre" minWidth="0.0" prefWidth="91.0" text="Hora cierre" />
-            <TableColumn fx:id="colSeleccion" prefWidth="43.0" text="Selección" />
+                <TableColumn id="Exposicion" fx:id="colExposicion" prefWidth="95.0" text="Exposición" />
+                <TableColumn fx:id="colPublicoDestino" prefWidth="145.0" text="Público Destino" />
+                <TableColumn fx:id="colHoraApertura" prefWidth="125.0" text="Hora apertura" />
+                <TableColumn fx:id="colHoraCierre" minWidth="0.0" prefWidth="78.0" text="Hora cierre" />
+            <TableColumn fx:id="colSeleccion" prefWidth="75.0" text="Column X" />
             </columns>
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
         </TableView>
-        <DatePicker disable="true" layoutX="217.0" layoutY="422.0" prefHeight="25.0" prefWidth="147.0" style="-fx-border-width: 1; -fx-border-color: #000000;">
+        <DatePicker fx:id="dateFechaVisita" disable="true" layoutX="217.0" layoutY="422.0" prefHeight="25.0" prefWidth="147.0" style="-fx-border-width: 1; -fx-border-color: #000000;">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></DatePicker>
-      <TextField layoutX="216.0" layoutY="460.0" style="-fx-border-color: #000000;">
+      <TextField editable="false" layoutX="216.0" layoutY="460.0" style="-fx-border-color: #000000;">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></TextField>
@@ -209,6 +209,7 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Label>
+      <Button fx:id="btnSeleccionarExposicion" disable="true" layoutX="595.0" layoutY="325.0" mnemonicParsing="false" onAction="#tomarSeleccionExposiciones" text="Seleccionar" />
     </children>
    <cursor>
       <Cursor fx:constant="S_RESIZE" />
