@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import javax.persistence.criteria.Selection;
 import javax.security.auth.callback.Callback;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -67,11 +69,22 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	private TableColumn<Exposicion, LocalTime> colHoraCierre;
 
 	@FXML
+	private Button btnSeleccionarExposicion;
+
+	@FXML
 	private DatePicker dateFechaVisita;
 
 	@FXML
-	private Button btnSeleccionarExposicion;
+	private TextField txtHoraVisita;
 
+	@FXML
+	private TextField txtMinutoVisita;
+
+	@FXML
+	private Label lblErrorHora;
+
+	@FXML
+	private TextField txtDuracionEstimada;
 
 	@Autowired
 	public void setControlador(ControladorNuevaReservaVisita controlador) {
@@ -162,20 +175,34 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		tablaExposiciones.setDisable(false);
 	}
 
-	public void tomarSeleccionExposiciones(ActionEvent actionEvent){
-//		TableView.TableViewSelectionModel<Exposicion> selectionModel = tablaExposiciones.getSelectionModel();
-//		selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
-//		List<Exposicion> exposicionSeleccionada = selectionModel.getSelectedItems();
-		controlador.addExposicionSeleccionada(tablaExposiciones.getSelectionModel().getSelectedItem());
+	public void tomarSeleccionExposicion(ActionEvent actionEvent){
+		controlador.exposicionSeleccionada(tablaExposiciones.getSelectionModel().getSelectedItem());
 		tablaExposiciones.getItems().removeAll(tablaExposiciones.getSelectionModel().getSelectedItem());
 	}
 
 	public void solicitarFechaYHoraReserva(){
 		dateFechaVisita.setDisable(false);
+		txtHoraVisita.setDisable(false);
+		txtMinutoVisita.setDisable(false);
 	}
 
-	public void tomarFechaYHoraReserva(){
+	public void tomarFechaYHoraReserva(ActionEvent actionEvent){
+		int horaVisita = Integer.parseInt(txtHoraVisita.getText());
+		int minutoVisita = Integer.parseInt(txtMinutoVisita.getText());
+		if (horaVisita > 23 || minutoVisita > 59 || horaVisita < 8 || minutoVisita < 0)
+			lblErrorHora.setVisible(true);
+		else {
+			if (lblErrorHora.isVisible())
+				lblErrorHora.setVisible(false);
+			LocalTime horaIngresada = LocalTime.of(horaVisita, minutoVisita);
+			LocalDate fechaIngresada = dateFechaVisita.getValue();
+			controlador.fechaYHoraReservaIngresados(LocalDateTime.of(fechaIngresada, horaIngresada));
+		}
+	}
 
+	public void presentarDuracionEstimada(LocalTime duracionEstimada) {
+		txtDuracionEstimada.setDisable(false);
+		txtDuracionEstimada.setText(duracionEstimada.toString());
 	}
 
 	public void presentarGuiasDisponibles(){

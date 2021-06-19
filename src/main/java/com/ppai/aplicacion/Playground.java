@@ -4,6 +4,7 @@ import com.ppai.aplicacion.negocio.*;
 import com.ppai.aplicacion.repo.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javassist.LoaderClassPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,12 +23,6 @@ public class Playground implements CommandLineRunner {
 
     @Autowired
     private SedeRepo sedeRepo;
-
-    @Autowired
-    private EscuelaRepo escuelaRepo;
-
-    @Autowired
-    private SesionRepo sesionRepo;
 
     @Autowired
     private EmpleadoRepo empleadoRepo;
@@ -43,8 +40,8 @@ public class Playground implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        List<Escuela> escuelas = escuelaRepo.findAll();
-        List<Sede> sedes = sedeRepo.findAll();
-//        List<Empleado> empleados = empleadoRepo.findAll();
+
+
 //        List<Sesion> sesiones = sesionRepo.findAll();
 //
 //
@@ -70,39 +67,44 @@ public class Playground implements CommandLineRunner {
 //            System.out.println(e + "\n");
 //        }
 
-//        List<ReservaVisita> reservaVisitaList = reservaVisitaRepo.findAll();
+
 //        for (ReservaVisita rv:
 //             reservaVisitaList) {
 //            System.out.println(rv + "\n");
 //        }
 //
-//        List<AsignacionGuia> asignacionGuias = asignacionGuiaRepo.findAll();
+
 //        for (AsignacionGuia ag:
 //                asignacionGuias) {
 //            System.out.println(ag + "\n");
 //        }
 
-        LocalTime start = LocalTime.of(1, 20, 25, 1024);
-        LocalTime end = LocalTime.of(3, 22, 27, 1544);
+//        LocalTime start = LocalTime.of(1, 20, 25, 1024);
+//        LocalTime end = LocalTime.of(3, 22, 27, 1544);
+//
+//        System.out.println(Duration.between(start, end).toString());
 
-        System.out.println(Duration.between(start, end).toString());
 
-        System.out.println(100/3);
+//        List<Exposicion> exposicionesTempYVig = miSede.buscarExposicionesTemporalesYVigentes();
+//        System.out.println(exposicionesTempYVig);
+//        LocalTime duracion = miSede.calcularDuracionEstimadaVisitaPorExposicion(exposicionesTempYVig);
+//        System.out.println(duracion);
 
-        Sede miSede = sedes.get(1);
-        List<Exposicion> exposicionesTempYVig = miSede.buscarExposicionesTemporalesYVigentes();
+//        List<Empleado> guiasDisponibles = miSede.
+//                buscarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime.now(), empleados, asignacionGuias);
+//        System.out.println(guiasDisponibles);
+
+        List<Sede> sedes = sedeRepo.findAll();
+        List<ReservaVisita> reservas = reservaVisitaRepo.findAll();
+        List<Empleado> empleados = empleadoRepo.findAll();
+        List<AsignacionGuia> asignacionGuias = asignacionGuiaRepo.findAll();
+
+        Sede miSede = sedes.get(5);
         System.out.println(miSede);
-        List<Exposicion> exposiciones = miSede.getExposicion();
-        for (Exposicion e:
-             exposiciones) {
-            System.out.println(e.toString() + e.esVigente() + e.esTemporal() + e.esVigenteYTemporal());
-            System.out.println(e.getFechaFin());
-            System.out.println(LocalDate.now());
-            System.out.println(e.getFechaFin().compareTo(LocalDate.now()));
-            System.out.println(LocalDate.now().compareTo(e.getFechaFin()));
-        }
-        System.out.println(exposicionesTempYVig);
-        System.out.println(FXCollections.observableArrayList(exposicionesTempYVig));
+        //List<Empleado> guiasDisp = new ArrayList<>();
+        Empleado miEmpleado = empleados.get(5);
+        System.out.println(miEmpleado);
+        System.out.println(miEmpleado.esTuSede(miSede));
 
     }
 }

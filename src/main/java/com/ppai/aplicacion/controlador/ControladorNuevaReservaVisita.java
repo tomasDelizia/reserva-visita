@@ -116,17 +116,18 @@ public class ControladorNuevaReservaVisita {
 		exposicionesTemporalesYVigentes = sedeSeleccionada.buscarExposicionesTemporalesYVigentes();
 	}
 
-	public void addExposicionSeleccionada(Exposicion exposicionSeleccionada) {
+	public void exposicionSeleccionada(Exposicion exposicionSeleccionada){
 		exposicionesSeleccionadas.add(exposicionSeleccionada);
-		pantalla.solicitarFechaYHoraReserva();
+		if (exposicionesSeleccionadas.size() == 1)
+			pantalla.solicitarFechaYHoraReserva();
 	}
 
-	public void exposicionesSeleccionadas(){
-
-	}
-
-	public void fechaYHoraReservaIngresados(){
-
+	public void fechaYHoraReservaIngresados(LocalDateTime fechaYHoraIngresados){
+		fechaYHoraReserva = fechaYHoraIngresados;
+		calcularDuracionEstimada();
+		pantalla.presentarDuracionEstimada(duracionEstimadaExposicion);
+		if (!superaLimiteVisitantes())
+			buscarGuiasDisponiblesPorHorarioReserva();
 	}
 
 	public void calcularDuracionEstimada(){

@@ -5,6 +5,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -127,14 +128,20 @@ public class Sede {
             int horasTotales = 0;
             int minutosTotales = 0;
             int segundosTotales = 0;
+            // Mientras haya exposiciones, obtenemos sus duraciones
             for (Exposicion exposicion:
                  listaExposiciones) {
                 LocalTime duracionExposicion = exposicion.calcularDuracionExposicion();
-                segundosTotales += duracionExposicion.getHour();
+                horasTotales += duracionExposicion.getHour();
                 minutosTotales += duracionExposicion.getMinute();
                 segundosTotales += duracionExposicion.getSecond();
             }
-            return LocalTime.parse(horasTotales + ":" + minutosTotales + ":" + segundosTotales);
+            Duration duracionTotal = Duration.
+                    ofHours(horasTotales).
+                    plusMinutes(minutosTotales).
+                    plusSeconds(segundosTotales);
+            return LocalTime.of(
+                    duracionTotal.toHoursPart(), duracionTotal.toMinutesPart(), duracionTotal.toSecondsPart());
     }
 
     public boolean esTuReserva(ReservaVisita reservaVisita) {
@@ -144,6 +151,7 @@ public class Sede {
 
     public int getCantidadVisitantesParaFechaYHora(LocalDateTime fechaYHora,
                                                    List<ReservaVisita> listaReservas) {
+        // Método que devuelve la cantidad de visitantes que habrá en una sede para un día y hora determinados
         int cantVisitantes = 0;
         for (ReservaVisita reservaVisita:
                 listaReservas) {
@@ -177,10 +185,10 @@ public class Sede {
 		List<Empleado> guiasDisponibles = new ArrayList<>();
         for (Empleado empleado:
 			 empleados) {
-			if (esTuEmpleado(empleado)
+			if (this.esTuEmpleado(empleado)
                     && empleado.esGuia()
                     && empleado.trabajaDentroDeDiaYHorario(fechaYHora)
-                    && empleado.tieneAsignacionParaDiaYHora(fechaYHora, asignacionesGuia))
+                    && !empleado.tieneAsignacionParaDiaYHora(fechaYHora, asignacionesGuia))
 			    guiasDisponibles.add(empleado);
 		}
 		return guiasDisponibles;

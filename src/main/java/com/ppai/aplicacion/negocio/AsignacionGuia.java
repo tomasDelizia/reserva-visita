@@ -48,7 +48,7 @@ public class AsignacionGuia {
         LocalDate fecha = fechaYHora.toLocalDate();
         LocalTime hora = fechaYHora.toLocalTime();
         return (fecha.compareTo(fechaHoraInicio.toLocalDate()) == 0
-                && hora.isAfter(fechaHoraInicio.toLocalTime())
+                && (hora.isAfter(fechaHoraInicio.toLocalTime()) || hora.equals(fechaHoraInicio.toLocalTime()))
                 && hora.isBefore(fechaHoraFin.toLocalTime()));
     }
 

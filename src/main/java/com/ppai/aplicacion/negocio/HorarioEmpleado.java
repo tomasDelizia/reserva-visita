@@ -39,7 +39,8 @@ public class HorarioEmpleado {
     public boolean estaDentroDeDiaYHorario(LocalDateTime fechaYHora) {
         // Método que dice si el horario de trabajo está dentro del día y hora pasada por parámetro.
         return (fechaYHora.getDayOfWeek().getValue() == diaSemana.getValue()
-                && fechaYHora.toLocalTime().isAfter(horaInicio)
+                && (fechaYHora.toLocalTime().isAfter(horaInicio) ||
+                fechaYHora.toLocalTime().equals(horaInicio))
                 && fechaYHora.toLocalTime().isBefore(horaFin));
     }
 }//end HorarioEmpleado

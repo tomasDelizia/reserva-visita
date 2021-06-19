@@ -76,8 +76,6 @@ public class Obra {
     public String toString() {
         return "Obra{" +
                 "nombreObra='" + nombreObra + '\'' +
-                ", valuacion= $" + valuacion +
-                ", duracionResumida=" + duracionResumida +
                 ", duracionExtendida=" + duracionExtendida +
                 '}';
     }

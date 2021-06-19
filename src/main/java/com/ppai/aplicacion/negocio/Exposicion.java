@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.javatuples.Pair;
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -132,17 +133,11 @@ public class Exposicion {
     }
 
 
-
     @Override
     public String toString() {
         return "Exposicion{" +
                 "nombre='" + nombre + '\'' +
-                ", tipoExposicion=" + tipoExposicion +
-                ", publicoDestino=" + publicoDestino +
-                ", fechaInicio=" + fechaInicio +
-                ", fechaFin=" + fechaFin +
-                ", fechaInicioReplanificada=" + fechaInicioReplanificada +
-                ", fechaFinReplanificada=" + fechaFinReplanificada +
+                ", detalleExposicion=" + detalleExposicion +
                 '}';
     }
 
@@ -198,11 +193,19 @@ public class Exposicion {
         for (DetalleExposicion detalleExpo:
              detalleExposicion) {
             LocalTime duracionObra = detalleExpo.getObra().getDuracionExtendida();
-            segundosTotales += duracionObra.getHour();
+            horasTotales += duracionObra.getHour();
             minutosTotales += duracionObra.getMinute();
             segundosTotales += duracionObra.getSecond();
         }
-        return LocalTime.parse(horasTotales + ":" + minutosTotales + ":" + segundosTotales);
+        Duration duracionTotal = Duration.
+                ofHours(horasTotales).
+                plusMinutes(minutosTotales).
+                plusSeconds(segundosTotales);
+        return LocalTime.of(
+                duracionTotal.toHoursPart(), duracionTotal.toMinutesPart(), duracionTotal.toSecondsPart());
     }
 
+    public List<DetalleExposicion> getDetalleExposicion() {
+        return detalleExposicion;
+    }
 }//end Exposicion

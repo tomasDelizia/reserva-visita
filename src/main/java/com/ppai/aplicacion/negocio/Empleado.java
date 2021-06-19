@@ -139,13 +139,15 @@ public class Empleado {
     public boolean esResponsableDeVisitas() {return this.cargo.esResponsableDeVisitas();}
 
     public boolean esTuSede(Sede sede) {
-        return sede == sedeDondeTrabaja;
+        return this.sedeDondeTrabaja.equals(sede);
     }
 
     public boolean trabajaDentroDeDiaYHorario(LocalDateTime fechaYHora) {
         // Método que nos dice si el empleado trabaja en el día y hora pasada por parámetro.
         for (HorarioEmpleado horario:
              horarioEmpleado) {
+            // Si al menos uno de los horarios de trabajo está dentreo del día y la hora seleccionados,
+            // el método devuelve verdadero.
             if (horario.estaDentroDeDiaYHorario(fechaYHora))
                 return true;
         }
@@ -160,7 +162,7 @@ public class Empleado {
         // Método que nos dice si el guía tiene asignaciones en el día y hora pasados por parámetro
         for (AsignacionGuia asignacionGuia:
                 asignaciones) {
-            if (esTuAsignacion(asignacionGuia) && asignacionGuia.esEnDiaYHora(fechaYHora))
+            if (this.esTuAsignacion(asignacionGuia) && asignacionGuia.esEnDiaYHora(fechaYHora))
                 return true;
         }
         return false;

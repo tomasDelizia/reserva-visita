@@ -762,6 +762,22 @@ INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUE
 INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (5, 4, 5);
 INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (3, 7, 4);
 
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (1, 1, 1);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (4, 2, 2);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (6, 3, 3);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (7, 4, 4);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (8, 5, 5);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (9, 6, 6);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (10, 7, 7);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (11, 8, 8);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (12, 9, 9);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (13, 10, 10);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (14, 1, 10);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (15, 2, 10);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (16, 3, 10);
+INSERT INTO DETALLES_DE_EXPOSICION(id_exposicion, id_obra, lugar_asignado) VALUES (17, 4, 10);
+
+
 INSERT INTO EXPOSICIONES_X_SEDES VALUES (1, 17);
 INSERT INTO EXPOSICIONES_X_SEDES VALUES (1, 2);
 INSERT INTO EXPOSICIONES_X_SEDES VALUES (1, 3);
