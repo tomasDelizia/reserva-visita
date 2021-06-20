@@ -122,13 +122,9 @@ public class Empleado {
     @Override
     public String toString() {
         return "Empleado{" +
-                "dni=" + dni +
-                ", nombre='" + nombre + '\'' +
+                "nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", cargo=" + cargo +
-                ", sedeDondeTrabaja=" + sedeDondeTrabaja.getNombre() +
-                ", sexo=" + sexo +
-                ", horarioEmpleado=" + horarioEmpleado +
                 '}';
     }
 
@@ -138,8 +134,8 @@ public class Empleado {
 
     public boolean esResponsableDeVisitas() {return this.cargo.esResponsableDeVisitas();}
 
-    public boolean esTuSede(Sede sede) {
-        return this.sedeDondeTrabaja.equals(sede);
+    public boolean esTuSede(Sede unaSede) {
+        return unaSede.getNombre().equals(sedeDondeTrabaja.getNombre());
     }
 
     public boolean trabajaDentroDeDiaYHorario(LocalDateTime fechaYHora) {

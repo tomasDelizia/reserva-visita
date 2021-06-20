@@ -38,8 +38,8 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             Parent root = fxmlLoader.load();
             Stage stage = event.getStage(); // Escena lista para inicializar la IU
             stage.setTitle(applicationTitle);
-            stage.setScene(new Scene(root, 640, 360));
-            stage.setMaximized(true);    // Tamaño de ventana completo
+            stage.setScene(new Scene(root, 810.0, 696.0));
+            //stage.setMaximized(true);    // Tamaño de ventana completo
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

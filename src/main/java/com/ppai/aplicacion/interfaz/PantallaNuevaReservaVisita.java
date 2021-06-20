@@ -26,11 +26,22 @@ import java.util.ResourceBundle;
 @Component
 public class PantallaNuevaReservaVisita implements Initializable {
 
+	@FXML
+	private TextArea cajaPruebas;
 
 	private ControladorNuevaReservaVisita controlador;
 
 	@FXML
-	private TextArea cajaPruebas;
+	private TextField txtUsuario;
+
+	@FXML
+	private PasswordField txtContrasena;
+
+	@FXML
+	private Label lblBenvenida;
+
+	@FXML
+	private Label lblUsuarioIncorrecto;
 
 	@FXML
 	private ComboBox<Escuela> cboEscuelas;
@@ -86,18 +97,58 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	@FXML
 	private TextField txtDuracionEstimada;
 
+	@FXML
+	private TableView<Empleado> tablaGuias;
+
+	@FXML
+	private TableColumn<Empleado, String> colNombreGuia;
+
+	@FXML
+	private TableColumn<Empleado, String> colApellidoGuia;
+
+	@FXML
+	private Label lblCantidadGuias;
+
+	@FXML
+	private Button btnSeleccionarGuia;
+
+	@FXML
+	private Button btnConfirmar;
+
+	@FXML
+	private Label lblErrorLimiteSedeSuperado;
+
+	@FXML
+	private Label lblReservaRegistrada;
+
+
 	@Autowired
 	public void setControlador(ControladorNuevaReservaVisita controlador) {
 		this.controlador = controlador;
 	}
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-		opcionNuevaReservaVisita();
-	}
+	public void initialize(URL url, ResourceBundle resourceBundle) {}
 
 	public void cancelar(ActionEvent actionEvent) {
 		Platform.exit();
+	}
+
+	public void tomarLogin(ActionEvent actionEvent) {
+		String usuario = txtUsuario.getText();
+		String contrasena = txtContrasena.getText();
+		controlador.loginIngresado(usuario, contrasena);
+	}
+
+	public void informarLoginConExito() {
+		if (lblUsuarioIncorrecto.isVisible())
+			lblUsuarioIncorrecto.setVisible(false);
+		lblBenvenida.setVisible(true);
+		opcionNuevaReservaVisita();
+	}
+
+	public void informarLoginFallido(){
+		lblUsuarioIncorrecto.setVisible(true);
 	}
 
 	public void opcionNuevaReservaVisita(){
@@ -105,8 +156,9 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		controlador.opcionRegistrarReservaVisita();
 	}
 
-	public void habilitarPantalla(){}
-
+	public void habilitarPantalla(){
+		cboEscuelas.setDisable(false);
+	}
 
 	public void presentarEscuelas(List<Escuela> listaEscuelas) {
 		cboEscuelas.setItems(FXCollections.observableArrayList(listaEscuelas));
@@ -141,10 +193,6 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	public void tomarSede(ActionEvent actionEvent){
 		Sede sede = cboSedes.getValue();
 		controlador.sedeSeleccionada(sede);
-	}
-
-	public void presentarTiposDeVisita(){
-
 	}
 
 	public void solicitarSeleccionTipoVisita(){
@@ -205,24 +253,50 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		txtDuracionEstimada.setText(duracionEstimada.toString());
 	}
 
-	public void presentarGuiasDisponibles(){
-
+	public void informarLimiteVisitantesSuperado() {
+		lblErrorLimiteSedeSuperado.setVisible(true);
 	}
 
-	public void tomarSeleccionGuiasDisponibles(){
-
+	public void presentarGuiasDisponibles(List<Empleado> guiasDisponibles, Integer cantidadAsistentes){
+		if (lblErrorLimiteSedeSuperado.isVisible())
+			lblErrorLimiteSedeSuperado.setVisible(false);
+		ObservableList<Empleado> listaObservableGuiasDisponibles =
+				FXCollections.observableArrayList(guiasDisponibles);
+		tablaGuias.setItems(listaObservableGuiasDisponibles);
+		colNombreGuia.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+		colApellidoGuia.setCellValueFactory(new PropertyValueFactory<>("apellido"));
+		lblCantidadGuias.setText(cantidadAsistentes.toString());
 	}
 
 	public void solicitarSeleccionGuiasDisponibles(){
+		btnSeleccionarGuia.setDisable(false);
+		tablaGuias.setDisable(false);
+	}
 
+	public void tomarSeleccionGuiaDisponible(ActionEvent actionEvent){
+		if (Integer.parseInt(lblCantidadGuias.getText()) > 0) {
+			int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
+			lblCantidadGuias.setText(Integer.toString(cantidadGuias));
+		}
+		if (Integer.parseInt(lblCantidadGuias.getText()) == 0) {
+			btnSeleccionarGuia.setDisable(true);
+		}
+		Empleado guiaSeleccionado = tablaGuias.getSelectionModel().getSelectedItem();
+		tablaGuias.getItems().removeAll(guiaSeleccionado);
+		controlador.guiaDisponibleSeleccionado(guiaSeleccionado);
 	}
 
 	public void solicitarConfirmacionReserva() {
-
+		btnConfirmar.setDisable(false);
 	}
 
-	public void tomarConfirmacionReserva() {
-
+	public void tomarConfirmacionReserva(ActionEvent actionEvent) {
+		btnConfirmar.setDisable(true);
+		lblReservaRegistrada.setVisible(true);
+		controlador.confirmacionReservaSeleccionada();
 	}
 
+	public void mostrarReserva(ReservaVisita nuevaReserva) {
+		cajaPruebas.setText(nuevaReserva.toString());
+	}
 }//end PantallaNuevaReservaVisita

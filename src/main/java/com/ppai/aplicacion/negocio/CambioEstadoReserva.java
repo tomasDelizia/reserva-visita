@@ -25,7 +25,8 @@ public class CambioEstadoReserva {
     private LocalDateTime fechaHoraFin;
 
 
-    public CambioEstadoReserva(EstadoReserva estadoReserva, LocalDateTime fechaHoraInicio) {
+    public CambioEstadoReserva(int idReserva, EstadoReserva estadoReserva, LocalDateTime fechaHoraInicio) {
+        this.idReserva = idReserva;
         this.estadoReserva = estadoReserva;
         this.fechaHoraInicio = fechaHoraInicio;
     }

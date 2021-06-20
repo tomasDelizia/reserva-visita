@@ -29,10 +29,11 @@ public class ControladorNuevaReservaVisita {
 	private final List<Exposicion> exposicionesSeleccionadas = new ArrayList<>();
 	private LocalDateTime fechaYHoraReserva, fechaYHoraActual;
 	private LocalTime duracionEstimadaExposicion;
-	private List<Empleado> guiasDisponibles, guiasSeleccionados;
+	private List<Empleado> guiasDisponibles;
+	private final List<Empleado> guiasSeleccionados = new ArrayList<>();
 	private EstadoReserva estadoPendienteDeConfirmacion;
-	private Sesion sesion;
 	private Empleado empleadoEnSesion;
+	private Sesion sesionActual;
 
 	@Autowired
 	private EscuelaRepo escuelaRepo;
@@ -58,10 +59,30 @@ public class ControladorNuevaReservaVisita {
 	@Autowired
 	private EstadoReservaRepo estadoReservaRepo;
 
+	@Autowired
+	private UsuarioRepo usuarioRepo;
+
 
 	@Autowired
 	public void setPantalla(PantallaNuevaReservaVisita pantalla) {
 		this.pantalla = pantalla;
+	}
+
+	public void loginIngresado(String nombreUsuario, String contrasena) {
+		List<Usuario> usuarios = usuarioRepo.findAll();
+		for (Usuario usuario:
+			 usuarios) {
+			if (usuario.correspondeUsuarioYContrasena(nombreUsuario, contrasena)
+				&& usuario.getEmpleado().esResponsableDeVisitas()) {
+				sesionActual = new Sesion(LocalDateTime.now(), usuario);
+				break;
+			}
+		}
+		if (sesionActual != null)
+			pantalla.informarLoginConExito();
+		else
+			pantalla.informarLoginFallido();
+
 	}
 
 	public void opcionRegistrarReservaVisita(){
@@ -128,6 +149,8 @@ public class ControladorNuevaReservaVisita {
 		pantalla.presentarDuracionEstimada(duracionEstimadaExposicion);
 		if (!superaLimiteVisitantes())
 			buscarGuiasDisponiblesPorHorarioReserva();
+		else
+			pantalla.informarLimiteVisitantesSuperado();
 	}
 
 	public void calcularDuracionEstimada(){
@@ -138,7 +161,7 @@ public class ControladorNuevaReservaVisita {
 	public boolean superaLimiteVisitantes(){
 		List<ReservaVisita> reservasDeVisita = reservaVisitaRepo.findAll();
 		return sedeSeleccionada.superaLimiteVisitantesParaFechaYHora(
-				cantidadVisitantes, fechaYHoraReserva, reservasDeVisita);
+				cantidadVisitantes, fechaYHoraReserva, duracionEstimadaExposicion, reservasDeVisita);
 	}
 
 	public void buscarGuiasDisponiblesPorHorarioReserva(){
@@ -146,6 +169,9 @@ public class ControladorNuevaReservaVisita {
 		List<AsignacionGuia> asignacionesDeGuia = asignacionGuiaRepo.findAll();
 		guiasDisponibles = sedeSeleccionada.buscarGuiasDisponiblesPorHorarioDeReserva(
 				fechaYHoraReserva, empleados, asignacionesDeGuia);
+		calcularGuiasNecesarios();
+		pantalla.presentarGuiasDisponibles(guiasDisponibles, cantGuiasNecesarios);
+		pantalla.solicitarSeleccionGuiasDisponibles();
 	}
 
 	public void calcularGuiasNecesarios(){
@@ -153,32 +179,39 @@ public class ControladorNuevaReservaVisita {
 				calcularGuiasNecesariosParaVisitantesIngresados(cantidadVisitantes);
 	}
 
-	public void guiasDisponiblesSeleccionados(){
-
+	public void guiaDisponibleSeleccionado(Empleado empleadoSeleccionado){
+		guiasSeleccionados.add(empleadoSeleccionado);
+		if (guiasSeleccionados.size() == cantGuiasNecesarios)
+			pantalla.solicitarConfirmacionReserva();
 	}
 
 	public void confirmacionReservaSeleccionada() {
 		crearReserva();
+		finCU();
 	}
 
 	public void crearReserva(){
 		generarNroReserva();
 		getFechaYHoraActual();
 		getEmpleadoEnSesion();
+		sesionActual.setFechaHoraFin(fechaYHoraActual);
+		sesionRepo.save(sesionActual);
 		buscarEstadoPendienteDeConfirmacion();
 		ReservaVisita nuevaReserva = new ReservaVisita(
 				numeroReserva,
 				cantidadVisitantes,
 				fechaYHoraActual,
 				fechaYHoraReserva,
+				duracionEstimadaExposicion,
 				escuelaSeleccionada,
 				sedeSeleccionada,
 				empleadoEnSesion,
 				exposicionesSeleccionadas,
-				estadoPendienteDeConfirmacion,
-				guiasSeleccionados
+				estadoPendienteDeConfirmacion
+				//guiasSeleccionados
 				);
 		reservaVisitaRepo.save(nuevaReserva);
+		pantalla.mostrarReserva(nuevaReserva);
 	}
 
 	public void generarNroReserva(){
@@ -197,7 +230,7 @@ public class ControladorNuevaReservaVisita {
 	}
 
 	public void getEmpleadoEnSesion() {
-		empleadoEnSesion = sesion.getEmpleadoEnSesion();
+		empleadoEnSesion = sesionActual.getEmpleadoEnSesion();
 	}
 
 	public void getFechaYHoraActual(){

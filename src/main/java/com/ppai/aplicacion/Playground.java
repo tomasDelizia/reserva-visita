@@ -33,6 +33,9 @@ public class Playground implements CommandLineRunner {
     @Autowired
     private AsignacionGuiaRepo asignacionGuiaRepo;
 
+    @Autowired
+    private SesionRepo sesionRepo;
+
     public static void main(String[] args) {
         SpringApplication.run(Playground.class, args);
     }
@@ -99,12 +102,41 @@ public class Playground implements CommandLineRunner {
         List<Empleado> empleados = empleadoRepo.findAll();
         List<AsignacionGuia> asignacionGuias = asignacionGuiaRepo.findAll();
 
-        Sede miSede = sedes.get(5);
+//        System.out.println(miSede);
+//        //List<Empleado> guiasDisp = new ArrayList<>();
+//        Empleado miEmpleado = empleados.get(5);
+//        Empleado miEmpleado2 = empleados.get(4);
+//        System.out.println(miEmpleado);
+//        System.out.println(miEmpleado2);
+//        System.out.println(miSede.esTuEmpleado(miEmpleado));
+//        System.out.println(miEmpleado.esTuSede(miSede));
+
+        Sede miSede = sedes.get(0);
         System.out.println(miSede);
-        //List<Empleado> guiasDisp = new ArrayList<>();
-        Empleado miEmpleado = empleados.get(5);
+        for (Empleado e:
+             empleados) {
+            if (miSede.esTuEmpleado(e) && e.esGuia()
+            && e.trabajaDentroDeDiaYHorario(LocalDateTime.now())
+            && !e.tieneAsignacionParaDiaYHora(LocalDateTime.now(), asignacionGuias))
+                System.out.println(e);
+        }
+
+        Empleado miEmpleado = empleados.get(7);
         System.out.println(miEmpleado);
-        System.out.println(miEmpleado.esTuSede(miSede));
+//        for (AsignacionGuia ag:
+//             asignacionGuias) {
+//            if (miEmpleado.esTuAsignacion(ag) && ag.esEnDiaYHora(LocalDateTime.now()))
+//                System.out.println(ag);
+//        }
+        System.out.println(miEmpleado.tieneAsignacionParaDiaYHora(LocalDateTime.now(), asignacionGuias));
+
+        List<Sesion> sesiones = sesionRepo.findAll();
+        for (Sesion s:
+             sesiones) {
+            if (s.esActual())
+                System.out.println(s.getEmpleadoEnSesion());
+
+        }
 
     }
 }

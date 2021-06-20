@@ -150,12 +150,15 @@ public class Sede {
     }
 
     public int getCantidadVisitantesParaFechaYHora(LocalDateTime fechaYHora,
+                                                   LocalTime duracionNuevaReserva,
                                                    List<ReservaVisita> listaReservas) {
         // Método que devuelve la cantidad de visitantes que habrá en una sede para un día y hora determinados
         int cantVisitantes = 0;
+        LocalDateTime fechaHoraFinReserva = fechaYHora
+                .plusHours(duracionNuevaReserva.getHour()).plusMinutes(duracionNuevaReserva.getMinute());
         for (ReservaVisita reservaVisita:
                 listaReservas) {
-            if (reservaVisita.esTuSede(this) && reservaVisita.esEnDiaYHora(fechaYHora))
+            if (reservaVisita.esTuSede(this) && reservaVisita.esEnRangoHorario(fechaYHora, fechaHoraFinReserva))
                 if (reservaVisita.getCantidadAlumnosConfirmada() != null)
                     cantVisitantes += reservaVisita.getCantidadAlumnosConfirmada();
                 else
@@ -166,16 +169,18 @@ public class Sede {
 
     public boolean superaLimiteVisitantesParaFechaYHora(int cantidadVisitantesReserva,
                                                         LocalDateTime fechaYHora,
-                                                        List<ReservaVisita> reservaVisitas){
+                                                        LocalTime duracionReserva,
+                                                        List<ReservaVisita> reservasDeVisita){
         // Método que indica si la cantidad de visitantes pasada por parámetro junto con la cantidad de
         // visitantes que hay en las visitas confirmadas de la sede supera el límite de capacidad para
         // la sede.
-        return cantidadVisitantesReserva + getCantidadVisitantesParaFechaYHora(fechaYHora, reservaVisitas)
+        return cantidadVisitantesReserva + getCantidadVisitantesParaFechaYHora(
+                fechaYHora, duracionReserva, reservasDeVisita)
                 > cantidadMaximaVisitantes;
     }
 
-    public boolean esTuEmpleado(Empleado empleado) {
-        return empleado.esTuSede(this);
+    public boolean esTuEmpleado(Empleado unEmpleado) {
+        return unEmpleado.esTuSede(this);
     }
 
 	public List<Empleado> buscarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime fechaYHora,
@@ -195,7 +200,10 @@ public class Sede {
 	}
 
 	public int calcularGuiasNecesariosParaVisitantesIngresados(int cantidadVisitantes) {
-        return cantidadVisitantes / cantidadMaximaVisitantesPorGuia;
+        if (cantidadVisitantes / cantidadMaximaVisitantesPorGuia == 0)
+            return 1;
+        else
+            return cantidadVisitantes / cantidadMaximaVisitantesPorGuia;
     }
 
 }//end Sede

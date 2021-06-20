@@ -21,6 +21,13 @@ public class Sesion {
     private Usuario usuario;
 
 
+    public Sesion(LocalDateTime fechaHoraInicio, Usuario usuario) {
+        this.fechaHoraInicio = fechaHoraInicio;
+        this.usuario = usuario;
+    }
+
+    public Sesion(){}
+
     @Override
     public String toString() {
         return "Sesion{" +
@@ -37,5 +44,13 @@ public class Sesion {
     public boolean validarUsuario(String nombreUsuario, String contrasena) {
         // Método para verificar que el usuario y contraseña ingresados sean los correctos
         return usuario.correspondeUsuarioYContrasena(nombreUsuario, contrasena);
+    }
+
+    public boolean esActual() {
+        return fechaHoraFin == null;
+    }
+
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
     }
 }//end Sesion

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
@@ -23,20 +24,20 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="360" minWidth="566.0" prefHeight="738.0" prefWidth="810.0" style="-fx-background-color: #bbbaaa; -fx-background-color: #FFFAF0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaNuevaReservaVisita">
+<AnchorPane minHeight="360" minWidth="566.0" prefHeight="696.0" prefWidth="810.0" style="-fx-background-color: #bbbaaa; -fx-background-color: #FFFAF0;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaNuevaReservaVisita">
     <children>
-        <Region layoutX="-5.0" layoutY="-7.0" prefHeight="745.0" prefWidth="822.0" style="-fx-background-color: #F5DEB3;">
+        <Region layoutX="-6.0" layoutY="-2.0" prefHeight="698.0" prefWidth="822.0" style="-fx-background-color: #F5DEB3;">
          </Region>
-        <Label layoutX="15.0" layoutY="56.0" prefHeight="17.0" prefWidth="170.0" style="-fx-border-style: 5;" text="Selección de escuela">
+        <Label layoutX="15.0" layoutY="14.0" prefHeight="17.0" prefWidth="170.0" style="-fx-border-style: 5;" text="Ingreso al sistema">
          <font>
             <Font name="Candara Bold" size="14.0" />
          </font>
         </Label>
-        <Label layoutX="14.0" layoutY="98.0" text="Seleccione una escuela:">
+        <Label layoutX="14.0" layoutY="113.0" text="Seleccione una escuela:">
          </Label>
-        <ComboBox fx:id="cboEscuelas" layoutX="152.0" layoutY="94.0" onAction="#tomarSeleccionEscuela" prefHeight="27.0" prefWidth="220.0" promptText="Escuela..." style="-fx-border-color: #000000;">
+        <ComboBox fx:id="cboEscuelas" disable="true" layoutX="152.0" layoutY="109.0" onAction="#tomarSeleccionEscuela" prefHeight="27.0" prefWidth="220.0" promptText="Escuela..." style="-fx-border-color: #000000;">
          </ComboBox>
-        <TextField fx:id="txtCantidadVisitantes" alignment="CENTER" disable="true" layoutX="570.0" layoutY="96.0" onAction="#tomarCantidadVisitantes" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: white; -fx-border-color: #000000;">
+        <TextField fx:id="txtCantidadVisitantes" alignment="CENTER" disable="true" layoutX="570.0" layoutY="111.0" onAction="#tomarCantidadVisitantes" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: white; -fx-border-color: #000000;">
 
         </TextField>
         <Label layoutX="20.0" layoutY="143.0" text="Visita">
@@ -45,7 +46,7 @@
             </font>
 
         </Label>
-        <Label alignment="TOP_LEFT" layoutX="385.0" layoutY="100.0" text="Ingrese la cantidad de visitantes:">
+        <Label alignment="TOP_LEFT" layoutX="385.0" layoutY="115.0" text="Ingrese la cantidad de visitantes:">
          </Label>
         <Label layoutX="28.0" layoutY="183.0" text="Seleccione una sede a visitar:">
          </Label>
@@ -78,10 +79,10 @@
          </cursor></TextField>
         <Label layoutX="24.0" layoutY="425.0" text="Seleccione la fecha para la visita:">
          </Label>
-        <TableView disable="true" editable="true" layoutX="215.0" layoutY="501.0" prefHeight="138.0" prefWidth="487.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
+        <TableView fx:id="tablaGuias" disable="true" editable="true" layoutX="38.0" layoutY="533.0" prefHeight="109.0" prefWidth="500.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
             <columns>
-                <TableColumn minWidth="2.0" prefWidth="198.0" text="Selección" />
-                <TableColumn prefWidth="200.0" text="Guías" />
+                <TableColumn fx:id="colNombreGuia" minWidth="2.0" prefWidth="258.0" text="Nombre" />
+                <TableColumn fx:id="colApellidoGuia" prefWidth="239.0" text="Apellido" />
             </columns>
 
         </TableView>
@@ -89,7 +90,7 @@
       </Label>
       <Label layoutX="24.0" layoutY="464.0" text="Duración estimada de la visita:">
       </Label>
-      <Label layoutX="26.0" layoutY="501.0" text="Seleccione guías para la reserva:">
+      <Label layoutX="26.0" layoutY="501.0" text="Seleccione        guías para la reserva:">
        </Label>
       <Label layoutX="375.0" layoutY="427.0" text="Seleccione la hora para la vista:">
       </Label>
@@ -106,15 +107,15 @@
             <TilePane />
          </children>
       </GridPane>
-      <Button layoutX="732.0" layoutY="665.0" mnemonicParsing="false" onAction="#cancelar" style="-fx-border-color: #000000;" text="Cancelar">
+      <Button layoutX="732.0" layoutY="662.0" mnemonicParsing="false" onAction="#cancelar" style="-fx-border-color: #000000;" text="Cancelar">
       </Button>
-      <Button disable="true" layoutX="652.0" layoutY="665.0" mnemonicParsing="false" style="-fx-border-color: #000000;" text="Confirmar">
+      <Button fx:id="btnConfirmar" disable="true" layoutX="652.0" layoutY="662.0" mnemonicParsing="false" onAction="#tomarConfirmacionReserva" style="-fx-border-color: #000000;" text="Confirmar">
       </Button>
       <TextField fx:id="txtHoraVisita" disable="true" layoutX="545.0" layoutY="423.0" prefHeight="26.0" prefWidth="69.0" style="-fx-border-color: #000000;">
       </TextField>
       <TextField fx:id="txtMinutoVisita" disable="true" layoutX="639.0" layoutY="423.0" onAction="#tomarFechaYHoraReserva" prefHeight="26.0" prefWidth="69.0" style="-fx-border-color: #000000;">
        </TextField>
-      <Separator layoutX="10.0" layoutY="80.0" prefHeight="3.0" prefWidth="802.0" style="-fx-background-color: #000000;">
+      <Separator layoutX="10.0" layoutY="102.0" prefHeight="3.0" prefWidth="802.0" style="-fx-background-color: #000000;">
        </Separator>
       <Separator layoutX="10.0" layoutY="164.0" prefHeight="3.0" prefWidth="802.0" style="-fx-background-color: #000000;">
        </Separator>
@@ -125,10 +126,10 @@
             <Image url="@gobierno_de_la_provincia_de_cordoba.png" />
          </image>
       </ImageView>
-      <Separator layoutX="4.0" layoutY="648.0" prefHeight="3.0" prefWidth="802.0" style="-fx-background-color: #000000;">
+      <Separator layoutX="4.0" layoutY="651.0" prefHeight="3.0" prefWidth="802.0" style="-fx-background-color: #000000;">
        </Separator>
       <Label layoutX="624.0" layoutY="427.0" prefHeight="18.0" prefWidth="1.0" text=":" />
-      <Label fx:id="lblCantidadValida" layoutX="385.0" layoutY="137.0" text="Por favor, ingrese una cantidad válida" textFill="#fc4e4e" visible="false">
+      <Label fx:id="lblCantidadValida" layoutX="385.0" layoutY="141.0" text="Por favor, ingrese una cantidad válida" textFill="#fc4e4e" visible="false">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
@@ -143,6 +144,29 @@
       <Label fx:id="lblErrorHora" layoutX="521.0" layoutY="464.0" text="Por favor, ingrese una hora válida" textFill="#fc4e4e" visible="false">
          <font>
             <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblCantidadGuias" layoutX="87.0" layoutY="497.0" prefHeight="25.0" prefWidth="28.0" text="XX" underline="true" />
+      <Button fx:id="btnSeleccionarGuia" disable="true" layoutX="557.0" layoutY="602.0" mnemonicParsing="false" onAction="#tomarSeleccionGuiaDisponible" text="Seleccionar" />
+      <Label fx:id="lblErrorLimiteSedeSuperado" layoutX="408.0" layoutY="459.0" prefHeight="44.0" prefWidth="307.0" text="La cantidad de visitantes ingresada supera la capacidad de la sede para la fecha y hora ingresados." textAlignment="CENTER" textFill="#fc4e4e" visible="false" wrapText="true">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="23.0" layoutY="42.0" text="Usuario" />
+      <Label layoutX="233.0" layoutY="42.0" text="Contraseña" />
+      <TextField fx:id="txtUsuario" layoutX="68.0" layoutY="39.0" />
+      <PasswordField fx:id="txtContrasena" layoutX="301.0" layoutY="39.0" />
+      <Button fx:id="btnIngresar" layoutX="471.0" layoutY="39.0" mnemonicParsing="false" onAction="#tomarLogin" text="Ingresar" />
+      <Label fx:id="lblBenvenida" layoutX="322.0" layoutY="78.0" text="Bienvenido, usuario!" visible="false" />
+      <Label fx:id="lblUsuarioIncorrecto" layoutX="76.0" layoutY="78.0" text="Usuario o contraseña incorrectos" textFill="#fc4e4e" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblReservaRegistrada" layoutX="473.0" layoutY="667.0" text="¡Reserva registrada con éxito!" textFill="#68eb5c" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
          </font>
       </Label>
     </children>

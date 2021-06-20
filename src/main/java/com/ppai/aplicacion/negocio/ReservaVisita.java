@@ -92,29 +92,43 @@ public class ReservaVisita {
                          int cantidadAlumnos,
                          LocalDateTime fechaYHoraCreacion,
                          LocalDateTime fechaYHoraReserva,
+                         LocalTime duracionEstimada,
                          Escuela escuela,
                          Sede sede,
                          Empleado empleadoCreo,
                          List<Exposicion> exposicion,
-                         EstadoReserva estadoPendiente,
-                         List<Empleado> guiasSeleccionados) {
+                         EstadoReserva estadoPendiente
+                         //List<Empleado> guiasSeleccionados
+                        ) {
         this.numeroReserva = numeroReserva;
         this.cantidadAlumnos = cantidadAlumnos;
         this.fechaYHoraCreacion = fechaYHoraCreacion;
         this.fechaYHoraReserva = fechaYHoraReserva;
+        this.duracionEstimada = duracionEstimada;
         this.escuela = escuela;
         this.sede = sede;
         this.empleadoCreo = empleadoCreo;
         this.exposicion = exposicion;
-        CambioEstadoReserva nuevoCambioEstado =
-                new CambioEstadoReserva(estadoPendiente, fechaYHoraCreacion);
-        cambioEstadoReserva.add(nuevoCambioEstado);
-        for (Empleado guia:
-             guiasSeleccionados) {
-            AsignacionGuia asignacionGuia = new AsignacionGuia(guia, fechaYHoraCreacion);
-            this.asignacionGuia.add(asignacionGuia);
-        }
+
+//        CambioEstadoReserva nuevoCambioEstado =
+//                new CambioEstadoReserva(numeroReserva, estadoPendiente, fechaYHoraCreacion);
+//        cambioEstadoReserva.add(nuevoCambioEstado);
+
+//        LocalDateTime fechaYHoraFinReserva = fechaYHoraReserva
+//                .plusHours(duracionEstimada.getHour())
+//                .plusMinutes(duracionEstimada.getMinute());
+//        for (Empleado guia :
+//                guiasSeleccionados) {
+//            AsignacionGuia asignacionGuia = new AsignacionGuia(
+//                    numeroReserva, guia, fechaYHoraReserva, fechaYHoraFinReserva);
+//            this.asignacionGuia.add(asignacionGuia);
+//      }
     }
+
+    public void newCambioEstado(EstadoReserva estadoReserva) {
+
+    }
+
 
     @Override
     public String toString() {
@@ -123,12 +137,17 @@ public class ReservaVisita {
                 ", cantidadAlumnos=" + cantidadAlumnos +
                 ", fechaHoraCreacion=" + fechaYHoraCreacion +
                 ", duracionEstimada=" + duracionEstimada +
+                ", empleadoCreo=" + empleadoCreo +
                 ", escuela=" + escuela +
                 ", sede=" + sede +
                 ", exposicion=" + exposicion +
                 ", cambioEstadoReserva=" + cambioEstadoReserva +
                 ", asignacionGuias=" + asignacionGuia +
                 '}';
+    }
+
+    public boolean esEnRangoHorario(LocalDateTime fechaYHoraInicio, LocalDateTime fechaYHoraFin) {
+        return esEnDiaYHora(fechaYHoraFin) || esEnDiaYHora(fechaYHoraFin);
     }
 
     public boolean esEnDiaYHora(LocalDateTime fechaYHora){
@@ -142,11 +161,10 @@ public class ReservaVisita {
 
     public boolean esTuSede(Sede sede) {
         // Dice si la sede pasada por parámetro es la misma que tiene asociada este objeto sede
-        return sede == this.sede;
+        return sede.getNombre().equals(this.sede.getNombre());
     }
 
     public int getNumeroReserva() {
         return numeroReserva;
     }
-
 }//end ReservaVisita

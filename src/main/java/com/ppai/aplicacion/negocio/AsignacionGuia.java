@@ -29,9 +29,12 @@ public class AsignacionGuia {
 
     public AsignacionGuia() {}
 
-    public AsignacionGuia(Empleado empleado, LocalDateTime fechaHoraInicio) {
+    public AsignacionGuia(int idReserva,
+                          Empleado empleado, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) {
+        this.idReserva = idReserva;
         this.empleado = empleado;
         this.fechaHoraInicio = fechaHoraInicio;
+        this.fechaHoraFin = fechaHoraFin;
     }
 
     @Override
@@ -47,12 +50,12 @@ public class AsignacionGuia {
         // Método que dice si la asignación es en el día y la hora pasada por parámetro.
         LocalDate fecha = fechaYHora.toLocalDate();
         LocalTime hora = fechaYHora.toLocalTime();
-        return (fecha.compareTo(fechaHoraInicio.toLocalDate()) == 0
+        return (fecha.equals(fechaHoraInicio.toLocalDate())
                 && (hora.isAfter(fechaHoraInicio.toLocalTime()) || hora.equals(fechaHoraInicio.toLocalTime()))
                 && hora.isBefore(fechaHoraFin.toLocalTime()));
     }
 
     public boolean esTuGuia(Empleado empleado) {
-        return empleado == this.empleado;
+        return empleado.getNombre().equals(this.empleado.getNombre());
     }
 }//end AsignacionGuia

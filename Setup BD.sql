@@ -230,7 +230,7 @@ CREATE TABLE HORARIOS_DE_SEDES (
 
 
 CREATE TABLE RESERVAS_DE_VISITA (
-    id_reserva INT IDENTITY,
+    id_reserva INT,
     cantidad_alumnos INT NOT NULL,
     cantidad_alumnos_confirmada INT,
     fecha_hora_creacion DATETIME NOT NULL,
@@ -456,7 +456,96 @@ INSERT INTO HORARIOS_DE_EMPLEADOS VALUES
 (9, 16),
 (10, 1),
 (10, 75),
-(10, 77);
+(10, 77),
+(11, 14),
+(11,27),
+(11,40),
+(12,5),
+(12,18),
+(12,57),
+(13,78),
+(13,65),
+(13,52),
+(14,8),
+(14,21),
+(14,20),
+(15,66),
+(15,53),
+(15,40),
+(16,96),
+(16,3),
+(16,19),
+(17, 92),
+(17,14),
+(17,27),
+(18,52),
+(18,65),
+(18,97),
+(19,1),
+(19,14),
+(19,27),
+(20,2),
+(20,15),
+(21,98),
+(22,4),
+(22,17),
+(22,43),
+(23,56),
+(23,97),
+(24,10),
+(24,23),
+(24,36),
+(25,2),
+(25,15),
+(26,77),
+(26,64),
+(27,94),
+(11,92),
+(11,94),
+(11,96),
+(11,98),
+(12,93),
+(12,95),
+(12,97),
+(13,92),
+(13,94),
+(13,96),
+(13,98),
+(14,93),
+(14,95),
+(14,97),
+(15,92),
+(15,94),
+(15,96),
+(15,98),
+(16,93),
+(16,95),
+(16,97),
+(17,94),
+(17,96),
+(17,98),
+(18,93),
+(18,95),
+(19,92),
+(19,94),
+(19,96),
+(19,98),
+(20,93),
+(20,95),
+(20,97),
+(21,92),
+(21,94),
+(21,96),
+(22,93),
+(22,95),
+(22,97),
+(23,92),
+(23,94),
+(23,96),
+(23,98),
+(24,93),
+(24,95),
+(24,97);
 
 
 INSERT INTO HORARIOS_DE_SEDES VALUES
@@ -532,6 +621,43 @@ VALUES (41562398, '27-41562398-4', 'Carla', 'Juarez', 'chavezj@hotmail.com', 8, 
 INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
 VALUES (32650897, '20-32650897-8', 'Mauricio', 'Cuevas', 'mcuevas@gmail.com', 8, 10, '1987-05-20', '2020-02-10', 'Independencia', 210, '3512987562', 0, 1518);
 
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (43438359, '20-43438359-6', 'Tomás', 'Delizia', 'tomidelizia@gmail.com', 5, 1, '2001-05-29', '2020-01-01', 'Crisol', 62, '3874535259', 0, 5538);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (43267361, '21-43267361-8', 'Mauro', 'Gabrielli', 'maurogab@gmail.com', 8, 10, '1987-05-20', '2020-02-10', 'Chacabuco', 210, '3512987562', 0, 1518);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (38648797, '26-38648797-8', 'Sastre', 'Martin', 'sastresatrin@gmail.com', 8, 10, '1995-02-20', '2020-03-20', 'Roberto Sisi', 280, '3512446562', 0, 1388);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (26659127, '26659127-8', 'Peter', 'Sanchez', 'peterelsanchez@gmail.com', 8, 6, '1997-01-29', '2021-02-17', 'Juan Rodriguez', 212, '351777989', 0, 1438);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (29650897, '19-29650897-8', 'Juan', 'Obolo', 'obolojuan45@gmail.com', 8, 9, '1990-09-13', '2019-03-14', 'Ayovi', 330, '351458125', 0, 1917);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (43276589, '25-43276589-8', 'Agustin', 'Limon', 'aguslimontayahoo@gmail.com', 8, 4, '2000-05-20', '2020-08-20', 'Independencia', 560, '351564645', 1, 4848);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (41256398, '25-41256398-8', 'Joaquin', 'Lopez', 'elJoacolopez@gmail.com', 8, 8, '2001-05-20', '2021-01-15', 'Paraguay', 550, '3513467895', 0, 4458);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (32461321, '25-32461321-8', 'Yenifer', 'Garcia', 'yenigarcia_12@gmail.com', 8, 8, '1999-09-30', '2020-03-05', 'Pergamino', 600, '351787878', 1, 5562);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (36798420, '25-36798420-8', 'Maria', 'Casas', 'casas_454@gmail.com', 8, 7, '1989-09-30', '2020-01-23', 'Balcarce', 993, '351787878', 1, 5562);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (45124578, '25-45124578-8', 'Ana', 'De la Cruz', 'anitass4@gmail.com', 8, 3, '1949-01-10', '2020-01-23', 'Gorriti', 393, '351236878', 1, 6662);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (37542651, '20-37542651-8', 'Cristina', 'Diaz', 'crisdiaz@gmail.com', 8, 4, '1974-07-06', '2020-03-05', 'Bodereau', 241, '3515478562', 1, 7495);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (37547698, '20-37547698-8', 'Veronica', 'Rodriguez', 'veror@gmail.com', 8, 1, '1980-07-16', '2021-05-10', 'Rondeau', 748, '3514786325', 1, 4587);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (35698210, '20-35698210-8', 'Josefina', 'Gonzalez', 'josegonzalez@gmail.com', 8, 5, '1988-09-20', '2021-07-11', 'Menendez Pidal', 520, '3518749658', 1, 1111);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (35475963, '20-35475963-8', 'Eugenia', 'Martinez', 'eugem@gmail.com', 8, 8, '1995-09-20', '2020-08-21', 'Roque Funes', 452, '3514758214', 1, 1540);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (32650897, '20-32650897-4', 'Guillermo', 'Gomez', 'guilleg@gmail.com', 8, 3, '1987-05-20', '2020-02-08', 'Mariano Larra', 350, '3512149870', 0, 1333);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (37564851, '20-37564851-8', 'Franco', 'Rodriguez', 'rfranco@gmail.com', 8, 7, '1991-07-10', '2018-02-05', 'Pablo Buitrago', 748, '3512568974', 0, 4852);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (30265984, '20-30265984-8', 'Agostina','Gonzalez', 'agosgonzalez@gmail.com', 8, 4, '1995-07-20', '2019-04-17', 'Sagrada Familia', 736, '3512563348', 1, 2491);
+INSERT INTO EMPLEADOS (dni, cuit, nombre, apellido, mail, id_cargo, id_sede, fecha_nacimiento, fecha_ingreso, calle_nombre, calle_numero, telefono, id_sexo, codigo_validacion)
+VALUES (40512984, '20-40512984-8', 'Victoria', 'Fernandez', 'vickifernandez@gmail.com', 8, 5, '1989-07-06', '2017-03-10', 'Gauss', 748, '3512568974', 0, 4852);
+
 
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
 VALUES ('milagros_ramos', 'ACD8141', '2022-05-02',3);
@@ -553,6 +679,43 @@ INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
 VALUES ('maria_robles', 'KJL3671', '2022-03-17',1);
 INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
 VALUES ('mauricio_cuevas', 'JGT2410', '2021-07-20',10);
+
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('mauro_gabrielli', 'OWK4271', '2021-10-20',11);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('martin_sastre', 'HIM8965', '2021-08-10',12);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('peter_sanchez', 'PPT2398', '2021-06-28',13);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('juan_obolo', 'GFD7643', '2021-11-15',14);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('agus_limon', 'limonagrio', '2021-09-13',15);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('joaco_lopez', 'tututu123', '2022-01-23',16);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('yenifer45', 'yeni5412', '2022-05-03',17);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('mari78', 'nononon', '2023-10-30',18);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('anaDelvalle', 'flipflopJk', '2021-11-11',19)
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('cristina_diaz', 'HQW2145', '2022-05-21',20);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('veronica_rodriguez', 'PYT4500', '2021-09-08',21);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('josefina_gonzalez', 'KLY8333', '2022-08-21',22);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('eugenia_martinez', 'LVF5123', '2022-01-20',23);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('guille_gomez', 'LSS5163', '2021-10-22',24);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('franco_rodriguez', 'LLE4523', '2022-11-15',25);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('agos_gonzalez', 'LKF2501', '2022-09-05',26);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('vicki_fernandez', 'TRE2105', '2022-11-25',27);
+INSERT INTO USUARIOS (nombre_usuario,contrasena,caducidad,id_empleado)
+VALUES ('tomas_delizia', '290501', '2022-11-25',11);
 
 INSERT INTO SESIONES (id_usuario, fecha_hora_inicio, fecha_hora_fin)
 VALUES (1, '2020-05-20 09:00:00','2020-05-20 09:30:00');
@@ -664,22 +827,22 @@ INSERT INTO PUBLICOS_X_EXPOSICIONES (id_exposicion, id_publico) VALUES ( 16, 1);
 INSERT INTO PUBLICOS_X_EXPOSICIONES (id_exposicion, id_publico) VALUES ( 17, 2);
 INSERT INTO PUBLICOS_X_EXPOSICIONES (id_exposicion, id_publico) VALUES ( 17, 1);
 
-INSERT INTO RESERVAS_DE_VISITA (cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
-VALUES (200, 200, '2020-06-06 12:23:00', '2020-06-20 10:30:00', '00:50:00', '10:30:00', '11:30:00', 1, 2, 1);
-INSERT INTO RESERVAS_DE_VISITA (cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
-VALUES (200, 180, '2020-08-09 09:12:30', '2020-08-13 08:40:00', '00:35:00', '08:45:00', '09:30:00', 2, 4, 2);
-INSERT INTO RESERVAS_DE_VISITA (cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
-VALUES (150,136,  '2021-02-10 16:53:43', '2021-03-01 14:00:00', '00:30:00', '14:10:00', '14:43:00', 5, 3, 5);
-INSERT INTO RESERVAS_DE_VISITA (cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
-VALUES (50, 50,  '2021-01-06 09:49:20', '2021-01-08 09:00:00', '00:43:00', '09:00:00', '09:43:00', 6, 5, 6);
-INSERT INTO RESERVAS_DE_VISITA (cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
-VALUES (100, 90, '2021-03-06 10:58:49', '2021-03-13 17:00:00', '01:15:00', '17:01:00', '18:05:00', 2, 2, 3);
-INSERT INTO RESERVAS_DE_VISITA (cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
-VALUES (112, 100, '2021-07-07 16:53:40', '2021-07-09 10:00:00', '01:20:00', NULL, NULL, 3, 1, 2);
-INSERT INTO RESERVAS_DE_VISITA (cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
-VALUES (60, 58, '2021-06-03 18:46:49', '2021-07-01 15:32:00', '00:25:00', '15:35:00', '11:00:00', 1, 1, 1);
-INSERT INTO RESERVAS_DE_VISITA (cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
-VALUES (73, 73, '2021-08-06 14:43:30', '2021-08-16 10:50:00', '01:10:00', NULL, NULL, 7, 3, 4);
+INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
+VALUES (1, 200, 200, '2020-06-06 12:23:00', '2020-06-20 10:30:00', '00:50:00', '10:30:00', '11:30:00', 1, 2, 1);
+INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
+VALUES (2, 200, 180, '2020-08-09 09:12:30', '2020-08-13 08:40:00', '00:35:00', '08:45:00', '09:30:00', 2, 4, 2);
+INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
+VALUES (3, 150,136,  '2021-02-10 16:53:43', '2021-03-01 14:00:00', '00:30:00', '14:10:00', '14:43:00', 5, 3, 5);
+INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
+VALUES (4, 50, 50,  '2021-01-06 09:49:20', '2021-01-08 09:00:00', '00:43:00', '09:00:00', '09:43:00', 6, 5, 6);
+INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
+VALUES (5, 100, 90, '2021-03-06 10:58:49', '2021-03-13 17:00:00', '01:15:00', '17:01:00', '18:05:00', 2, 2, 3);
+INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
+VALUES (6, 112, 100, '2021-07-07 16:53:40', '2021-07-09 10:00:00', '01:20:00', NULL, NULL, 3, 1, 2);
+INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
+VALUES (7, 60, 58, '2021-06-03 18:46:49', '2021-07-01 15:32:00', '00:25:00', '15:35:00', '11:00:00', 1, 1, 1);
+INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
+VALUES (8, 73, 73, '2021-08-06 14:43:30', '2021-08-16 10:50:00', '01:10:00', NULL, NULL, 7, 3, 4);
 
 INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
 VALUES (1,8,'2020-05-01 13:25:15','2020-05-01 15:25:15');
