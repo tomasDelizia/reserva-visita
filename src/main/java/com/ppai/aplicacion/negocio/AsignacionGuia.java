@@ -11,8 +11,9 @@ import java.util.Objects;
 @Table(name = "ASIGNACIONES_DE_GUIA", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class AsignacionGuia {
     @Id
-    @Column(name = "id_reserva")
-    private int idReserva;
+    @Column(name = "id_asignacion")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idAsignacion;
 
     @Basic
     @Column(name = "fecha_hora_inicio")
@@ -29,9 +30,7 @@ public class AsignacionGuia {
 
     public AsignacionGuia() {}
 
-    public AsignacionGuia(int idReserva,
-                          Empleado empleado, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) {
-        this.idReserva = idReserva;
+    public AsignacionGuia(Empleado empleado, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) {
         this.empleado = empleado;
         this.fechaHoraInicio = fechaHoraInicio;
         this.fechaHoraFin = fechaHoraFin;

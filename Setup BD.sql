@@ -250,16 +250,16 @@ CREATE TABLE RESERVAS_DE_VISITA (
         REFERENCES EMPLEADOS(id_empleado) ON UPDATE NO ACTION ON DELETE NO ACTION,
 );
 
-CREATE TABLE ASIGNACIONES_DE_GUIA (
-	id_guia INT,
-    fecha_hora_inicio DATETIME NOT NULL,
-    fecha_hora_fin DATETIME NOT NULL,
-	id_reserva INT,
-    CONSTRAINT asig_guia_id_guia_fechahora_inicio_pk PRIMARY KEY(id_guia, fecha_hora_inicio),
-    CONSTRAINT asig_guia_id_reserva_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
-        ON UPDATE NO ACTION ON DELETE CASCADE,
-	CONSTRAINT asig_guia_id_guia_fk FOREIGN KEY(id_guia) REFERENCES EMPLEADOS(id_empleado)
-        ON UPDATE NO ACTION ON DELETE CASCADE
+--CREATE TABLE ASIGNACIONES_DE_GUIA (
+--	id_guia INT,
+--    fecha_hora_inicio DATETIME NOT NULL,
+--    fecha_hora_fin DATETIME NOT NULL,
+--	id_reserva INT,
+--    CONSTRAINT asig_guia_id_guia_fechahora_inicio_pk PRIMARY KEY(id_guia, fecha_hora_inicio),
+--    CONSTRAINT asig_guia_id_reserva_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
+--        ON UPDATE NO ACTION ON DELETE CASCADE,
+--	CONSTRAINT asig_guia_id_guia_fk FOREIGN KEY(id_guia) REFERENCES EMPLEADOS(id_empleado)
+--        ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
 CREATE TABLE ESTADOS_DE_RESERVA (
@@ -269,17 +269,17 @@ CREATE TABLE ESTADOS_DE_RESERVA (
     CONSTRAINT estados_de_reserva_id_estado_reserva_pk PRIMARY KEY(id_estado_reserva)
 );
 
-CREATE TABLE CAMBIOS_DE_ESTADO_DE_RESERVA (
-    id_reserva INT,
-    id_estado_reserva TINYINT,
-    fecha_hora_inicio DATETIME NOT NULL,
-    fecha_hora_fin DATETIME,
-    CONSTRAINT cambios_de_estado_res_id_res_id_est_fecha_ini_pk PRIMARY KEY(id_reserva, id_estado_reserva),
-    CONSTRAINT cambios_de_estado_res_id_res_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT cambios_de_estado_res_id_est_fk FOREIGN KEY(id_estado_reserva) REFERENCES ESTADOS_DE_RESERVA(id_estado_reserva)
-        ON UPDATE CASCADE ON DELETE CASCADE
-);
+--CREATE TABLE CAMBIOS_DE_ESTADO_DE_RESERVA (
+--    id_reserva INT,
+--    id_estado_reserva TINYINT,
+--    fecha_hora_inicio DATETIME NOT NULL,
+--    fecha_hora_fin DATETIME,
+--    CONSTRAINT cambios_de_estado_res_id_res_id_est_fecha_ini_pk PRIMARY KEY(id_reserva, id_estado_reserva),
+--    CONSTRAINT cambios_de_estado_res_id_res_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
+--        ON UPDATE CASCADE ON DELETE CASCADE,
+--    CONSTRAINT cambios_de_estado_res_id_est_fk FOREIGN KEY(id_estado_reserva) REFERENCES ESTADOS_DE_RESERVA(id_estado_reserva)
+--        ON UPDATE CASCADE ON DELETE CASCADE
+--);
 
 CREATE TABLE EXPOSICIONES_X_SEDES (
     id_sede INT,
@@ -844,38 +844,6 @@ VALUES (7, 60, 58, '2021-06-03 18:46:49', '2021-07-01 15:32:00', '00:25:00', '15
 INSERT INTO RESERVAS_DE_VISITA (id_reserva, cantidad_alumnos, cantidad_alumnos_confirmada, fecha_hora_creacion, fecha_hora_reserva, duracion_estimada, hora_inicio_real, hora_fin_real, id_escuela, id_sede, id_empleado_creador)
 VALUES (8, 73, 73, '2021-08-06 14:43:30', '2021-08-16 10:50:00', '01:10:00', NULL, NULL, 7, 3, 4);
 
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (1,8,'2020-05-01 13:25:15','2020-05-01 15:25:15');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (2,9,'2020-06-07 14:00:15','2020-06-07 15:50:15');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (3,10,'2020-02-04 17:30:20','2020-02-04 19:30:15');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (4,8,'2020-07-09 15:30:15','2020-07-09 18:30:15');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (5,9,'2020-03-01 17:10:10','2020-03-01 19:30:10');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (6,10,'2020-04-03 12:15:00','2020-04-03 13:25:30');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (7,8,'2020-07-09 11:45:05','2020-07-09 16:30:30');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (8,9,'2020-06-07 14:50:25','2020-06-07 17:50:25');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (8,10,'2020-08-05 15:50:00','2020-08-05 18:50:15');
-INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
-VALUES (5,8,'2020-07-01 12:35:00','2020-07-01 13:25:35');
-
-INSERT INTO CAMBIOS_DE_ESTADO_DE_RESERVA
-VALUES (1, 3, '2021-06-06 10:00:00', '2021-06-06 10:30:00'),
-(2, 6, '2021-10-01 19:00:00', '2021-10-12 21:00:00'),
-(3, 2, '2020-08-12 08:00:00', '2020-08-24 13:45:00'),
-(4, 5, '2021-12-15 13:30:00', '2021-12-25 18:30:00'),
-(5, 1, '2020-03-03 07:45:00', '2020-03-21 15:30:00'),
-(6, 4, '2021-06-21 10:00:00', '2021-07-21 07:00:00'),
-(7, 5, '2021-01-10 15:30:00', '2021-01-10 16:55:00'),
-(8, 2, '2021-10-06 17:00:00', '2021-10-10 10:30:00'),
-(3, 5, '2020-08-25 07:30:00', '2020-08-29 12:00:00'),
-(7, 6, '2021-01-11 10:00:00','2021-01-11 20:30:00');
 
 INSERT INTO OBRAS (nombre_obra,id_artista,alto,ancho,peso,valuacion,duracion_resumida,duracion_extendida,fecha_creacion,
 fecha_primer_ingreso,fecha_registracion,descripcion,codigo_sensor,id_empleado_creador)
@@ -1027,5 +995,144 @@ INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (7, 2);
 INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (8, 6);
 INSERT INTO EXPOSICIONES_X_RESERVAS VALUES (8, 1);
 
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (1,8,'2020-05-01 13:25:15','2020-05-01 15:25:15');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (2,9,'2020-06-07 14:00:15','2020-06-07 15:50:15');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (3,10,'2020-02-04 17:30:20','2020-02-04 19:30:15');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (4,8,'2020-07-09 15:30:15','2020-07-09 18:30:15');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (5,9,'2020-03-01 17:10:10','2020-03-01 19:30:10');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (6,10,'2020-04-03 12:15:00','2020-04-03 13:25:30');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (7,8,'2020-07-09 11:45:05','2020-07-09 16:30:30');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (8,9,'2020-06-07 14:50:25','2020-06-07 17:50:25');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (8,10,'2020-08-05 15:50:00','2020-08-05 18:50:15');
+--INSERT INTO ASIGNACIONES_DE_GUIA (id_reserva, id_guia, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (5,8,'2020-07-01 12:35:00','2020-07-01 13:25:35');
+
+--INSERT INTO CAMBIOS_DE_ESTADO_DE_RESERVA
+--VALUES (1, 3, '2021-06-06 10:00:00', '2021-06-06 10:30:00'),
+--(2, 6, '2021-10-01 19:00:00', '2021-10-12 21:00:00'),
+--(3, 2, '2020-08-12 08:00:00', '2020-08-24 13:45:00'),
+--(4, 5, '2021-12-15 13:30:00', '2021-12-25 18:30:00'),
+--(5, 1, '2020-03-03 07:45:00', '2020-03-21 15:30:00'),
+--(6, 4, '2021-06-21 10:00:00', '2021-07-21 07:00:00'),
+--(7, 5, '2021-01-10 15:30:00', '2021-01-10 16:55:00'),
+--(8, 2, '2021-10-06 17:00:00', '2021-10-10 10:30:00'),
+--(3, 5, '2020-08-25 07:30:00', '2020-08-29 12:00:00'),
+--(7, 6, '2021-01-11 10:00:00','2021-01-11 20:30:00');
+
 ------
+
+CREATE TABLE ASIGNACIONES_DE_GUIA (
+	id_asignacion INT IDENTITY,
+	id_guia INT,
+    fecha_hora_inicio DATETIME NOT NULL,
+    fecha_hora_fin DATETIME NOT NULL,
+    CONSTRAINT asignaciones_guia_id_asignacion_pk PRIMARY KEY(id_asignacion),
+	CONSTRAINT asig_guia_id_guia_fk FOREIGN KEY(id_guia) REFERENCES EMPLEADOS(id_empleado)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+);
+
+CREATE TABLE ASIGNACIONES_DE_GUIA_X_RESERVA (
+	id_reserva INT,
+	id_asignacion INT,
+	CONSTRAINT asig_guia_x_reserva_id_res_id_asig_pk PRIMARY KEY(id_reserva, id_asignacion),
+	CONSTRAINT asig_guia_x_reserva_id_reserva_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
+        ON UPDATE NO ACTION ON DELETE CASCADE,
+	CONSTRAINT asig_guia_x_reserva_id_asig_fk FOREIGN KEY(id_asignacion) REFERENCES ASIGNACIONES_DE_GUIA(id_asignacion)
+		ON UPDATE NO ACTION ON DELETE CASCADE,
+);
+
+CREATE TABLE CAMBIOS_DE_ESTADO (
+	id_cambio_de_estado INT IDENTITY,
+    id_estado_reserva TINYINT NOT NULL,
+    fecha_hora_inicio DATETIME NOT NULL,
+    fecha_hora_fin DATETIME,
+    CONSTRAINT cambios_de_estado_id_cambio_estado_pk PRIMARY KEY(id_cambio_de_estado),
+    CONSTRAINT cambios_de_estado_res_id_est_fk FOREIGN KEY(id_estado_reserva) REFERENCES ESTADOS_DE_RESERVA(id_estado_reserva)
+        ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE CAMBIOS_DE_ESTADO_DE_RESERVAS (
+	id_reserva INT,
+	id_cambio_de_estado INT,
+	CONSTRAINT cambios_estado_x_reserva_id_res_id_cambio_pk PRIMARY KEY(id_reserva, id_cambio_de_estado),
+	CONSTRAINT cambios_estado_x_reserva_id_reserva_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
+        ON UPDATE NO ACTION ON DELETE CASCADE,
+	CONSTRAINT cambios_de_estado_x_reserva_id_cambio_fk FOREIGN KEY(id_cambio_de_estado) REFERENCES CAMBIOS_DE_ESTADO(id_cambio_de_estado)
+		ON UPDATE NO ACTION ON DELETE CASCADE,
+);
+
+INSERT INTO CAMBIOS_DE_ESTADO (id_estado_reserva, fecha_hora_inicio, fecha_hora_fin) VALUES
+(3, '2021-06-06 10:00:00', '2021-06-06 10:30:00'),
+(6, '2021-10-01 19:00:00', '2021-10-12 21:00:00'),
+(2, '2020-08-12 08:00:00', '2020-08-24 13:45:00'),
+(5, '2021-12-15 13:30:00', '2021-12-25 18:30:00'),
+(1, '2020-03-03 07:45:00', '2020-03-21 15:30:00'),
+(4, '2021-06-21 10:00:00', '2021-07-21 07:00:00'),
+(5, '2021-01-10 15:30:00', '2021-01-10 16:55:00'),
+(2, '2021-10-06 17:00:00', '2021-10-10 10:30:00'),
+(5, '2020-08-25 07:30:00', '2020-08-29 12:00:00'),
+(6, '2021-01-11 10:00:00','2021-01-11 20:30:00');
+
+INSERT INTO CAMBIOS_DE_ESTADO_DE_RESERVAS VALUES
+(1, 1), (2,2), (3,3), (4,4), (5,5), (6,6), (7,7), (8,8), (1,9), (9,10);
+
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (8,'2020-05-01 13:25:15','2020-05-01 15:25:15');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (9,'2020-06-07 14:00:15','2020-06-07 15:50:15');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (10,'2020-02-04 17:30:20','2020-02-04 19:30:15');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (8,'2020-07-09 15:30:15','2020-07-09 18:30:15');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (9,'2020-03-01 17:10:10','2020-03-01 19:30:10');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (10,'2020-04-03 12:15:00','2020-04-03 13:25:30');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (8,'2020-07-09 11:45:05','2020-07-09 16:30:30');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (9,'2020-06-07 14:50:25','2020-06-07 17:50:25');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (10,'2020-08-05 15:50:00','2020-08-05 18:50:15');
+INSERT INTO ASIGNACIONES_DE_GUIA (id_guia, fecha_hora_inicio, fecha_hora_fin)
+VALUES (8,'2020-07-01 12:35:00','2020-07-01 13:25:35');
+
+INSERT INTO ASIGNACIONES_DE_GUIA_X_RESERVA VALUES
+(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (8, 10);
+
+
+--CREATE TABLE CAMBIOS_DE_ESTADO_DE_RESERVA (
+--	id_cambio_de_estado INT IDENTITY,
+--    id_reserva INT,
+--    id_estado_reserva TINYINT NOT NULL,
+--    fecha_hora_inicio DATETIME NOT NULL,
+--    fecha_hora_fin DATETIME,
+--    CONSTRAINT cambios_de_estado_res_id_cambio_de_estado_pk PRIMARY KEY(id_cambio_de_estado),
+--    CONSTRAINT cambios_de_estado_res_id_reserva_fk FOREIGN KEY(id_reserva) REFERENCES RESERVAS_DE_VISITA(id_reserva)
+--        ON UPDATE CASCADE ON DELETE CASCADE,
+--    CONSTRAINT cambios_de_estado_res_id_estado_fk FOREIGN KEY(id_estado_reserva) REFERENCES ESTADOS_DE_RESERVA(id_estado_reserva)
+--        ON UPDATE CASCADE ON DELETE CASCADE
+--);
+
+
+--INSERT INTO CAMBIOS_DE_ESTADO_DE_RESERVA (id_reserva, id_estado_reserva, fecha_hora_inicio, fecha_hora_fin)
+--VALUES (1, 3, '2021-06-06 10:00:00', '2021-06-06 10:30:00'),
+--(2, 6, '2021-10-01 19:00:00', '2021-10-12 21:00:00'),
+--(3, 2, '2020-08-12 08:00:00', '2020-08-24 13:45:00'),
+--(4, 5, '2021-12-15 13:30:00', '2021-12-25 18:30:00'),
+--(5, 1, '2020-03-03 07:45:00', '2020-03-21 15:30:00'),
+--(6, 4, '2021-06-21 10:00:00', '2021-07-21 07:00:00'),
+--(7, 5, '2021-01-10 15:30:00', '2021-01-10 16:55:00'),
+--(8, 2, '2021-10-06 17:00:00', '2021-10-10 10:30:00'),
+--(3, 5, '2020-08-25 07:30:00', '2020-08-29 12:00:00'),
+--(7, 6, '2021-01-11 10:00:00','2021-01-11 20:30:00');
 

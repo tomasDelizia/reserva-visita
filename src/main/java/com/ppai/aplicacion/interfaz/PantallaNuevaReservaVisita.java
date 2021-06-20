@@ -9,13 +9,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.criteria.Selection;
-import javax.security.auth.callback.Callback;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,9 +23,6 @@ import java.util.ResourceBundle;
 @Component
 public class PantallaNuevaReservaVisita implements Initializable {
 
-	@FXML
-	private TextArea cajaPruebas;
-
 	private ControladorNuevaReservaVisita controlador;
 
 	@FXML
@@ -38,7 +32,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	private PasswordField txtContrasena;
 
 	@FXML
-	private Label lblBenvenida;
+	private Label lblBienvenida;
 
 	@FXML
 	private Label lblUsuarioIncorrecto;
@@ -131,84 +125,106 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {}
 
 	public void cancelar(ActionEvent actionEvent) {
+		// Método que permite al usuario cancelar el CU en cualquier momento al tocar el botón "Cancelar".
 		Platform.exit();
 	}
 
 	public void tomarLogin(ActionEvent actionEvent) {
+		// Método para tomar el el usuario y contraseña ingresados para luego ser verificados.
 		String usuario = txtUsuario.getText();
 		String contrasena = txtContrasena.getText();
 		controlador.loginIngresado(usuario, contrasena);
 	}
 
 	public void informarLoginConExito() {
+		// Método que informa un ingreso de sesión con éxito.
 		if (lblUsuarioIncorrecto.isVisible())
 			lblUsuarioIncorrecto.setVisible(false);
-		lblBenvenida.setVisible(true);
+		lblBienvenida.setText("¡Bienvenido, usuario " + txtUsuario.getText() + "!");
+		lblBienvenida.setVisible(true);
 		opcionNuevaReservaVisita();
 	}
 
 	public void informarLoginFallido(){
+		// Método que informa de un login fallido.
 		lblUsuarioIncorrecto.setVisible(true);
 	}
 
+	// MÉTODOS DEL CASO DE USO 92: REGISTRAR RESERVA DE VISITA
+
 	public void opcionNuevaReservaVisita(){
-		habilitarPantalla();
+		// Método que inicia el caso de uso, una vez verificado el inicio de sesión.
 		controlador.opcionRegistrarReservaVisita();
 	}
 
-	public void habilitarPantalla(){
-		cboEscuelas.setDisable(false);
-	}
+	//public void habilitarPantalla(){}	// Método para habilitar la pantalla de Registar Reserva de Visita.
 
 	public void presentarEscuelas(List<Escuela> listaEscuelas) {
+		// Método que recibe una lista de escuelas y las muestra por pantalla.
 		cboEscuelas.setItems(FXCollections.observableArrayList(listaEscuelas));
 	}
 
-	public void solicitarSeleccionEscuela(){}
+	public void solicitarSeleccionEscuela(){
+		// Método que habilita la selección de una escuela para el usuario.
+		cboEscuelas.setDisable(false);
+	}
 
 	public void tomarSeleccionEscuela(ActionEvent actionEvent){
+		// Método que toma la selección de una escuela.
 		controlador.escuelaSeleccionada(cboEscuelas.getValue());
 	}
 
 	public void solicitarCantidadVisitantes(){
+		// Método que habilita para el usuario el ingreso de la cantidad de visitantes.
 		txtCantidadVisitantes.setDisable(false);
 	}
 
 	public void tomarCantidadVisitantes(ActionEvent actionEvent){
+		// Método que toma la cantidad de visitantes y verifica que sea una cantidad correcta.
 		int visitantes = Integer.parseInt(txtCantidadVisitantes.getText());
 		lblCantidadValida.setVisible(visitantes < 1);
+		// Si la cantidad es correcta, se procede con el caso de uso.
 		if (visitantes > 0) {
 			controlador.cantidadDeVisitantesIngresados(visitantes);
 		}
 	}
 
 	public void presentarSedes(List<Sede> listaSedes){
+		// Método que recibe por parámetro una lista de sedes y las muestra al usuario para su selección.
 		cboSedes.setItems(FXCollections.observableArrayList(listaSedes));
 	}
 
 	public void solicitarSeleccionSede(){
+		// Método que habilita la selección de una sede por parte del usuario.
 		cboSedes.setDisable(false);
 	}
 
 	public void tomarSede(ActionEvent actionEvent){
+		// Método que toma la selección de una sede por parte del usuario.
 		Sede sede = cboSedes.getValue();
 		controlador.sedeSeleccionada(sede);
 	}
 
 	public void solicitarSeleccionTipoVisita(){
+		// Método que habilita la selección de un tipo de visita.
 		radioBtnCompleta.setDisable(false);
 		radioBtnPorExposicion.setDisable(false);
 	}
 
 	public void tomarTipoVisita(ActionEvent actionEvent){
-		if (radioBtnPorExposicion.isSelected())
-			lblAvisoTipoDeVisita.setVisible(false);
+		// Si se selecciona el tipo de visita Por Exposición, se continua con el caso de uso.
+		if (radioBtnPorExposicion.isSelected()) {
+			if (lblAvisoTipoDeVisita.isVisible())
+				lblAvisoTipoDeVisita.setVisible(false);
 			controlador.tipoVisitaSeleccionada(radioBtnPorExposicion.getText());
+		}
+		// Si se selecciona el tipo de visita Completa, se informa que seleccione Por Exposición.
 		if (radioBtnCompleta.isSelected())
 			lblAvisoTipoDeVisita.setVisible(true);
 	}
 
 	public void presentarExposicionesTemporalesYVigentes(List<Exposicion> listaExposiciones){
+		// Método que recibe una lista de exposiciones y las muestra por pantalla.
 		ObservableList<Exposicion> listaObservableExposiciones =
 				FXCollections.observableArrayList(listaExposiciones);
 		tablaExposiciones.setItems(listaObservableExposiciones);
@@ -219,26 +235,33 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	}
 
 	public void solicitarSeleccionExposiciones(){
+		// Método que habilita la selección de las exposiciones.
 		btnSeleccionarExposicion.setDisable(false);
 		tablaExposiciones.setDisable(false);
 	}
 
 	public void tomarSeleccionExposicion(ActionEvent actionEvent){
-		controlador.exposicionSeleccionada(tablaExposiciones.getSelectionModel().getSelectedItem());
-		tablaExposiciones.getItems().removeAll(tablaExposiciones.getSelectionModel().getSelectedItem());
+		// Método que toma la exposición seleccionada, la guarda y luego la remueve de la tabla.
+		Exposicion exposicionSeleccionada = tablaExposiciones.getSelectionModel().getSelectedItem();
+		controlador.exposicionSeleccionada(exposicionSeleccionada);
+		tablaExposiciones.getItems().removeAll(exposicionSeleccionada);
 	}
 
 	public void solicitarFechaYHoraReserva(){
+		// Método que habilita el ingreso de una fecha y hora para la reserva.
 		dateFechaVisita.setDisable(false);
 		txtHoraVisita.setDisable(false);
 		txtMinutoVisita.setDisable(false);
 	}
 
 	public void tomarFechaYHoraReserva(ActionEvent actionEvent){
+		// Método que toma la fecha y hora ingresados y verifica que sean válidos.
 		int horaVisita = Integer.parseInt(txtHoraVisita.getText());
 		int minutoVisita = Integer.parseInt(txtMinutoVisita.getText());
+		// Si no es una fecha y hora válida, se avisa con un mensaje.
 		if (horaVisita > 23 || minutoVisita > 59 || horaVisita < 8 || minutoVisita < 0)
 			lblErrorHora.setVisible(true);
+		// Si es válida, se continúa con el caso de uso.
 		else {
 			if (lblErrorHora.isVisible())
 				lblErrorHora.setVisible(false);
@@ -249,15 +272,19 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	}
 
 	public void presentarDuracionEstimada(LocalTime duracionEstimada) {
+		// Método que muestra la duración estimada de la exposición por pantalla.
 		txtDuracionEstimada.setDisable(false);
 		txtDuracionEstimada.setText(duracionEstimada.toString());
 	}
 
 	public void informarLimiteVisitantesSuperado() {
+		// Método que informa al usuario que se superó el límite de visitantes de la sede
+		// para ese fecha y hora, para la duración de la exposición.
 		lblErrorLimiteSedeSuperado.setVisible(true);
 	}
 
 	public void presentarGuiasDisponibles(List<Empleado> guiasDisponibles, Integer cantidadAsistentes){
+		// Método que presenta los guías disponibles por pantalla para su selección.
 		if (lblErrorLimiteSedeSuperado.isVisible())
 			lblErrorLimiteSedeSuperado.setVisible(false);
 		ObservableList<Empleado> listaObservableGuiasDisponibles =
@@ -269,15 +296,19 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	}
 
 	public void solicitarSeleccionGuiasDisponibles(){
+		// Método que habilita la selección de guías disponibles.
 		btnSeleccionarGuia.setDisable(false);
 		tablaGuias.setDisable(false);
 	}
 
 	public void tomarSeleccionGuiaDisponible(ActionEvent actionEvent){
+		// Método que toma la selección de guías necesarios.
+		// Actualizamos la cantidad de guías seleccionados hasta que no se llegue a la cantidad requerida.
 		if (Integer.parseInt(lblCantidadGuias.getText()) > 0) {
 			int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
 			lblCantidadGuias.setText(Integer.toString(cantidadGuias));
 		}
+		// Se deshabilita la selección de guías cuando se llega a la cantidad requerida.
 		if (Integer.parseInt(lblCantidadGuias.getText()) == 0) {
 			btnSeleccionarGuia.setDisable(true);
 		}
@@ -287,16 +318,14 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	}
 
 	public void solicitarConfirmacionReserva() {
+		// Método que habilita el botón de confirmación de la reserva.
 		btnConfirmar.setDisable(false);
 	}
 
 	public void tomarConfirmacionReserva(ActionEvent actionEvent) {
+		// Método que toma la selección de la confirmación por parte del usuario.
 		btnConfirmar.setDisable(true);
 		lblReservaRegistrada.setVisible(true);
 		controlador.confirmacionReservaSeleccionada();
-	}
-
-	public void mostrarReserva(ReservaVisita nuevaReserva) {
-		cajaPruebas.setText(nuevaReserva.toString());
 	}
 }//end PantallaNuevaReservaVisita

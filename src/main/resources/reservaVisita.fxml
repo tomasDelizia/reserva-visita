@@ -11,7 +11,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
@@ -71,7 +70,7 @@
             </columns>
 
         </TableView>
-        <DatePicker fx:id="dateFechaVisita" disable="true" layoutX="217.0" layoutY="422.0" prefHeight="25.0" prefWidth="147.0" style="-fx-border-width: 1; -fx-border-color: #000000;">
+        <DatePicker fx:id="dateFechaVisita" disable="true" layoutX="217.0" layoutY="422.0" onAction="#tomarFechaYHoraReserva" prefHeight="25.0" prefWidth="147.0" style="-fx-border-width: 1; -fx-border-color: #000000;">
         </DatePicker>
       <TextField fx:id="txtDuracionEstimada" disable="true" editable="false" layoutX="216.0" layoutY="460.0" style="-fx-border-color: #000000;">
          <cursor>
@@ -111,7 +110,7 @@
       </Button>
       <Button fx:id="btnConfirmar" disable="true" layoutX="652.0" layoutY="662.0" mnemonicParsing="false" onAction="#tomarConfirmacionReserva" style="-fx-border-color: #000000;" text="Confirmar">
       </Button>
-      <TextField fx:id="txtHoraVisita" disable="true" layoutX="545.0" layoutY="423.0" prefHeight="26.0" prefWidth="69.0" style="-fx-border-color: #000000;">
+      <TextField fx:id="txtHoraVisita" disable="true" layoutX="545.0" layoutY="423.0" onAction="#tomarFechaYHoraReserva" prefHeight="26.0" prefWidth="69.0" style="-fx-border-color: #000000;">
       </TextField>
       <TextField fx:id="txtMinutoVisita" disable="true" layoutX="639.0" layoutY="423.0" onAction="#tomarFechaYHoraReserva" prefHeight="26.0" prefWidth="69.0" style="-fx-border-color: #000000;">
        </TextField>
@@ -140,7 +139,6 @@
          </font>
       </Label>
       <Button fx:id="btnSeleccionarExposicion" disable="true" layoutX="557.0" layoutY="328.0" mnemonicParsing="false" onAction="#tomarSeleccionExposicion" text="Seleccionar" />
-      <TextArea fx:id="cajaPruebas" layoutX="535.0" layoutY="179.0" prefHeight="73.0" prefWidth="200.0" />
       <Label fx:id="lblErrorHora" layoutX="521.0" layoutY="464.0" text="Por favor, ingrese una hora válida" textFill="#fc4e4e" visible="false">
          <font>
             <Font name="System Bold Italic" size="13.0" />
@@ -158,7 +156,10 @@
       <TextField fx:id="txtUsuario" layoutX="68.0" layoutY="39.0" />
       <PasswordField fx:id="txtContrasena" layoutX="301.0" layoutY="39.0" />
       <Button fx:id="btnIngresar" layoutX="471.0" layoutY="39.0" mnemonicParsing="false" onAction="#tomarLogin" text="Ingresar" />
-      <Label fx:id="lblBenvenida" layoutX="322.0" layoutY="78.0" text="Bienvenido, usuario!" visible="false" />
+      <Label fx:id="lblBienvenida" layoutX="322.0" layoutY="78.0" text="Bienvenido, usuario!" visible="false">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
       <Label fx:id="lblUsuarioIncorrecto" layoutX="76.0" layoutY="78.0" text="Usuario o contraseña incorrectos" textFill="#fc4e4e" visible="false">
          <font>
             <Font name="System Bold Italic" size="12.0" />

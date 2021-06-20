@@ -6,11 +6,12 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "CAMBIOS_DE_ESTADO_DE_RESERVA", schema = "dbo", catalog = "MUSEO_PICTORICO")
+@Table(name = "CAMBIOS_DE_ESTADO", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class CambioEstadoReserva {
     @Id
-    @Column(name = "id_reserva")
-    private int idReserva;
+    @Column(name = "id_cambio_de_estado")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idCambioEstado;
 
     @OneToOne
     @JoinColumn(name = "id_estado_reserva", referencedColumnName = "id_estado_reserva")
@@ -25,8 +26,7 @@ public class CambioEstadoReserva {
     private LocalDateTime fechaHoraFin;
 
 
-    public CambioEstadoReserva(int idReserva, EstadoReserva estadoReserva, LocalDateTime fechaHoraInicio) {
-        this.idReserva = idReserva;
+    public CambioEstadoReserva(EstadoReserva estadoReserva, LocalDateTime fechaHoraInicio) {
         this.estadoReserva = estadoReserva;
         this.fechaHoraInicio = fechaHoraInicio;
     }

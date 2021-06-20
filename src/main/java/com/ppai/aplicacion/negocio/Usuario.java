@@ -49,4 +49,9 @@ public class Usuario {
         // Método que verifica si el usuario y contraseña pasados por parámetro son correctos
         return this.nombreUsuario.equals(nombreUsuario) && this.contrasena.equals(contrasena);
     }
+
+    public boolean correspondeAResponsableDeVisitas() {
+        // Método que verifica si el empleado correspondiente al usuario es Responsable de Visitas.
+        return this.empleado.esResponsableDeVisitas();
+    }
 }//end Usuario

@@ -71,11 +71,19 @@ public class ReservaVisita {
     private List<Exposicion> exposicion = new ArrayList<>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy="idReserva")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "CAMBIOS_DE_ESTADO_DE_RESERVAS",
+            joinColumns = @JoinColumn(name = "id_reserva"),
+            inverseJoinColumns = @JoinColumn(name = "id_cambio_de_estado"))
     private final List<CambioEstadoReserva> cambioEstadoReserva = new ArrayList<>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy="idReserva")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ASIGNACIONES_DE_GUIA_X_RESERVA",
+            joinColumns = @JoinColumn(name = "id_reserva"),
+            inverseJoinColumns = @JoinColumn(name = "id_asignacion"))
     private final List<AsignacionGuia> asignacionGuia = new ArrayList<>();
 
     public ReservaVisita() {}
@@ -97,8 +105,8 @@ public class ReservaVisita {
                          Sede sede,
                          Empleado empleadoCreo,
                          List<Exposicion> exposicion,
-                         EstadoReserva estadoPendiente
-                         //List<Empleado> guiasSeleccionados
+                         EstadoReserva estadoPendiente,
+                         List<Empleado> guiasSeleccionados
                         ) {
         this.numeroReserva = numeroReserva;
         this.cantidadAlumnos = cantidadAlumnos;
@@ -110,25 +118,20 @@ public class ReservaVisita {
         this.empleadoCreo = empleadoCreo;
         this.exposicion = exposicion;
 
-//        CambioEstadoReserva nuevoCambioEstado =
-//                new CambioEstadoReserva(numeroReserva, estadoPendiente, fechaYHoraCreacion);
-//        cambioEstadoReserva.add(nuevoCambioEstado);
+        CambioEstadoReserva nuevoCambioEstado =
+                new CambioEstadoReserva(estadoPendiente, fechaYHoraCreacion);
+        cambioEstadoReserva.add(nuevoCambioEstado);
 
-//        LocalDateTime fechaYHoraFinReserva = fechaYHoraReserva
-//                .plusHours(duracionEstimada.getHour())
-//                .plusMinutes(duracionEstimada.getMinute());
-//        for (Empleado guia :
-//                guiasSeleccionados) {
-//            AsignacionGuia asignacionGuia = new AsignacionGuia(
-//                    numeroReserva, guia, fechaYHoraReserva, fechaYHoraFinReserva);
-//            this.asignacionGuia.add(asignacionGuia);
-//      }
+        LocalDateTime fechaYHoraFinReserva = fechaYHoraReserva
+                .plusHours(duracionEstimada.getHour())
+                .plusMinutes(duracionEstimada.getMinute());
+        for (Empleado guia :
+                guiasSeleccionados) {
+            AsignacionGuia asignacionGuia = new AsignacionGuia(
+                    guia, fechaYHoraReserva, fechaYHoraFinReserva);
+            this.asignacionGuia.add(asignacionGuia);
+      }
     }
-
-    public void newCambioEstado(EstadoReserva estadoReserva) {
-
-    }
-
 
     @Override
     public String toString() {
