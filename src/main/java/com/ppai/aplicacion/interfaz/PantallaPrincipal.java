@@ -1,57 +1,42 @@
 package com.ppai.aplicacion.interfaz;
 
-import com.ppai.aplicacion.StageManager;
+import com.ppai.aplicacion.config.StageManager;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
+import javafx.fxml.Initializable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Controller
-public class PantallaPrincipal {
+@Component
+public class PantallaPrincipal implements Initializable {
+    private StageManager stageManager;
+    private PantallaReservaVisita pantallaReservaVisita;
 
-    @FXML
-    private Button btnRegistrarReservaVisita;
+
+    @Lazy
+    @Autowired
+    public void setStageManager(StageManager stageManager) {
+        this.stageManager = stageManager;
+    }
 
     @Autowired
-    private StageManager stageManager;
+    public void setPantallaReservaVisita(PantallaReservaVisita pantallaReservaVisita) {
+        this.pantallaReservaVisita = pantallaReservaVisita;
+    }
 
-    private Stage mainStage;
-
-    @FXML
-    private Button btnLogin;
-    @FXML
-    private Button btnCancel;
-
-    public void initialize(URL arg0, ResourceBundle arg1) {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
-    @FXML
-    public void loginEvent(ActionEvent event) throws IOException {
-
-        //loginService.loginService();
-
-        Parent root = stageManager.getLoader("reservaVisita.fxml").load();
-
-        Scene scene = new Scene(root);
-
-        mainStage = stageManager.getMainStage();
-
-        mainStage.setTitle("Reserva de Visita");
-
-        mainStage.setScene(scene);
-
-        mainStage.show();
-
+    public void opcionNuevaReservaVisita(ActionEvent actionEvent) {
+        pantallaReservaVisita.opcionNuevaReservaVisita();
     }
 
-}
+    public void salir(ActionEvent actionEvent) {
+        stageManager.switchScene(FxmlView.LOGIN);
+    }
+}//end PantallaPrincipal

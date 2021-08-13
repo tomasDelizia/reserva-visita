@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaLogin">
+
+    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="402.0" stroke="WHITE" strokeType="INSIDE" width="600.0" />
+    <Label layoutX="202.0" layoutY="64.0" text="Bienvenido" textFill="WHITE">
+        <font>
+          <Font size="40.0" />
+        </font>
+    </Label>
+    <TextField fx:id="txtUsuario" focusTraversable="false" layoutX="188.0" layoutY="146.0" promptText="Usuario">
+        <font>
+          <Font size="18.0" />
+        </font>
+    </TextField>
+    <PasswordField fx:id="txtConstrasenia" focusTraversable="false" layoutX="188.0" layoutY="221.0" promptText="Contraseña">
+        <font>
+          <Font size="18.0" />
+        </font>
+    </PasswordField>
+    <Button defaultButton="true" layoutX="251.0" layoutY="329.0" mnemonicParsing="false" onAction="#tomarLogin" styleClass="btnGreen" text="Ingresar" textFill="WHITE">
+        <font>
+          <Font size="20.0" />
+        </font>
+    </Button>
+   <Label fx:id="lblErrorLogin" layoutX="86.0" layoutY="281.0" text="El usuario o contraseña es incorrecto. Vuelva a intentarlo." textFill="WHITE" visible="false">
+      <font>
+         <Font size="17.0" />
+      </font>
+   </Label>
+</AnchorPane>

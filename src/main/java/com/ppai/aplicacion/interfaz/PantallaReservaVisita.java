@@ -1,6 +1,7 @@
 package com.ppai.aplicacion.interfaz;
 
-import com.ppai.aplicacion.controlador.ControladorNuevaReservaVisita;
+import com.ppai.aplicacion.config.StageManager;
+import com.ppai.aplicacion.controlador.ControladorReservaVisita;
 import com.ppai.aplicacion.negocio.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -9,10 +10,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,21 +25,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
-public class PantallaNuevaReservaVisita implements Initializable {
+public class PantallaReservaVisita implements Initializable {
 
-	private ControladorNuevaReservaVisita controlador;
-
-	@FXML
-	private TextField txtUsuario;
-
-	@FXML
-	private PasswordField txtContrasena;
-
-	@FXML
-	private Label lblBienvenida;
-
-	@FXML
-	private Label lblUsuarioIncorrecto;
+	private ControladorReservaVisita controladorReservaVisita;
+	private StageManager stageManager;
 
 	@FXML
 	private ComboBox<Escuela> cboEscuelas;
@@ -72,6 +65,9 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 	@FXML
 	private TableColumn<Exposicion, LocalTime> colHoraCierre;
+
+//	@FXML
+//	private TableColumn<Exposicion, CheckBox> colSeleccion;
 
 	@FXML
 	private Button btnSeleccionarExposicion;
@@ -116,48 +112,38 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	private Label lblReservaRegistrada;
 
 
+	@Lazy
 	@Autowired
-	public void setControlador(ControladorNuevaReservaVisita controlador) {
-		this.controlador = controlador;
+	public void setStageManager(StageManager stageManager) {
+		this.stageManager = stageManager;
+	}
+
+	@Autowired
+	public void setControladorReservaVisita(ControladorReservaVisita controladorReservaVisita) {
+		this.controladorReservaVisita = controladorReservaVisita;
 	}
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {}
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+
+		//btnSeleccionarExposicion.getStyleClass().setAll("btn","btn-primary");
+	}
 
 	public void cancelar(ActionEvent actionEvent) {
 		// Método que permite al usuario cancelar el CU en cualquier momento al tocar el botón "Cancelar".
-		Platform.exit();
+		stageManager.switchScene(FxmlView.MAIN);
 	}
-
-	public void tomarLogin(ActionEvent actionEvent) {
-		// Método para tomar el el usuario y contraseña ingresados para luego ser verificados.
-		String usuario = txtUsuario.getText();
-		String contrasena = txtContrasena.getText();
-		controlador.loginIngresado(usuario, contrasena);
-	}
-
-	public void informarLoginConExito() {
-		// Método que informa un ingreso de sesión con éxito.
-		if (lblUsuarioIncorrecto.isVisible())
-			lblUsuarioIncorrecto.setVisible(false);
-		lblBienvenida.setText("¡Bienvenido, usuario " + txtUsuario.getText() + "!");
-		lblBienvenida.setVisible(true);
-		opcionNuevaReservaVisita();
-	}
-
-	public void informarLoginFallido(){
-		// Método que informa de un login fallido.
-		lblUsuarioIncorrecto.setVisible(true);
-	}
-
-	// MÉTODOS DEL CASO DE USO 92: REGISTRAR RESERVA DE VISITA
 
 	public void opcionNuevaReservaVisita(){
 		// Método que inicia el caso de uso, una vez verificado el inicio de sesión.
-		controlador.opcionRegistrarReservaVisita();
+		habilitarPantalla();
+		controladorReservaVisita.opcionRegistrarReservaVisita();
 	}
 
-	//public void habilitarPantalla(){}	// Método para habilitar la pantalla de Registar Reserva de Visita.
+	public void habilitarPantalla(){
+		// Método para habilitar la pantalla de Registar Reserva de Visita.
+		stageManager.switchScene(FxmlView.RESERVA_VISITA);
+	}
 
 	public void presentarEscuelas(List<Escuela> listaEscuelas) {
 		// Método que recibe una lista de escuelas y las muestra por pantalla.
@@ -171,7 +157,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 
 	public void tomarSeleccionEscuela(ActionEvent actionEvent){
 		// Método que toma la selección de una escuela.
-		controlador.escuelaSeleccionada(cboEscuelas.getValue());
+		controladorReservaVisita.escuelaSeleccionada(cboEscuelas.getValue());
 	}
 
 	public void solicitarCantidadVisitantes(){
@@ -185,7 +171,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		lblCantidadValida.setVisible(visitantes < 1);
 		// Si la cantidad es correcta, se procede con el caso de uso.
 		if (visitantes > 0) {
-			controlador.cantidadDeVisitantesIngresados(visitantes);
+			controladorReservaVisita.cantidadDeVisitantesIngresados(visitantes);
 		}
 	}
 
@@ -202,7 +188,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	public void tomarSede(ActionEvent actionEvent){
 		// Método que toma la selección de una sede por parte del usuario.
 		Sede sede = cboSedes.getValue();
-		controlador.sedeSeleccionada(sede);
+		controladorReservaVisita.sedeSeleccionada(sede);
 	}
 
 	public void solicitarSeleccionTipoVisita(){
@@ -216,7 +202,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		if (radioBtnPorExposicion.isSelected()) {
 			if (lblAvisoTipoDeVisita.isVisible())
 				lblAvisoTipoDeVisita.setVisible(false);
-			controlador.tipoVisitaSeleccionada(radioBtnPorExposicion.getText());
+			controladorReservaVisita.tipoVisitaSeleccionada(radioBtnPorExposicion.getText());
 		}
 		// Si se selecciona el tipo de visita Completa, se informa que seleccione Por Exposición.
 		if (radioBtnCompleta.isSelected())
@@ -232,6 +218,31 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		colPublicoDestino.setCellValueFactory(new PropertyValueFactory<>("publicoDestino"));
 		colHoraApertura.setCellValueFactory(new PropertyValueFactory<>("horaApertura"));
 		colHoraCierre.setCellValueFactory(new PropertyValueFactory<>("horaCierre"));
+
+//		TableColumn colSeleccion = new TableColumn("Selección");
+//
+//		colSeleccion.setCellValueFactory(
+//				new Callback<TableColumn.CellDataFeatures<Exposicion, CheckBox>, ObservableValue<CheckBox>>() {
+//					@Override
+//					public ObservableValue<CheckBox> call(
+//							TableColumn.CellDataFeatures<Exposicion, CheckBox> exposicionBooleanCellDataFeatures) {
+//						Exposicion expo = exposicionBooleanCellDataFeatures.getValue();
+//
+//						CheckBox checkBox = new CheckBox();
+//
+//						checkBox.selectedProperty().setValue(false);
+//
+//						checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+//							@Override
+//							public void changed(ObservableValue<? extends Boolean> observableValue,
+//												Boolean valorAnterior, Boolean valorNuevo) {
+//								// expo.setSelected(nuevoValor);
+//							}
+//						});
+//						return new SimpleObjectProperty<CheckBox>(checkBox);
+//					}
+//				});
+//		tablaExposiciones.getColumns().addAll(colSeleccion);
 	}
 
 	public void solicitarSeleccionExposiciones(){
@@ -243,7 +254,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 	public void tomarSeleccionExposicion(ActionEvent actionEvent){
 		// Método que toma la exposición seleccionada, la guarda y luego la remueve de la tabla.
 		Exposicion exposicionSeleccionada = tablaExposiciones.getSelectionModel().getSelectedItem();
-		controlador.exposicionSeleccionada(exposicionSeleccionada);
+		controladorReservaVisita.exposicionSeleccionada(exposicionSeleccionada);
 		tablaExposiciones.getItems().removeAll(exposicionSeleccionada);
 	}
 
@@ -267,7 +278,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 				lblErrorHora.setVisible(false);
 			LocalTime horaIngresada = LocalTime.of(horaVisita, minutoVisita);
 			LocalDate fechaIngresada = dateFechaVisita.getValue();
-			controlador.fechaYHoraReservaIngresados(LocalDateTime.of(fechaIngresada, horaIngresada));
+			controladorReservaVisita.fechaYHoraReservaIngresados(LocalDateTime.of(fechaIngresada, horaIngresada));
 		}
 	}
 
@@ -314,7 +325,7 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		}
 		Empleado guiaSeleccionado = tablaGuias.getSelectionModel().getSelectedItem();
 		tablaGuias.getItems().removeAll(guiaSeleccionado);
-		controlador.guiaDisponibleSeleccionado(guiaSeleccionado);
+		controladorReservaVisita.guiaDisponibleSeleccionado(guiaSeleccionado);
 	}
 
 	public void solicitarConfirmacionReserva() {
@@ -326,6 +337,6 @@ public class PantallaNuevaReservaVisita implements Initializable {
 		// Método que toma la selección de la confirmación por parte del usuario.
 		btnConfirmar.setDisable(true);
 		lblReservaRegistrada.setVisible(true);
-		controlador.confirmacionReservaSeleccionada();
+		controladorReservaVisita.confirmacionReservaSeleccionada();
 	}
-}//end PantallaNuevaReservaVisita
+}//end PantallaReservaVisita

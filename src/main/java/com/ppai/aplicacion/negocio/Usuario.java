@@ -45,8 +45,8 @@ public class Usuario {
         this.empleado = empleado;
     }
 
-    public boolean correspondeUsuarioYContrasena(String nombreUsuario, String contrasena) {
-        // Método que verifica si el usuario y contraseña pasados por parámetro son correctos
+    public boolean autenticar(String nombreUsuario, String contrasena) {
+        // Método que verifica si el nombre de usuario y contraseña pasados por parámetro son correctos
         return this.nombreUsuario.equals(nombreUsuario) && this.contrasena.equals(contrasena);
     }
 

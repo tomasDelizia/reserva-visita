@@ -1,8 +1,6 @@
 package com.ppai.aplicacion.negocio;
 
 
-
-import javafx.scene.control.CheckBox;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.javatuples.Pair;

@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Component  // Permite a Spring utilizar inyección de dependencia
 public class StageInitializer implements ApplicationListener<StageReadyEvent> {
-    @Value("classpath:/reservaVisita.fxml")
+    @Value("classpath:/fxml/ReservaVisita.fxml")
     private Resource reservaResource;
     private final String applicationTitle;
     private ApplicationContext applicationContext;

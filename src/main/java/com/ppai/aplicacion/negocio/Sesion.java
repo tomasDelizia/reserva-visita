@@ -1,9 +1,7 @@
 package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "SESIONES", schema = "dbo", catalog = "MUSEO_PICTORICO")
@@ -41,9 +39,9 @@ public class Sesion {
         return usuario.getEmpleado();
     }
 
-    public boolean validarUsuario(String nombreUsuario, String contrasena) {
+    public boolean autenticarUsuario(String nombreUsuario, String contrasena) {
         // Método para verificar que el usuario y contraseña ingresados sean los correctos
-        return usuario.correspondeUsuarioYContrasena(nombreUsuario, contrasena);
+        return usuario.autenticar(nombreUsuario, contrasena);
     }
 
     public boolean esActual() {
