@@ -3,7 +3,9 @@ package com.ppai.aplicacion.negocio;
 import javax.persistence.*;
 import java.time.LocalTime;
 
-
+/**
+ * Clase que representa las entidades persistentes Horarios de Sede.
+ */
 @Entity
 @Table(name = "HORARIOS", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class HorarioSede {
@@ -23,18 +25,4 @@ public class HorarioSede {
     @Column(name = "id_dia")
     @Enumerated(EnumType.ORDINAL)
     private DiaSemana diaSemana;
-
-
-    @Override
-    public String toString() {
-        return "HorarioSede{" +
-                "horaInicio=" + horaInicio +
-                ", horaFin=" + horaFin +
-                ", diaSemana=" + diaSemana +
-                '}';
-    }
-
-    public DiaSemana getDiaSemana() {
-        return diaSemana;
-    }
 }//end HorarioSede

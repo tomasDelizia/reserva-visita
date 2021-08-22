@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface EscuelaServicio {
     List<Escuela> listarEscuelas();
+
+    Escuela encontrarPorNombre(String nombreEscuela);
 }

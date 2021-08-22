@@ -1,20 +1,17 @@
 package com.ppai.aplicacion.negocio;
 
-import com.ppai.aplicacion.repo.AsignacionGuiaRepo;
-import com.ppai.aplicacion.repo.CambioEstadoReservaRepo;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+/**
+ * Clase que representa las entidades persistentes Reservasd de Visita Guiada.
+ */
 @Entity
 @Table(name = "RESERVAS_DE_VISITA", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class ReservaVisita {
@@ -86,16 +83,21 @@ public class ReservaVisita {
             inverseJoinColumns = @JoinColumn(name = "id_asignacion"))
     private final List<AsignacionGuia> asignacionGuia = new ArrayList<>();
 
-    public ReservaVisita() {}
 
-    public int getCantidadAlumnos() {
-        return cantidadAlumnos;
-    }
-
-    public Integer getCantidadAlumnosConfirmada() {
-        return cantidadAlumnosConfirmada;
-    }
-
+    /**
+     * Método contructor de la una reserva de visita.
+     * @param numeroReserva el número de la reserva.
+     * @param cantidadAlumnos la cantidad de alumnos que asistirán a la visita.
+     * @param fechaYHoraCreacion la fecha y hora en la que se crea la reserva.
+     * @param fechaYHoraReserva la fecha y hora en la que se realizará la visita.
+     * @param duracionEstimada la duración estimada de la visita.
+     * @param escuela la escuela que realizará la visita.
+     * @param sede la sede donde se realizará la visita.
+     * @param empleadoCreo el empleado Responsable de Visitas que registra la reserva.
+     * @param exposicion la lista de exposiciones que se visitarán.
+     * @param estadoPendiente el estado inicial de la reserva, que es "Pendiente de Confirmación".
+     * @param guiasSeleccionados la lista de guías para la visita.
+     */
     public ReservaVisita(int numeroReserva,
                          int cantidadAlumnos,
                          LocalDateTime fechaYHoraCreacion,
@@ -133,28 +135,50 @@ public class ReservaVisita {
       }
     }
 
-    @Override
-    public String toString() {
-        return "ReservaVisita{" +
-                "numeroReserva=" + numeroReserva +
-                ", cantidadAlumnos=" + cantidadAlumnos +
-                ", fechaHoraCreacion=" + fechaYHoraCreacion +
-                ", duracionEstimada=" + duracionEstimada +
-                ", empleadoCreo=" + empleadoCreo +
-                ", escuela=" + escuela +
-                ", sede=" + sede +
-                ", exposicion=" + exposicion +
-                ", cambioEstadoReserva=" + cambioEstadoReserva +
-                ", asignacionGuias=" + asignacionGuia +
-                '}';
+    public ReservaVisita(){};
+
+    /**
+     * Método que devuelve la cantidad de alumnos de la reserva.
+     * @return la cantidad de alumnos de la reserva en formato entero.
+     */
+    public int getCantidadAlumnos() {
+        return cantidadAlumnos;
     }
 
+    /**
+     * Método que devuelve la cantidad de alumnos confirmada de la reserva.
+     * @return la cantidad de alumnos confirmada de la reserva en formato entero.
+     */
+    public Integer getCantidadAlumnosConfirmada() {
+        return cantidadAlumnosConfirmada;
+    }
+
+    /**
+     * Método que devuelve el número de la reserva.
+     * @return el número de la reserva en formato entero.
+     */
+    public int getNumeroReserva() {
+        return numeroReserva;
+    }
+
+    /**
+     * Método que determina si una visita se realiza dentro del rango horario pasado por parámetro.
+     * @param fechaYHoraInicio la fecha y hora de inicio de la reserva nueva.
+     * @param fechaYHoraFin la fecha y hora de fin de la reserva nueva.
+     * @return verdadero si la visita se realiza en el mismo horario que la reserva a registrar, y falso en
+     * cualquier otro caso.
+     */
     public boolean esEnRangoHorario(LocalDateTime fechaYHoraInicio, LocalDateTime fechaYHoraFin) {
         return esEnDiaYHora(fechaYHoraFin) || esEnDiaYHora(fechaYHoraFin);
     }
 
+    /**
+     * Método que dice si la reserva es en el día y la hora pasada por parámetro.
+     * @param fechaYHora la fecha y hora en la que se realizará una reserva.
+     * @return verdadero si la visita se realiza a la misma hora que la reserva nueva, y falso en cualquier otro
+     * caso.
+     */
     public boolean esEnDiaYHora(LocalDateTime fechaYHora){
-        // Método que dice si la reserva es en el día y la hora pasada por parámetro.
         LocalDate fecha = fechaYHora.toLocalDate();
         LocalTime hora = fechaYHora.toLocalTime();
         return (fecha.compareTo(this.fechaYHoraReserva.toLocalDate()) == 0
@@ -162,12 +186,12 @@ public class ReservaVisita {
                 && hora.isBefore(fechaYHoraReserva.toLocalTime()));
     }
 
+    /**
+     * Método para saber si la sede pasada por parámetro corresponde a esta reserva de visita.
+     * @param sede la sede de la que se desea saber si corresponde a esta reserva de visita.
+     * @return verdadero si esta reserva de visita corresponde a la sede.
+     */
     public boolean esTuSede(Sede sede) {
-        // Dice si la sede pasada por parámetro es la misma que tiene asociada este objeto sede
         return sede.getNombre().equals(this.sede.getNombre());
-    }
-
-    public int getNumeroReserva() {
-        return numeroReserva;
     }
 }//end ReservaVisita

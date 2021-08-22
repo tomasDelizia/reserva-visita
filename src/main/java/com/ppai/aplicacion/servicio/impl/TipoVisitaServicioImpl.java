@@ -23,4 +23,10 @@ public class TipoVisitaServicioImpl implements TipoVisitaServicio {
     public List<TipoVisita> listarTiposVisita() {
         return tipoVisitaRepo.findAll();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TipoVisita encontrarPorNombre(String nombreTipoVisita) {
+        return tipoVisitaRepo.findByNombre(nombreTipoVisita);
+    }
 }

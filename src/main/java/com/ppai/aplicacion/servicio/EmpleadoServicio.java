@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface EmpleadoServicio {
     List<Empleado> listarEmpleados();
+
+    Empleado encontrarEmpleadoPorNombreYApellido(String nombreEmpleado, String apellidoEmpleado);
 }

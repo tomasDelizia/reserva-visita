@@ -27,6 +27,10 @@ public class StageManager {
         Parent viewRootNodeHierarchy = loadViewNodeHierarchy(view.getFxmlFile());
         show(viewRootNodeHierarchy, view.getTitle());
     }
+
+    public void maximize() {
+        primaryStage.setMaximized(true);
+    }
     
     private void show(final Parent rootnode, String title) {
         Scene scene = prepareScene(rootnode);

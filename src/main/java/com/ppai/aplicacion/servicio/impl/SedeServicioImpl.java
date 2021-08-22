@@ -24,4 +24,9 @@ public class SedeServicioImpl implements SedeServicio {
         return sedeRepo.findAll();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Sede encontrarPorNombre(String nombreSede) {
+        return sedeRepo.findByNombre(nombreSede);
+    }
 }

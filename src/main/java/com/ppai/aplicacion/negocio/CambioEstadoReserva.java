@@ -1,10 +1,11 @@
 package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
+/**
+ * Clase que representa las entidades persistentes Cambios de Estado de Reserva.
+ */
 @Entity
 @Table(name = "CAMBIOS_DE_ESTADO", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class CambioEstadoReserva {
@@ -32,13 +33,4 @@ public class CambioEstadoReserva {
     }
 
     public CambioEstadoReserva() {}
-
-    @Override
-    public String toString() {
-        return "CambioEstadoReserva{" +
-                "estadoReserva=" + estadoReserva +
-                ", fechaHoraInicio=" + fechaHoraInicio +
-                ", fechaHoraFin=" + fechaHoraFin +
-                '}';
-    }
 }//end CambioEstadoReserva

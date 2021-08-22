@@ -1,8 +1,10 @@
 package com.ppai.aplicacion.negocio;
 
-
 import javax.persistence.*;
 
+/**
+ * Clase que representa las entidades persistentes Tipos de Visita.
+ */
 @Entity
 @Table(name = "TIPOS_DE_VISITA", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class TipoVisita {
@@ -18,32 +20,19 @@ public class TipoVisita {
 
     public TipoVisita() {}
 
-    public TipoVisita(String nombre) {
-        this.nombre = nombre;
-    }
-
+    /**
+     * Método que devuelve el nombre del tipo de visita.
+     * @return el nombre del tipo de visita como cadena de texto.
+     */
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    @Override
-    public String toString() {
-        return nombre;
-    }
-
-    public boolean esCompleta() {
-        return nombre.equals("Completa");
-    }
-
+    /**
+     * Método para saber si el tipo de visita es "Por Exposición".
+     * @return verdadero si el tipo de visita es "Por Exposición", y falso en cualquier otro caso.
+     */
     public boolean esPorExposicion() {
         return nombre.equals("Por Exposición");
     }
-
-    public boolean esTipoDeVisita(String nombreTipoVisita) {return nombre.equals(nombreTipoVisita);}
-
-
 }//end TipoDeVisita

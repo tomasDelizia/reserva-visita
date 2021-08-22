@@ -6,4 +6,6 @@ import com.ppai.aplicacion.negocio.Escuela;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EscuelaRepo extends JpaRepository<Escuela, Integer> {}
+public interface EscuelaRepo extends JpaRepository<Escuela, Integer> {
+    Escuela findByNombre(String nombreEscuela);
+}

@@ -3,26 +3,23 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.ppai.aplicacion.interfaz.PantallaPrincipal">
-    <MenuBar prefHeight="25.0" prefWidth="600.0">
-      <menus>
-          <Menu mnemonicParsing="false" text="Archivo">
-              <items>
-                  <MenuItem mnemonicParsing="false" onAction="#salir" text="Salir"/>
-              </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Visitas">
-              <items>
-                  <MenuItem mnemonicParsing="false" onAction="#opcionNuevaReservaVisita" text="Nueva Visita Guiada"/>
-              </items>
-          </Menu>
-          <Menu disable="true" mnemonicParsing="false" text="Obras"/>
-          <Menu disable="true" mnemonicParsing="false" text="Ventas"/>
-          <Menu disable="true" mnemonicParsing="false" text="Exposiciones"/>
-      </menus>
-    </MenuBar>
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaPrincipal">
+   <top>
+     <MenuBar BorderPane.alignment="CENTER">
+       <Menu mnemonicParsing="false" text="Archivo">
+         <MenuItem mnemonicParsing="false" onAction="#salir" text="Salir"/>
+       </Menu>
+       <Menu mnemonicParsing="false" text="Visitas">
+         <MenuItem mnemonicParsing="false" onAction="#opcionNuevaReservaVisita" text="Nueva Visita Guiada"/>
+       </Menu>
+       <Menu disable="true" mnemonicParsing="false" text="Obras"/>
+       <Menu disable="true" mnemonicParsing="false" text="Ventas"/>
+       <Menu disable="true" mnemonicParsing="false" text="Exposiciones"/>
+     </MenuBar>
+   </top>
+</BorderPane>

@@ -1,11 +1,9 @@
 package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
-import java.util.Objects;
+
 /**
- * @author tomid
- * @version 1.0
- * @created 22-May-2021 9:42:39 am
+ * Clase que representa las entidades de Tipos de Exposición.
  */
 @Entity
 @Table(name = "TIPOS_DE_EXPOSICION", schema = "dbo", catalog = "MUSEO_PICTORICO")
@@ -23,41 +21,18 @@ public class TipoExposicion {
     private String descripcion;
 
 
-    @Override
-    public String toString() {
-        return "TipoExposicion{" +
-                "nombre='" + nombre + '\'' +
-                '}';
-    }
-
-    public byte getIdTipoExposicion() {
-        return idTipoExposicion;
-    }
-
-    public void setIdTipoExposicion(byte idTipoExposicion) {
-        this.idTipoExposicion = idTipoExposicion;
-    }
-
+    /**
+     * Método que devuelve el nombre del tipo de exposición.
+     * @return el nombre del tipo de exposición como cadena de texto.
+     */
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public boolean esPermanente(){
-        return this.nombre.equals("Permanente");
-    }
-
+    /**
+     * Método para saber si el tipo de exposición es "Temporal".
+     * @return devuelve verdadero si el tipo de exposición de la misma es "Temporal", y falso en cualquier otro caso.
+     */
     public boolean esTemporal(){
         return this.nombre.equals("Temporal");
     }

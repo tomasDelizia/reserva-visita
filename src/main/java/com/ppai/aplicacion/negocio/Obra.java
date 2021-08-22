@@ -2,15 +2,11 @@ package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
+
 /**
- * @author tomid
- * @version 1.0
- * @created 22-May-2021 9:42:41 am
+ * Clase que representa las entidades persistentes Obras.
  */
 @Entity
 @Table(name = "OBRAS", schema = "dbo", catalog = "MUSEO_PICTORICO")
@@ -72,53 +68,11 @@ public class Obra {
     private Empleado empleadoCreo;
 
 
-    @Override
-    public String toString() {
-        return "Obra{" +
-                "nombreObra='" + nombreObra + '\'' +
-                ", duracionExtendida=" + duracionExtendida +
-                '}';
-    }
-
-    public LocalTime getDuracionResumida() {
-        return duracionResumida;
-    }
-
-    public void setDuracionResumida(LocalTime duracionResumida) {
-        this.duracionResumida = duracionResumida;
-    }
-
+    /**
+     * Método que devuelve la duración extendida de la obra.
+     * @return la duración extendida de la obra en formato de fecha.
+     */
     public LocalTime getDuracionExtendida() {
         return duracionExtendida;
     }
-
-    public void setDuracionExtendida(LocalTime duracionExtendida) {
-        this.duracionExtendida = duracionExtendida;
-    }
-
-    public void estaDiponibleParaExposicionEnPeriodo(){
-
-    }
-
-    public void estaEnDeposito(){
-
-    }
-
-    public void estaEnExposicion(){
-
-    }
-
-    public void estaParaRestauracion(){
-
-    }
-
-    public void registrarBaja(){
-
-    }
-
-    public void registrarPendienteAsignacionDeposito(){
-
-    }
-
-
 }//end Obra

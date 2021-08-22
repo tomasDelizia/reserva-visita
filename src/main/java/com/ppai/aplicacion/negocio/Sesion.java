@@ -3,6 +3,9 @@ package com.ppai.aplicacion.negocio;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Clase que representa las entidades persistentes Sesiones.
+ */
 @Entity
 @Table(name = "SESIONES", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class Sesion {
@@ -19,35 +22,38 @@ public class Sesion {
     private Usuario usuario;
 
 
+    /**
+     * Método constructor de una Sesión.
+     * @param fechaHoraInicio la fecha y hora de inicio de la sesión.
+     * @param usuario el usuario al que pertenece la sesión.
+     */
     public Sesion(LocalDateTime fechaHoraInicio, Usuario usuario) {
         this.fechaHoraInicio = fechaHoraInicio;
         this.usuario = usuario;
     }
 
-    public Sesion(){}
+    public Sesion() {}
 
-    @Override
-    public String toString() {
-        return "Sesion{" +
-                "fechaHoraInicio=" + fechaHoraInicio +
-                ", fechaHoraFin=" + fechaHoraFin +
-                ", usuario=" + usuario +
-                '}';
-    }
-
+    /**
+     * Método que devuelve el empleado al que pertenece el usuario en sesión.
+     * @return el empleado logueado.
+     */
     public Empleado getEmpleadoEnSesion() {
         return usuario.getEmpleado();
     }
 
-    public boolean autenticarUsuario(String nombreUsuario, String contrasena) {
-        // Método para verificar que el usuario y contraseña ingresados sean los correctos
-        return usuario.autenticar(nombreUsuario, contrasena);
-    }
-
+    /**
+     * Método para saber si la sesión es actual.
+     * @return verdadero si la sesión aún no tiene fecha y hora de finalización, y falso en cualquier otro caso.
+     */
     public boolean esActual() {
         return fechaHoraFin == null;
     }
 
+    /**
+     * Método para tomar la fecha y hora de fin pasados por parámetro y asignarla a la sesión.
+     * @param fechaHoraFin la fecha y hora de finalización de la sesión.
+     */
     public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
         this.fechaHoraFin = fechaHoraFin;
     }

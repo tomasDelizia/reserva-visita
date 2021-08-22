@@ -1,8 +1,10 @@
 package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
-import java.util.Objects;
 
+/**
+ * Clase que representa las entidades persistentes Estados de Reserva.
+ */
 @Entity
 @Table(name = "ESTADOS_DE_RESERVA", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class EstadoReserva {
@@ -18,13 +20,11 @@ public class EstadoReserva {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @Override
-    public String toString() {
-        return "EstadoReserva{" +
-                "nombre='" + nombre + '\'' +
-                '}';
-    }
 
+    /**
+     * Método que dice si el estado de la reserva es "Pendiente de Confirmación".
+     * @return verdadero si el estado de la reserva es "Pendiente de Confirmación", y falso en cualquier otro caso.
+     */
     public boolean esPendienteDeConfirmacion(){
         return nombre.equals("Pendiente de Confirmación");
     }

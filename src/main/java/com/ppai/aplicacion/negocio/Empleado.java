@@ -1,7 +1,5 @@
 package com.ppai.aplicacion.negocio;
 
-
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
@@ -10,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase que representa las entidades persistentes Empleados.
+ */
 @Entity
 @Table(name = "EMPLEADOS", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class Empleado {
@@ -85,77 +86,76 @@ public class Empleado {
             inverseJoinColumns = @JoinColumn(name = "id_horario"))
     private final List<HorarioEmpleado> horarioEmpleado = new ArrayList<>();
 
-
-
-    public int getDni() {
-        return dni;
-    }
-
-    public void setDni(int dni) {
-        this.dni = dni;
-    }
-
-    public String getCuit() {
-        return cuit;
-    }
-
-    public void setCuit(String cuit) {
-        this.cuit = cuit;
-    }
-
+    /**
+     * Método que devuelve el nombre del empleado.
+     * @return el nombre del empleado como cadena de texto.
+     */
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
+    /**
+     * Método que devuelve el apellido del empleado.
+     * @return el apellido del empleado como cadena de texto.
+     */
     public String getApellido() {
         return apellido;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    @Override
-    public String toString() {
-        return "Empleado{" +
-                "nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", cargo=" + cargo +
-                '}';
-    }
-
+    /**
+     * Método que dice si el cargo del empleado corresponde a un "Guía".
+     * @return verdadero si el empleado es "Guía", y falso en cualquier otro caso.
+     */
     public boolean esGuia(){
         return this.cargo.esGuia();
     }
 
+    /**
+     * Método que dice si el cargo del empleado corresponde a un "Responsable de Visitas".
+     * @return verdadero si el empleado es "Responsable de Visitas", y falso en cualquier otro caso.
+     */
     public boolean esResponsableDeVisitas() {return this.cargo.esResponsableDeVisitas();}
 
+    /**
+     * Método que dice si la sede pasada por parámetro corresponde a la sede donde trabaja el empleado.
+     * @param unaSede la sede a saber si es donde trabaja el empleado.
+     * @return verdadero si la sede pasada es donde trabaja el empleado, y falso en cualquier otro caso.
+     */
     public boolean esTuSede(Sede unaSede) {
         return unaSede.getNombre().equals(sedeDondeTrabaja.getNombre());
     }
 
+    /**
+     * Método que nos dice si el empleado trabaja en el día y hora pasada por parámetro.
+     * @param fechaYHora la fecha y la hora cuando se desea saber si el empleado trabaja.
+     * @return verdadero si al menos uno de los horarios de trabajo está dentro del día y la hora seleccionados,
+     * y falso en cualquier otro caso.
+     */
     public boolean trabajaDentroDeDiaYHorario(LocalDateTime fechaYHora) {
-        // Método que nos dice si el empleado trabaja en el día y hora pasada por parámetro.
         for (HorarioEmpleado horario:
              horarioEmpleado) {
-            // Si al menos uno de los horarios de trabajo está dentreo del día y la hora seleccionados,
-            // el método devuelve verdadero.
             if (horario.estaDentroDeDiaYHorario(fechaYHora))
                 return true;
         }
         return false;
     }
 
+    /**
+     * Método que dice si una asignación de guía pasada por parámetro corresponde al guía.
+     * @param asignacionGuia la asignación de la que se desea saber si corresponde al guía.
+     * @return verdadero si la asignación corresponde al guía, y falso en cualquier otro caso.
+     */
     public boolean esTuAsignacion(AsignacionGuia asignacionGuia) {
         return asignacionGuia.esTuGuia(this);
     }
 
+    /**
+     * Método que nos dice si el guía tiene asignaciones en el día y hora pasados por parámetro.
+     * @param fechaYHora la fecha y hora en que se desea saber si el guía tiene asignaciones.
+     * @param asignaciones la lista de todas las asignaciones existentes.
+     * @return verdadero si el guía tiene asignaciones para esa fecha y hora, y falso en cualquier otro caso.
+     */
     public boolean tieneAsignacionParaDiaYHora(LocalDateTime fechaYHora, List<AsignacionGuia> asignaciones){
-        // Método que nos dice si el guía tiene asignaciones en el día y hora pasados por parámetro
         for (AsignacionGuia asignacionGuia:
                 asignaciones) {
             if (this.esTuAsignacion(asignacionGuia) && asignacionGuia.esEnDiaYHora(fechaYHora))
@@ -163,5 +163,4 @@ public class Empleado {
         }
         return false;
     }
-
 }//end Empleado

@@ -2,6 +2,9 @@ package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
 
+/**
+ * Clase que representa las entidades persistentes Cargos.
+ */
 @Entity
 @Table(name = "CARGOS", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class Cargo {
@@ -18,42 +21,18 @@ public class Cargo {
     @Column(name = "descripcion")
     private String descripcion;
 
-
-    public byte getIdCargo() {
-        return idCargo;
-    }
-
-    public void setIdCargo(byte idCargo) {
-        this.idCargo = idCargo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    @Override
-    public String toString() {
-        return "Cargo{" +
-                "nombre='" + nombre + '\'' +
-                '}';
-    }
-
+    /**
+     * Método que dice si el cargo corresponde a un "Guía".
+     * @return verdadero si el nombre del cargo es "Guía", y falso en cualquier otro caso.
+     */
     public boolean esGuia() {
         return nombre.equals("Guía");
     }
 
+    /**
+     * Método que dice si el cargo corresponde a un "Responsable de Visitas".
+     * @return verdadero si el nombre del cargo es "Respnsable de Visitas", y falso en cualquier otro caso.
+     */
     public boolean esResponsableDeVisitas() {
         return this.nombre.equals("Responsable de Visitas");
     }

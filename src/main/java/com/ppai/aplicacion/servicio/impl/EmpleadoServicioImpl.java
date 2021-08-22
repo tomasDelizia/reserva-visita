@@ -23,4 +23,10 @@ public class EmpleadoServicioImpl implements EmpleadoServicio {
     public List<Empleado> listarEmpleados() {
         return empleadoRepo.findAll();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Empleado encontrarEmpleadoPorNombreYApellido(String nombreEmpleado, String apellidoEmpleado) {
+        return empleadoRepo.findByNombreAndApellido(nombreEmpleado, apellidoEmpleado);
+    }
 }

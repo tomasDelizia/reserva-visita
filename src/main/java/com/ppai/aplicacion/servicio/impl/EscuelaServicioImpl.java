@@ -22,4 +22,10 @@ public class EscuelaServicioImpl implements EscuelaServicio {
     public List<Escuela> listarEscuelas() {
         return escuelaRepo.findAll();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Escuela encontrarPorNombre(String nombreEscuela) {
+        return escuelaRepo.findByNombre(nombreEscuela);
+    }
 }

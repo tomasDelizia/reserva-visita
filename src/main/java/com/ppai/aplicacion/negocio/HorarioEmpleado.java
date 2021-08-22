@@ -1,11 +1,12 @@
 package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Objects;
 
+/**
+ * Clase que representa las entidades persistentes Horarios de Empleado.
+ */
 @Entity
 @Table(name = "HORARIOS", schema = "dbo", catalog = "MUSEO_PICTORICO")
 public class HorarioEmpleado {
@@ -26,18 +27,13 @@ public class HorarioEmpleado {
     @Enumerated(EnumType.ORDINAL)
     private DiaSemana diaSemana;
 
-
-    @Override
-    public String toString() {
-        return "HorarioEmpleado{" +
-                "horaInicio=" + horaInicio +
-                ", horaFin=" + horaFin +
-                ", diaSemana=" + diaSemana +
-                '}';
-    }
-
+    /**
+     * Método que dice si la fecha y hora pasada por parámetro está dentro del horario de trabajo.
+     * @param fechaYHora la fecha y hora que se desea saber si coincide con el horario de trabajo.
+     * @return verdadero si la fecha y hora pasada por parámetro está dentro del horario de trabajo, y falso en
+     * cualquier otro caso.
+     */
     public boolean estaDentroDeDiaYHorario(LocalDateTime fechaYHora) {
-        // Método que dice si el horario de trabajo está dentro del día y hora pasada por parámetro.
         return (fechaYHora.getDayOfWeek().getValue() == diaSemana.getValue()
                 && (fechaYHora.toLocalTime().isAfter(horaInicio) ||
                 fechaYHora.toLocalTime().equals(horaInicio))

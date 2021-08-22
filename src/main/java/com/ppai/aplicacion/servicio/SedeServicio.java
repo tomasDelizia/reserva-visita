@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface SedeServicio {
     List<Sede> listarSedes();
+
+    Sede encontrarPorNombre(String nombreSede);
 }

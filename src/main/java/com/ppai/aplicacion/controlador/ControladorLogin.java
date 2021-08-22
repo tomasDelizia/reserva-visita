@@ -1,6 +1,7 @@
 package com.ppai.aplicacion.controlador;
 
 import com.ppai.aplicacion.interfaz.PantallaLogin;
+import com.ppai.aplicacion.interfaz.PantallaPrincipal;
 import com.ppai.aplicacion.negocio.Sesion;
 import com.ppai.aplicacion.negocio.Usuario;
 import com.ppai.aplicacion.servicio.UsuarioServicio;
@@ -12,6 +13,7 @@ import java.util.List;
 @Component
 public class ControladorLogin {
     private PantallaLogin pantallaLogin;
+    private PantallaPrincipal pantallaPrincipal;
     private ControladorReservaVisita controladorNuevaReservaVisita;
     private final UsuarioServicio usuarioServicio;
     private Sesion sesionActual;
@@ -28,13 +30,23 @@ public class ControladorLogin {
     }
 
     @Autowired
+    public void setPantallaPrincipal(PantallaPrincipal pantallaPrincipal) {
+        this.pantallaPrincipal = pantallaPrincipal;
+    }
+
+    @Autowired
     public void setControladorNuevaReservaVisita(ControladorReservaVisita controladorNuevaReservaVisita) {
         this.controladorNuevaReservaVisita = controladorNuevaReservaVisita;
     }
 
+    /**
+     * Método que verifica que el usuario y contraseña pasados por parámetro sean válidos
+     * y que además el usuario ingresado sea un Responsable de Visitas.
+     * @param nombreUsuario nombre de usuario ingresado
+     * @param contrasena contraseña ingresada
+     */
     public void login(String nombreUsuario, String contrasena) {
-        // Método que verifica que el usuario y contraseña pasados por parámetro sean válidos
-        // y que además el usuario ingresado sea un Responsable de Visitas.
+        //
         // Primero, se obtienen todos los usuarios:
         List<Usuario> usuarios = usuarioServicio.listarUsuarios();
         for (Usuario usuario:
@@ -52,7 +64,7 @@ public class ControladorLogin {
         // Si se encontró el usuario correspondiente, se informa un mensaje de éxito en la pantalla.
         if (sesionActual != null) {
             controladorNuevaReservaVisita.setSesionActual(sesionActual);
-            pantallaLogin.habilitarPantalla();
+            pantallaPrincipal.habilitarPantalla();
         }
 
         // Si no, se informa un mensaje de ingreso fallido.
