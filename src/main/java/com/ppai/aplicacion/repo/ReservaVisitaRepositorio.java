@@ -5,4 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ReservaVisitaRepo extends JpaRepository<ReservaVisita, Integer> {}
+public interface ReservaVisitaRepositorio extends JpaRepository<ReservaVisita, Integer> {}

@@ -18,23 +18,23 @@ public class AsignacionGuia {
 
     @Basic
     @Column(name = "fecha_hora_inicio")
-    private LocalDateTime fechaHoraInicio;
+    private LocalDateTime fechaYHoraInicio;
 
     @Basic
     @Column(name = "fecha_hora_fin")
-    private LocalDateTime fechaHoraFin;
+    private LocalDateTime fechaYHoraFin;
 
     @OneToOne
     @JoinColumn(name = "id_guia", referencedColumnName = "id_empleado")
-    private Empleado empleado;
+    private Empleado guiaAsignado;
 
 
     public AsignacionGuia() {}
 
-    public AsignacionGuia(Empleado empleado, LocalDateTime fechaHoraInicio, LocalDateTime fechaHoraFin) {
-        this.empleado = empleado;
-        this.fechaHoraInicio = fechaHoraInicio;
-        this.fechaHoraFin = fechaHoraFin;
+    public AsignacionGuia(Empleado guiaAsignado, LocalDateTime fechaYHoraInicio, LocalDateTime fechaYHoraFin) {
+        this.guiaAsignado = guiaAsignado;
+        this.fechaYHoraInicio = fechaYHoraInicio;
+        this.fechaYHoraFin = fechaYHoraFin;
     }
 
     /**
@@ -45,9 +45,9 @@ public class AsignacionGuia {
     public boolean esEnDiaYHora(LocalDateTime fechaYHora){
         LocalDate fecha = fechaYHora.toLocalDate();
         LocalTime hora = fechaYHora.toLocalTime();
-        return (fecha.equals(fechaHoraInicio.toLocalDate())
-                && (hora.isAfter(fechaHoraInicio.toLocalTime()) || hora.equals(fechaHoraInicio.toLocalTime()))
-                && hora.isBefore(fechaHoraFin.toLocalTime()));
+        return (fecha.equals(fechaYHoraInicio.toLocalDate())
+                && (hora.isAfter(fechaYHoraInicio.toLocalTime()) || hora.equals(fechaYHoraInicio.toLocalTime()))
+                && hora.isBefore(fechaYHoraFin.toLocalTime()));
     }
 
     /**
@@ -56,6 +56,6 @@ public class AsignacionGuia {
      * @return verdadero si la asignación corresponde al guía, y falso en cualquier otro caso.
      */
     public boolean esTuGuia(Empleado empleado) {
-        return empleado.getNombre().equals(this.empleado.getNombre());
+        return empleado.getNombre().equals(this.guiaAsignado.getNombre());
     }
 }//end AsignacionGuia

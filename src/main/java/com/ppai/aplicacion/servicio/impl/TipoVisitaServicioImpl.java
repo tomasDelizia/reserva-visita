@@ -1,7 +1,7 @@
 package com.ppai.aplicacion.servicio.impl;
 
 import com.ppai.aplicacion.negocio.TipoVisita;
-import com.ppai.aplicacion.repo.TipoVisitaRepo;
+import com.ppai.aplicacion.repo.TipoVisitaRepositorio;
 import com.ppai.aplicacion.servicio.TipoVisitaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,22 +11,22 @@ import java.util.List;
 
 @Service
 public class TipoVisitaServicioImpl implements TipoVisitaServicio {
-    private final TipoVisitaRepo tipoVisitaRepo;
+    private final TipoVisitaRepositorio tipoVisitaRepositorio;
 
     @Autowired
-    public TipoVisitaServicioImpl(TipoVisitaRepo tipoVisitaRepo) {
-        this.tipoVisitaRepo = tipoVisitaRepo;
+    public TipoVisitaServicioImpl(TipoVisitaRepositorio tipoVisitaRepositorio) {
+        this.tipoVisitaRepositorio = tipoVisitaRepositorio;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<TipoVisita> listarTiposVisita() {
-        return tipoVisitaRepo.findAll();
+        return tipoVisitaRepositorio.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
     public TipoVisita encontrarPorNombre(String nombreTipoVisita) {
-        return tipoVisitaRepo.findByNombre(nombreTipoVisita);
+        return tipoVisitaRepositorio.findByNombre(nombreTipoVisita);
     }
 }

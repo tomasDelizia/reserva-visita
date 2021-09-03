@@ -129,12 +129,12 @@ public class Exposicion {
      * es posterior a la fecha actual, y falso en cualquier otro caso.
      */
     public boolean esVigente() {
-        // Primero, se obtiene la fecha actual:
+        // Primero, se obtiene la fecha actual.
         LocalDate fechaActual = LocalDate.now();
-        // Si no fue replanificada, pregunto si la fechaActual es menor a la fechaFin:
+        // Si no fue replanificada, pregunto si la fechaActual es menor a la fechaFin.
         if (fechaFinReplanificada == null)
             return fechaActual.compareTo(fechaFin) <= 0;
-        // Si fue replanificada, pregunto si la fechaActual es menor a la fechaFin replanificada:
+        // Si fue replanificada, pregunto si la fechaActual es menor a la fechaFin replanificada.
         else return (fechaActual.compareTo(fechaInicioReplanificada) >= 0 &&
                 fechaActual.compareTo(fechaFinReplanificada) <= 0);
     }
@@ -144,25 +144,25 @@ public class Exposicion {
      * @return la duración en horas, minutos y segundos en un objeto de tipo LocalTime de la exposición.
      */
     public LocalTime calcularDuracionExposicion() {
-        // Se inicializan contadores para horas, minutos y segundos:
+        // Se inicializan contadores para horas, minutos y segundos.
         int horasTotales = 0;
         int minutosTotales = 0;
         int segundosTotales = 0;
-        // Mientras la exposición tenga detalles de exposición, obtenemos su duración extendida:
+        // Mientras la exposición tenga detalles de exposición, obtenemos su duración extendida.
         for (DetalleExposicion detalleExpo:
              detalleExposicion) {
             LocalTime duracionObra = detalleExpo.getObra().getDuracionExtendida();
-            // Añadimos la duración (horas, minutos y segundos) de cada detalle a los contadores:
+            // Añadimos la duración (horas, minutos y segundos) de cada detalle a los contadores.
             horasTotales += duracionObra.getHour();
             minutosTotales += duracionObra.getMinute();
             segundosTotales += duracionObra.getSecond();
         }
-        // Creamos un objeto duración para obtener la duración total sumando los 3 contadores:
+        // Creamos un objeto duración para obtener la duración total sumando los 3 contadores.
         Duration duracionTotal = Duration.
                 ofHours(horasTotales).
                 plusMinutes(minutosTotales).
                 plusSeconds(segundosTotales);
-        // Retornamos el objeto duración convertido apropiadamente al tipo LocalTime:
+        // Retornamos el objeto duración convertido apropiadamente al tipo LocalTime.
         return LocalTime.of(
                 duracionTotal.toHoursPart(), duracionTotal.toMinutesPart(), duracionTotal.toSecondsPart());
     }

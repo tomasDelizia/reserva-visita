@@ -6,9 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component
+@Controller
 public class PantallaLogin extends PantallaBase {
     private ControladorLogin controladorLogin;
 
@@ -27,15 +27,17 @@ public class PantallaLogin extends PantallaBase {
         this.controladorLogin = controladorLogin;
     }
 
+    /**
+     * Método para tomar el el usuario y contraseña ingresados para luego ser verificados.
+     */
     public void tomarLogin() {
-        // Método para tomar el el usuario y contraseña ingresados para luego ser verificados.
-        String usuario = txtUsuario.getText();
-        String contrasenia = txtConstrasenia.getText();
-        controladorLogin.login(usuario, contrasenia);
+        controladorLogin.login(txtUsuario.getText(), txtConstrasenia.getText());
     }
 
+    /**
+     * Método que informa de un intento de ingreso al sistema fallido.
+     */
     public void informarLoginFallido() {
-        // Método que informa de un intento de ingreso al sistema fallido.
         lblErrorLogin.setVisible(true);
     }
 }//end PantallaLogin

@@ -1,7 +1,7 @@
 package com.ppai.aplicacion.servicio.impl;
 
 import com.ppai.aplicacion.negocio.Empleado;
-import com.ppai.aplicacion.repo.EmpleadoRepo;
+import com.ppai.aplicacion.repo.EmpleadoRepositorio;
 import com.ppai.aplicacion.servicio.EmpleadoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,22 +11,22 @@ import java.util.List;
 
 @Service
 public class EmpleadoServicioImpl implements EmpleadoServicio {
-    private final EmpleadoRepo empleadoRepo;
+    private final EmpleadoRepositorio empleadoRepositorio;
 
     @Autowired
-    public EmpleadoServicioImpl(EmpleadoRepo empleadoRepo) {
-        this.empleadoRepo = empleadoRepo;
+    public EmpleadoServicioImpl(EmpleadoRepositorio empleadoRepositorio) {
+        this.empleadoRepositorio = empleadoRepositorio;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Empleado> listarEmpleados() {
-        return empleadoRepo.findAll();
+        return empleadoRepositorio.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Empleado encontrarEmpleadoPorNombreYApellido(String nombreEmpleado, String apellidoEmpleado) {
-        return empleadoRepo.findByNombreAndApellido(nombreEmpleado, apellidoEmpleado);
+        return empleadoRepositorio.findByNombreAndApellido(nombreEmpleado, apellidoEmpleado);
     }
 }

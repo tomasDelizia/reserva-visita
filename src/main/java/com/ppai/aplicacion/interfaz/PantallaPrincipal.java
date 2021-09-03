@@ -1,9 +1,9 @@
 package com.ppai.aplicacion.interfaz;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component
+@Controller
 public class PantallaPrincipal extends PantallaBase {
     private PantallaReservaVisita pantallaReservaVisita;
 

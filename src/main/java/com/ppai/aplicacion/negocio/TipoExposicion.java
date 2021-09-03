@@ -22,14 +22,6 @@ public class TipoExposicion {
 
 
     /**
-     * Método que devuelve el nombre del tipo de exposición.
-     * @return el nombre del tipo de exposición como cadena de texto.
-     */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
      * Método para saber si el tipo de exposición es "Temporal".
      * @return devuelve verdadero si el tipo de exposición de la misma es "Temporal", y falso en cualquier otro caso.
      */

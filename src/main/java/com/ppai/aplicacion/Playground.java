@@ -20,6 +20,5 @@ public class Playground implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Sede unaSede = sedeServicio.encontrarPorNombre("Louvre");
-        System.out.println(unaSede.buscarExposicionesTemporalesYVigentes());
     }
 }

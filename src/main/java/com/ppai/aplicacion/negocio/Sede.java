@@ -1,7 +1,5 @@
 package com.ppai.aplicacion.negocio;
 
-import com.ppai.aplicacion.interfaz.ExposicionVisible;
-import com.ppai.aplicacion.interfaz.GuiaVisible;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
@@ -69,16 +67,16 @@ public class Sede {
      * @return una lista de tipo Exposicion con las exposiciones temporales y vigentes.
      */
     public List<Exposicion> listarExposicionesTemporalesYVigentes(){
-        // Se inicializa una lista para almacenar dichas exposiciones:
+        // Se inicializa una lista para almacenar dichas exposiciones.
         List<Exposicion> exposicionesTempYVig = new ArrayList<>();
-        // Recorro todas las exposiciones de una sede:
+        // Recorro todas las exposiciones de una sede.
         for (Exposicion expo:
                 exposicion) {
-            // A cada exposición le pregunto si es temporal y vigente. Si lo es, la agrego a la lista:
+            // A cada exposición le pregunto si es temporal y vigente. Si lo es, la agrego a la lista.
             if (expo.esVigenteYTemporal())
                 exposicionesTempYVig.add(expo);
         }
-        // Retorno la lista con las exposiciones resultantes de la iteración
+        // Retorno la lista con las exposiciones resultantes de la iteración.
         return exposicionesTempYVig;
     }
 
@@ -86,20 +84,23 @@ public class Sede {
      * Método para obtener las exposiciones temporales y vigentes de la sede con sus datos generales.
      * @return una lista de exposiciones temporales y vigentes con sus datos generales.
      */
-    public List<ExposicionVisible> buscarExposicionesTemporalesYVigentes(){
-        // Se genera la lista de exposiciones temporales y vigentes:
+    public String[][] buscarExposicionesTemporalesYVigentes(){
+        // Se genera la lista de exposiciones temporales y vigentes.
         List<Exposicion> listaExposicionesTempYVig = listarExposicionesTemporalesYVigentes();
-        // Se inicializa una lista para almacenar dichas exposiciones con sus datos generales:
-        List<ExposicionVisible> exposicionesTempYVig = new ArrayList<>();
-        // Para cada elemento de la lista, creo un objeto exposición con sus datos generales y lo agrego a la lista:
-        for (Exposicion expo:
-                listaExposicionesTempYVig) {
-            ExposicionVisible expoTemporalYVigente = new ExposicionVisible(
-                        expo.getNombre(), expo.getPublicoDestino(), expo.getHoraApertura(), expo.getHoraCierre());
-            exposicionesTempYVig.add(expoTemporalYVigente);
-            }
-        // Retorno la lista con las exposiciones y sus datos generales:
-        return exposicionesTempYVig;
+        // Se inicializa una lista para almacenar dichas exposiciones con sus datos generales.
+        String[][] datosExposicionesTempYVig = new String[listaExposicionesTempYVig.size()][4];
+        // Para cada elemento de la lista, creo un objeto exposición con sus datos generales y lo agrego a la lista.
+        for (int i = 0; i < listaExposicionesTempYVig.size(); i++) {
+            String[] exposicionTempYVig = {
+                    listaExposicionesTempYVig.get(i).getNombre(),
+                    listaExposicionesTempYVig.get(i).getPublicoDestino(),
+                    listaExposicionesTempYVig.get(i).getHoraApertura(),
+                    listaExposicionesTempYVig.get(i).getHoraCierre()
+            };
+            datosExposicionesTempYVig[i] = exposicionTempYVig;
+        }
+        // Retorno la lista con las exposiciones y sus datos generales.
+        return datosExposicionesTempYVig;
     }
 
     /**
@@ -108,15 +109,15 @@ public class Sede {
      * @return la exposición con el nombre buscado si se encuentra o nulo si no se encuentra.
      */
     public Exposicion encontrarExposicionTemporalYVigentePorNombre(String nombreExposicion) {
-        // Creo la lista con las exposicione temporales y vigentes:
+        // Creo la lista con las exposicione temporales y vigentes.
         List<Exposicion> listaExposicioneTemporalesYVigentes = listarExposicionesTemporalesYVigentes();
         for (Exposicion exposicion:
              listaExposicioneTemporalesYVigentes) {
-            // Si el nombre coincide, devuelvo esa exposición:
+            // Si el nombre coincide, devuelvo esa exposición.
             if (exposicion.esTuNombre(nombreExposicion))
                 return exposicion;
         }
-        // Si no se encuentra, devuelve vacío:
+        // Si no se encuentra, devuelve vacío.
         return null;
     }
 
@@ -125,26 +126,26 @@ public class Sede {
      * @param listaExposiciones las exposiciones que serán parte de la visita guiada.
      * @return la duración estimada de la visita en un objeto LocalTime.
      */
-    public LocalTime calcularDuracionEstimadaVisitaPorExposicion(List<Exposicion> listaExposiciones){
-        // Se inicializan los contadores de horas, minutos y segundos totales:
+    public LocalTime calcularDuracionEstimadaVisita(List<Exposicion> listaExposiciones){
+        // Se inicializan los contadores de horas, minutos y segundos totales.
         int horasTotales = 0;
         int minutosTotales = 0;
         int segundosTotales = 0;
-        // Mientras haya exposiciones, obtenemos sus duraciones:
+        // Mientras haya exposiciones, obtenemos sus duraciones.
         for (Exposicion exposicion:
              listaExposiciones) {
             LocalTime duracionExposicion = exposicion.calcularDuracionExposicion();
-            // Añadimos la duración (horas, minutos y segundos) de cada exposición a los contadores:
+            // Añadimos la duración (horas, minutos y segundos) de cada exposición a los contadores.
             horasTotales += duracionExposicion.getHour();
             minutosTotales += duracionExposicion.getMinute();
             segundosTotales += duracionExposicion.getSecond();
         }
-        // Creamos un objeto duración para obtener la duración total sumando los 3 contadores:
+        // Creamos un objeto duración para obtener la duración total sumando los 3 contadores.
         Duration duracionTotal = Duration.
                 ofHours(horasTotales).
                 plusMinutes(minutosTotales).
                 plusSeconds(segundosTotales);
-        // Retornamos el objeto duración convertido apropiadamente al tipo LocalTime:
+        // Retornamos el objeto duración convertido apropiadamente al tipo LocalTime.
         return LocalTime.of(
                 duracionTotal.toHoursPart(), duracionTotal.toMinutesPart(), duracionTotal.toSecondsPart());
     }
@@ -160,15 +161,15 @@ public class Sede {
                                                    LocalTime duracionNuevaReserva,
                                                    List<ReservaVisita> listaReservas) {
 
-        // Se inicializa un contador de visitantes:
+        // Se inicializa un contador de visitantes.
         int cantVisitantes = 0;
-        // Se obtiene la fecha y hora de fin de la reserva a partir de su fecha y hora inicial y su duración:
+        // Se obtiene la fecha y hora de fin de la reserva a partir de su fecha y hora inicial y su duración.
         LocalDateTime fechaHoraFinReserva = fechaYHora
                 .plusHours(duracionNuevaReserva.getHour()).plusMinutes(duracionNuevaReserva.getMinute());
-        // Se iteran todas las reservas de la colección:
+        // Se iteran todas las reservas de la colección.
         for (ReservaVisita reservaVisita:
                 listaReservas) {
-            // Se pregunta si la reserva corresponde a esta sede y si está dentro del rango horario de la reserva nueva
+            // Se pregunta si la reserva corresponde a esta sede y si está dentro del rango horario de la reserva nueva.
             if (reservaVisita.esTuSede(this) && reservaVisita.esEnRangoHorario(fechaYHora, fechaHoraFinReserva))
                 if (reservaVisita.getCantidadAlumnosConfirmada() != null)
                     cantVisitantes += reservaVisita.getCantidadAlumnosConfirmada();
@@ -216,12 +217,12 @@ public class Sede {
 	public List<Empleado> listarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime fechaYHora,
                                                                     List<Empleado> empleados,
                                                                     List<AsignacionGuia> asignacionesGuia) {
-	    // Iniciamos la lista donde se almacenarán todos los guías:
+	    // Iniciamos la lista donde se almacenarán todos los guías.
 		List<Empleado> guiasDisponibles = new ArrayList<>();
         for (Empleado empleado:
 			 empleados) {
-            // Si el empleado pertenece a la sede, es guía, trabaja y no tiene asignaciones en el día y hora de la
-            // reserva, se añade a la lista:
+            /* Si el empleado pertenece a la sede, es guía, trabaja y no tiene asignaciones en el día y hora de
+               la reserva, se añade a la lista. */
 			if (this.esTuEmpleado(empleado)
                     && empleado.esGuia()
                     && empleado.trabajaDentroDeDiaYHorario(fechaYHora)
@@ -238,18 +239,20 @@ public class Sede {
      * @param asignacionesGuia la lista de todas las asignaciones de guía.
      * @return una lista de guías disponibles para un horario determinado con sus datos generales.
      */
-	public List<GuiaVisible> buscarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime fechaYHora,
-                                                                       List<Empleado> empleados,
-                                                                       List<AsignacionGuia> asignacionesGuia) {
-	    List<Empleado> listaGuiasDisponibles =
+    public String[][] buscarGuiasDisponiblesPorHorarioDeReserva(LocalDateTime fechaYHora,
+                                                                List<Empleado> empleados,
+                                                                List<AsignacionGuia> asignacionesGuia) {
+        List<Empleado> listaGuiasDisponibles =
                 listarGuiasDisponiblesPorHorarioDeReserva(fechaYHora,empleados, asignacionesGuia);
-	    List<GuiaVisible> guiasDisponibles = new ArrayList<>();
-        for (Empleado guiaDisponible:
-             listaGuiasDisponibles) {
-            GuiaVisible guia = new GuiaVisible(guiaDisponible.getNombre(), guiaDisponible.getApellido());
-            guiasDisponibles.add(guia);
+        String[][] datosGuiasDisponibles = new String[listaGuiasDisponibles.size()][2];
+        for (int i = 0; i < listaGuiasDisponibles.size(); i++) {
+            String[] guiaDisponible = {
+                    listaGuiasDisponibles.get(i).getNombre(),
+                    listaGuiasDisponibles.get(i).getApellido(),
+            };
+            datosGuiasDisponibles[i] = guiaDisponible;
         }
-        return guiasDisponibles;
+        return datosGuiasDisponibles;
     }
 
     /**

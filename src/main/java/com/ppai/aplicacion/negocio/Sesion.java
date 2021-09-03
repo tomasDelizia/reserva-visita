@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 public class Sesion {
     @Id
     @Column(name = "fecha_hora_inicio")
-    private LocalDateTime fechaHoraInicio;
+    private LocalDateTime fechaYHoraInicio;
 
     @Basic
     @Column(name = "fecha_hora_fin")
-    private LocalDateTime fechaHoraFin;
+    private LocalDateTime fechaYHoraFin;
 
     @OneToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
@@ -24,11 +24,11 @@ public class Sesion {
 
     /**
      * Método constructor de una Sesión.
-     * @param fechaHoraInicio la fecha y hora de inicio de la sesión.
+     * @param fechaYHoraInicio la fecha y hora de inicio de la sesión.
      * @param usuario el usuario al que pertenece la sesión.
      */
-    public Sesion(LocalDateTime fechaHoraInicio, Usuario usuario) {
-        this.fechaHoraInicio = fechaHoraInicio;
+    public Sesion(LocalDateTime fechaYHoraInicio, Usuario usuario) {
+        this.fechaYHoraInicio = fechaYHoraInicio;
         this.usuario = usuario;
     }
 
@@ -47,14 +47,14 @@ public class Sesion {
      * @return verdadero si la sesión aún no tiene fecha y hora de finalización, y falso en cualquier otro caso.
      */
     public boolean esActual() {
-        return fechaHoraFin == null;
+        return fechaYHoraFin == null;
     }
 
     /**
      * Método para tomar la fecha y hora de fin pasados por parámetro y asignarla a la sesión.
      * @param fechaHoraFin la fecha y hora de finalización de la sesión.
      */
-    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
-        this.fechaHoraFin = fechaHoraFin;
+    public void setFechaYHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaYHoraFin = fechaHoraFin;
     }
 }//end Sesion

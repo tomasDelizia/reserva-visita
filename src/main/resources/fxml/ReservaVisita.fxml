@@ -30,17 +30,6 @@
     </ComboBox>
     <Label layoutX="27.0" layoutY="219.0" text="Seleccione un tipo de visita:">
     </Label>
-
-    <TableView fx:id="tablaExposiciones" disable="true" layoutX="31.0" layoutY="271.0" prefHeight="138.0" prefWidth="578.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
-        <columns>
-            <TableColumn id="Exposicion" fx:id="colExposicion" prefWidth="100.0" text="Exposición" />
-            <TableColumn fx:id="colPublicoDestino" prefWidth="200.0" text="Público Destino" />
-            <TableColumn fx:id="colHoraApertura" prefWidth="100.0" text="Hora apertura" />
-            <TableColumn fx:id="colHoraCierre" minWidth="100.0" prefWidth="78.0" text="Hora cierre" />
-            <TableColumn fx:id="colSeleccionExposicion" prefWidth="75.0" text="Selección" />
-        </columns>
-
-    </TableView>
     <DatePicker fx:id="dateFechaVisita" disable="true" layoutX="217.0" layoutY="422.0" prefHeight="25.0" prefWidth="147.0" style="-fx-border-width: 1; -fx-border-color: #000000;">
     </DatePicker>
     <TextField fx:id="txtDuracionEstimada" disable="true" editable="false" layoutX="216.0" layoutY="460.0" style="-fx-border-color: #000000;">
@@ -50,14 +39,6 @@
     </TextField>
     <Label layoutX="24.0" layoutY="425.0" text="Seleccione la fecha para la visita:">
     </Label>
-    <TableView fx:id="tablaGuias" disable="true" editable="true" layoutX="38.0" layoutY="533.0" prefHeight="109.0" prefWidth="307.0" style="-fx-border-color: #000000; -fx-border-width: 2;">
-        <columns>
-            <TableColumn fx:id="colNombreGuia" minWidth="2.0" prefWidth="115.0" text="Nombre" />
-            <TableColumn fx:id="colApellidoGuia" prefWidth="124.0" text="Apellido" />
-         <TableColumn fx:id="colSeleccionGuia" prefWidth="58.0" text="Selección" />
-        </columns>
-
-    </TableView>
     <Label layoutX="27.0" layoutY="249.0" text="Seleccione las exposiciones a visitar:">
     </Label>
     <Label layoutX="24.0" layoutY="464.0" text="Duración estimada de la visita:">
@@ -131,4 +112,6 @@
          <Font name="System Bold Italic" size="14.0" />
       </font>
    </Label>
+   <TableView fx:id="tablaDatosExposiciones" disable="true" layoutX="29.0" layoutY="282.0" prefHeight="131.0" prefWidth="584.0" />
+   <TableView fx:id="tablaDatosGuias" disable="true" layoutX="29.0" layoutY="522.0" prefHeight="119.0" prefWidth="260.0" />
 </AnchorPane>

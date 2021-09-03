@@ -1,28 +1,21 @@
 package com.ppai.aplicacion.interfaz;
 
-
 import com.ppai.aplicacion.controlador.ControladorReservaVisita;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-
 /**
  * Clase de interfaz que se encarga de la lógica de presentación para el CU Registrar Reserva de Visita Guiada.
  */
-@Component
+@Controller
 public class PantallaReservaVisita extends PantallaBase {
 	private ControladorReservaVisita controladorReservaVisita;
 
@@ -37,28 +30,13 @@ public class PantallaReservaVisita extends PantallaBase {
 			lblReservaRegistrada, lblErrorGuiasExcedidos;
 
 	@FXML
-	private TableView<ExposicionVisible> tablaExposiciones;
-
-	@FXML
-	private TableColumn<ExposicionVisible, String> colExposicion, colPublicoDestino, colHoraApertura, colHoraCierre;
-
-	@FXML
-	private TableColumn<ExposicionVisible, CheckBox> colSeleccionExposicion;
+	private TableView<String[]> tablaDatosExposiciones, tablaDatosGuias;
 
 	@FXML
 	private Button btnConfirmar, btnCancelar;
 
 	@FXML
 	private DatePicker dateFechaVisita;
-
-	@FXML
-	private TableView<GuiaVisible> tablaGuias;
-
-	@FXML
-	private TableColumn<GuiaVisible, String> colNombreGuia, colApellidoGuia;
-
-	@FXML
-	private TableColumn<GuiaVisible, CheckBox> colSeleccionGuia;
 
 
 	@Autowired
@@ -187,54 +165,43 @@ public class PantallaReservaVisita extends PantallaBase {
 
 	/**
 	 * Método que recibe una lista de exposiciones y las muestra por pantalla.
-	 * @param listaExposiciones las exposiciones con sus datos generales a mostrar para la selección del usuario.
+	 * @param datosExposiciones las exposiciones con sus datos generales a mostrar para la selección del usuario.
 	 */
-	public void presentarExposicionesTemporalesYVigentesNuevo(List<ExposicionVisible> listaExposiciones) {
-		ObservableList<ExposicionVisible> listaObservableExposiciones =
-				FXCollections.observableArrayList(listaExposiciones);
-		tablaExposiciones.setItems(listaObservableExposiciones);
-		colExposicion.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-		colPublicoDestino.setCellValueFactory(new PropertyValueFactory<>("publicoDestino"));
-		colHoraApertura.setCellValueFactory(new PropertyValueFactory<>("horaApertura"));
-		colHoraCierre.setCellValueFactory(new PropertyValueFactory<>("horaCierre"));
-		colSeleccionExposicion.setCellValueFactory(
-				new Callback<TableColumn.CellDataFeatures<ExposicionVisible, CheckBox>, ObservableValue<CheckBox>>() {
-					@Override
-					public ObservableValue<CheckBox> call(
-							TableColumn.CellDataFeatures<ExposicionVisible, CheckBox> exposicionBooleanCellDataFeatures) {
-						ExposicionVisible expo = exposicionBooleanCellDataFeatures.getValue();
-						CheckBox checkBox = new CheckBox();
-						checkBox.selectedProperty().setValue(false);
-						checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-							// Reemplaza al método tomarSeleccionExposicion() y tomarDeseleccionExposicion():
-							@Override
-							public void changed(ObservableValue<? extends Boolean> observableValue,
-												Boolean valorAnterior, Boolean valorNuevo) {
-								// Toma la selección de una exposición:
-								if (valorNuevo)
-									controladorReservaVisita.exposicionSeleccionada(expo.getNombre());
-								// Toma la deselección de una exposición:
-								if (!valorNuevo)
-									controladorReservaVisita.exposicionDeseleccionada(expo.getNombre());
-							}
-						});
-						return new SimpleObjectProperty<CheckBox>(checkBox);
-					}
-				});
+	public void presentarExposicionesTemporalesYVigentes(String[][] datosExposiciones) {
+		// Inicializamos columnas
+		String[] titulos = {"Exposición", "Públicos Destino", "Hora apertura", "Hora cierre"};
+		inicializarTabla(tablaDatosExposiciones, datosExposiciones, titulos);
+		tomarSeleccionExposicion();
 	}
 
 	/**
 	 * Método que habilita la selección de las exposiciones.
 	 */
 	public void solicitarSeleccionExposiciones(){
-		tablaExposiciones.setDisable(false);
+		tablaDatosExposiciones.setDisable(false);
 	}
 
-	public void tomarSeleccionExposicion(){
-		// Método que toma la exposición seleccionada, la guarda y luego la remueve de la tabla.
-//		Exposicion exposicionSeleccionada = tablaExposiciones.getSelectionModel().getSelectedItem();
-//		controladorReservaVisita.exposicionSeleccionada(exposicionSeleccionada);
-//		tablaExposiciones.getItems().removeAll(exposicionSeleccionada);
+	/**
+	 * Método que toma la selección de una exposición por parte del usuario y se la pasa al controlador.
+	 */
+	public void tomarSeleccionExposicion() {
+		TableColumn<String[], CheckBox> seleccion = new TableColumn<>("Selección");
+		seleccion.setCellValueFactory(
+				exposicionBooleanCellDataFeatures -> {
+					String[] datosExpo = exposicionBooleanCellDataFeatures.getValue();
+					CheckBox checkBox = new CheckBox();
+					checkBox.selectedProperty().setValue(false);
+					checkBox.selectedProperty().addListener((observableValue, valorAnterior, valorNuevo) -> {
+						// Toma la selección de una exposición.
+						if (valorNuevo)
+							controladorReservaVisita.exposicionSeleccionada(datosExpo[0]);
+						// Toma la deselección de una exposición.
+						if (!valorNuevo)
+							controladorReservaVisita.exposicionDeseleccionada(datosExpo[0]);
+					});
+					return new SimpleObjectProperty<>(checkBox);
+				});
+		tablaDatosExposiciones.getColumns().add(seleccion);
 	}
 
 	/**
@@ -302,74 +269,16 @@ public class PantallaReservaVisita extends PantallaBase {
 
 	/**
 	 * Método que presenta los guías disponibles por pantalla para su selección.
-	 * @param guiasDisponibles la lista con los nombres y apellidos de los guías disponibles para seleccionar.
+	 * @param datosGuiasDisponibles la lista con los nombres y apellidos de los guías disponibles para seleccionar.
 	 * @param cantidadGuiasNecesarios la cantidad de guías necesarios a seleccionar.
 	 */
-	public void presentarGuiasDisponibles(List<GuiaVisible> guiasDisponibles, Integer cantidadGuiasNecesarios){
+	public void presentarGuiasDisponibles(String[][] datosGuiasDisponibles, Integer cantidadGuiasNecesarios){
 		if (lblErrorLimiteSedeSuperado.isVisible())
 			lblErrorLimiteSedeSuperado.setVisible(false);
-		ObservableList<GuiaVisible> listaObservableGuiasDisponibles =
-				FXCollections.observableArrayList(guiasDisponibles);
-		tablaGuias.setItems(listaObservableGuiasDisponibles);
-		colNombreGuia.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-		colApellidoGuia.setCellValueFactory(new PropertyValueFactory<>("apellido"));
-		lblCantidadGuias.setText(cantidadGuiasNecesarios.toString());
-		colSeleccionGuia.setCellValueFactory(
-				new Callback<TableColumn.CellDataFeatures<GuiaVisible, CheckBox>, ObservableValue<CheckBox>>() {
-					@Override
-					public ObservableValue<CheckBox> call(
-							TableColumn.CellDataFeatures<GuiaVisible, CheckBox> guiaBooleanCellDataFeatures) {
-						GuiaVisible guia = guiaBooleanCellDataFeatures.getValue();
-						CheckBox checkBox = new CheckBox();
-						checkBox.selectedProperty().setValue(false);
-						checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-							// Reemplaza al método tomarSeleccionGuia() y tomarDeseleccionGuia():
-							@Override
-							public void changed(ObservableValue<? extends Boolean> observableValue,
-												Boolean valorAnterior, Boolean valorNuevo) {
-								// Toma la selección de un guía:
-								if (valorNuevo) {
-									// Actualizamos la cantidad hasta que no se llegue a la cantidad requerida.
-									if (Integer.parseInt(lblCantidadGuias.getText()) > 0) {
-										if (!lblErrorGuiasExcedidos.isVisible())
-											lblErrorGuiasExcedidos.setVisible(false);
-										if (!btnConfirmar.isDisabled())
-											btnConfirmar.setDisable(true);
-										int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
-										lblCantidadGuias.setText(Integer.toString(cantidadGuias));
-										controladorReservaVisita
-												.guiaDisponibleSeleccionado(guia.getNombre(), guia.getApellido());
-									}
-									// Se informa un error cuando se seleccionan más guías de los requeridos:
-									else if (Integer.parseInt(lblCantidadGuias.getText()) == 0) {
-										informarGuiasExcedidos();
-										int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
-										lblCantidadGuias.setText(Integer.toString(cantidadGuias));
-									}
-								}
-								// Toma la deselección de un guía:
-								if (!valorNuevo) {
-									// Actualizamos la cantidad hasta que no se llegue a la cantidad requerida.
-									if (Integer.parseInt(lblCantidadGuias.getText()) >= 0) {
-										int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) + 1;
-										lblCantidadGuias.setText(Integer.toString(cantidadGuias));
-										controladorReservaVisita
-												.guiaDisponibleDeseleccionado(guia.getNombre(), guia.getApellido());
-									}
-									else {
-										int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) + 1;
-										lblCantidadGuias.setText(Integer.toString(cantidadGuias));
-										if (cantidadGuias == 0) {
-											lblErrorGuiasExcedidos.setVisible(false);
-											btnConfirmar.setDisable(false);
-										}
-									}
-								}
-							}
-						});
-						return new SimpleObjectProperty<CheckBox>(checkBox);
-					}
-				});
+		// Inicializamos columnas.
+		String[] titulos = {"Nombre", "Apellido"};
+		inicializarTabla(tablaDatosGuias, datosGuiasDisponibles, titulos);
+		tomarSeleccionGuiaDisponible(cantidadGuiasNecesarios);
 	}
 
 	/**
@@ -386,22 +295,64 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * Método que habilita la selección de guías disponibles.
 	 */
 	public void solicitarSeleccionGuiasDisponibles(){
-		tablaGuias.setDisable(false);
+		tablaDatosGuias.setDisable(false);
 	}
 
-	public void tomarSeleccionGuiaDisponible(){
-		// Método que toma la selección de guías necesarios.
-		// Actualizamos la cantidad de guías seleccionados hasta que no se llegue a la cantidad requerida.
-//		if (Integer.parseInt(lblCantidadGuias.getText()) > 0) {
-//			int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
-//			lblCantidadGuias.setText(Integer.toString(cantidadGuias));
-//		}
-//		// Se deshabilita la selección de guías cuando se llega a la cantidad requerida.
-//		if (Integer.parseInt(lblCantidadGuias.getText()) == 0) {
-//			btnSeleccionarGuia.setDisable(true);
-//		Empleado guiaSeleccionado = tablaGuias.getSelectionModel().getSelectedItem();
-//		tablaGuias.getItems().removeAll(guiaSeleccionado);
-//		controladorReservaVisita.guiaDisponibleSeleccionado(guiaSeleccionado);
+	/**
+	 * Método que toma la selección o deselección de un guía por parte del usuario y se lo pasa al controlador.
+	 * @param cantidadGuiasNecesarios la cantidad actual de guías que se necesitan seleccionar.
+	 */
+	public void tomarSeleccionGuiaDisponible(Integer cantidadGuiasNecesarios){
+		TableColumn<String[], CheckBox> seleccion = new TableColumn<>("Selección");
+		seleccion.setCellValueFactory(
+				guiaBooleanCellDataFeatures -> {
+					String[] datosGuia = guiaBooleanCellDataFeatures.getValue();
+					CheckBox checkBox = new CheckBox();
+					checkBox.selectedProperty().setValue(false);
+					checkBox.selectedProperty().addListener((observableValue, valorAnterior, valorNuevo) -> {
+						// Toma la selección de un guía.
+						if (valorNuevo) {
+							// Actualizamos la cantidad hasta que no se llegue a la cantidad requerida.
+							if (Integer.parseInt(lblCantidadGuias.getText()) > 0) {
+								if (!lblErrorGuiasExcedidos.isVisible())
+									lblErrorGuiasExcedidos.setVisible(false);
+								if (!btnConfirmar.isDisabled())
+									btnConfirmar.setDisable(true);
+								int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
+								lblCantidadGuias.setText(Integer.toString(cantidadGuias));
+								controladorReservaVisita
+										.guiaDisponibleSeleccionado(datosGuia[0], datosGuia[1]);
+							}
+							// Se informa un error cuando se seleccionan más guías de los requeridos.
+							else if (Integer.parseInt(lblCantidadGuias.getText()) == 0) {
+								informarGuiasExcedidos();
+								int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
+								lblCantidadGuias.setText(Integer.toString(cantidadGuias));
+							}
+						}
+						// Toma la deselección de un guía.
+						if (!valorNuevo) {
+							// Actualizamos la cantidad hasta que no se llegue a la cantidad requerida.
+							if (Integer.parseInt(lblCantidadGuias.getText()) >= 0) {
+								int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) + 1;
+								lblCantidadGuias.setText(Integer.toString(cantidadGuias));
+								controladorReservaVisita
+										.guiaDisponibleDeseleccionado(datosGuia[0], datosGuia[1]);
+							}
+							else {
+								int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) + 1;
+								lblCantidadGuias.setText(Integer.toString(cantidadGuias));
+								if (cantidadGuias == 0) {
+									lblErrorGuiasExcedidos.setVisible(false);
+									btnConfirmar.setDisable(false);
+								}
+							}
+						}
+					});
+					return new SimpleObjectProperty<>(checkBox);
+				});
+		tablaDatosGuias.getColumns().add(seleccion);
+		lblCantidadGuias.setText(cantidadGuiasNecesarios.toString());
 	}
 
 	/**

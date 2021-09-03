@@ -1,7 +1,7 @@
 package com.ppai.aplicacion.servicio.impl;
 
 import com.ppai.aplicacion.negocio.Sede;
-import com.ppai.aplicacion.repo.SedeRepo;
+import com.ppai.aplicacion.repo.SedeRepositorio;
 import com.ppai.aplicacion.servicio.SedeServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,22 +11,22 @@ import java.util.List;
 
 @Service
 public class SedeServicioImpl implements SedeServicio {
-    private final SedeRepo sedeRepo;
+    private final SedeRepositorio sedeRepositorio;
 
     @Autowired
-    public SedeServicioImpl(SedeRepo sedeRepo) {
-        this.sedeRepo = sedeRepo;
+    public SedeServicioImpl(SedeRepositorio sedeRepositorio) {
+        this.sedeRepositorio = sedeRepositorio;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Sede> listarSedes() {
-        return sedeRepo.findAll();
+        return sedeRepositorio.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Sede encontrarPorNombre(String nombreSede) {
-        return sedeRepo.findByNombre(nombreSede);
+        return sedeRepositorio.findByNombre(nombreSede);
     }
 }

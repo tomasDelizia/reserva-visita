@@ -6,4 +6,4 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 
 @Repository
-public interface SesionRepo extends JpaRepository<Sesion, LocalDateTime> {}
+public interface SesionRepositorio extends JpaRepository<Sesion, LocalDateTime> {}

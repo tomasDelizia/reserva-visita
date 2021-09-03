@@ -157,7 +157,7 @@ public class ReservaVisita {
      * Método que devuelve el número de la reserva.
      * @return el número de la reserva en formato entero.
      */
-    public int getNumeroReserva() {
+    public int getNroReserva() {
         return numeroReserva;
     }
 
