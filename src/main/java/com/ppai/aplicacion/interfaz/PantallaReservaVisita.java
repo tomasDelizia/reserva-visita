@@ -72,6 +72,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * @param listaEscuelas la lista con los nombres de las escuelas a mostrar.
 	 */
 	public void presentarEscuelas(List<String> listaEscuelas) {
+		cboEscuelas.getItems().clear();
 		cboEscuelas.setItems(FXCollections.observableArrayList(listaEscuelas));
 	}
 
@@ -113,8 +114,8 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * @param listaSedes la lista con los nombres de las sedes a mostrar.
 	 */
 	public void presentarSedes(List<String> listaSedes){
-		if (cboSedes.isDisabled())
-			cboSedes.setItems(FXCollections.observableArrayList(listaSedes));
+		cboSedes.getItems().clear();
+		cboSedes.setItems(FXCollections.observableArrayList(listaSedes));
 	}
 
 	/**
@@ -136,8 +137,8 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * @param listaTiposVisita la lista con los tipos de visita a mostrar.
 	 */
 	public void presentarTiposVisita(List<String> listaTiposVisita) {
-		if (cboTiposVisita.isDisabled())
-			cboTiposVisita.setItems(FXCollections.observableArrayList(listaTiposVisita));
+		cboTiposVisita.getItems().clear();
+		cboTiposVisita.setItems(FXCollections.observableArrayList(listaTiposVisita));
 	}
 
 	/**
@@ -168,10 +169,12 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * @param datosExposiciones las exposiciones con sus datos generales a mostrar para la selección del usuario.
 	 */
 	public void presentarExposicionesTemporalesYVigentes(String[][] datosExposiciones) {
+		tablaDatosExposiciones.getItems().clear();
 		// Inicializamos columnas
 		String[] titulos = {"Exposición", "Públicos Destino", "Hora apertura", "Hora cierre"};
 		inicializarTabla(tablaDatosExposiciones, datosExposiciones, titulos);
 		tomarSeleccionExposicion();
+
 	}
 
 	/**
@@ -275,6 +278,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	public void presentarGuiasDisponibles(String[][] datosGuiasDisponibles, Integer cantidadGuiasNecesarios){
 		if (lblErrorLimiteSedeSuperado.isVisible())
 			lblErrorLimiteSedeSuperado.setVisible(false);
+		tablaDatosGuias.getItems().clear();
 		// Inicializamos columnas.
 		String[] titulos = {"Nombre", "Apellido"};
 		inicializarTabla(tablaDatosGuias, datosGuiasDisponibles, titulos);
