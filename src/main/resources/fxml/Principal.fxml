@@ -5,21 +5,18 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaPrincipal">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaPrincipal">
    <top>
      <MenuBar BorderPane.alignment="CENTER">
-       <Menu mnemonicParsing="false" text="Archivo">
-         <MenuItem mnemonicParsing="false" onAction="#salir" text="Salir"/>
-       </Menu>
        <Menu mnemonicParsing="false" text="Visitas">
-         <MenuItem mnemonicParsing="false" onAction="#opcionNuevaReservaVisita" text="Nueva Visita Guiada"/>
+         <MenuItem mnemonicParsing="false" onAction="#opcionNuevaReservaVisita" text="Nueva Visita Guiada" />
        </Menu>
-       <Menu disable="true" mnemonicParsing="false" text="Obras"/>
-       <Menu disable="true" mnemonicParsing="false" text="Ventas"/>
-       <Menu disable="true" mnemonicParsing="false" text="Exposiciones"/>
+       <Menu disable="true" mnemonicParsing="false" text="Obras" />
+       <Menu disable="true" mnemonicParsing="false" text="Ventas" />
+       <Menu disable="true" mnemonicParsing="false" text="Exposiciones" />
+       <Menu mnemonicParsing="false" text="Sistema">
+         <MenuItem mnemonicParsing="false" onAction="#salir" text="Salir" />
+       </Menu>
      </MenuBar>
    </top>
 </BorderPane>

@@ -38,6 +38,7 @@ public class ControladorReservaVisita {
 	private final AsignacionGuiaServicio asignacionGuiaServicio;
 	private final EstadoReservaServicio estadoReservaServicio;
 	private final SesionServicio sesionServicio;
+	private List<Empleado> guiasDisponibles;
 
 	@Autowired
 	public ControladorReservaVisita(EscuelaServicio escuelaServicio, SedeServicio sedeServicio,
@@ -57,6 +58,7 @@ public class ControladorReservaVisita {
 		this.sesionServicio = sesionServicio;
 		exposicionesSeleccionadas = new ArrayList<>();
 		guiasSeleccionados = new ArrayList<>();
+		guiasDisponibles = new ArrayList<>();
 	}
 
 	@Autowired
@@ -68,7 +70,7 @@ public class ControladorReservaVisita {
 	 * Método que se invoca desde la pantalla una vez iniciada la interfaz. Comienza buscando las escuelas, y luego
 	 * le pide a la pantalla que las presente para su selección.
 	 */
-	public void opcionRegistrarReservaVisita(){
+	public void opcionRegistrarReservaVisita() {
 		buscarEscuelas();
 		pantallaReservaVisita.presentarEscuelas(escuelas);
 		pantallaReservaVisita.solicitarSeleccionEscuela();
@@ -86,7 +88,7 @@ public class ControladorReservaVisita {
 	 *  Luego le pide a la pantalla que solicite el ingreso de la cantidad de visitantes.
 	 * @param escuelaSeleccionada el nombre de la escuela seleccionada a buscar.
 	 */
-	public void escuelaSeleccionada(String escuelaSeleccionada){
+	public void escuelaSeleccionada(String escuelaSeleccionada) {
 		this.escuelaSeleccionada =	escuelaServicio.encontrarPorNombre(escuelaSeleccionada);
 		pantallaReservaVisita.solicitarCantidadVisitantes();
 	}
@@ -95,7 +97,7 @@ public class ControladorReservaVisita {
 	 * Método que guarda en una atributo la cantidad de visitantes pasados por parámetro.
 	 * @param cantidadVisitantes la cantidad de visitantes ingresada por el usuario.
 	 */
-	public void cantidadDeVisitantesIngresados(int cantidadVisitantes){
+	public void cantidadDeVisitantesIngresados(int cantidadVisitantes) {
 		this.cantidadVisitantes = cantidadVisitantes;
 		buscarSedes();
 		pantallaReservaVisita.presentarSedes(sedes);
@@ -105,7 +107,7 @@ public class ControladorReservaVisita {
 	/**
 	 * Método que busca y guarda en una lista el nombre de todas las sedes existentes.
 	 */
-	public void buscarSedes(){
+	public void buscarSedes() {
 		sedes = sedeServicio.buscarSedes();
 	}
 
@@ -114,7 +116,7 @@ public class ControladorReservaVisita {
 	 * de visita y presentándolos para su selección.
 	 * @param sedeSeleccionada la sede seleccionada por el usuario.
 	 */
-	public void sedeSeleccionada(String sedeSeleccionada){
+	public void sedeSeleccionada(String sedeSeleccionada) {
 		this.sedeSeleccionada = sedeServicio.encontrarPorNombre(sedeSeleccionada);
 		if (exposicionesSeleccionadas.size() > 0)
 			exposicionesSeleccionadas.clear();
@@ -160,7 +162,7 @@ public class ControladorReservaVisita {
 	 * Método que busca y guarda en un atributo una lista con los datos generales de todas exposiciones temporales
 	 * y vigentes para la sede seleccionada.
 	 */
-	public void buscarExposicionesTemporalesYVigentes(){
+	public void buscarExposicionesTemporalesYVigentes() {
 		exposicionesTemporalesYVigentes = sedeSeleccionada.buscarExposicionesTemporalesYVigentes();
 	}
 
@@ -169,7 +171,7 @@ public class ControladorReservaVisita {
 	 * con el caso de uso pidiéndole a la pantalla que solicite el ingreso de la fecha y hora de la reserva.
 	 * @param idExposicionSeleccionada el id de la exposición a añadir.
 	 */
-	public void exposicionSeleccionada(int idExposicionSeleccionada){
+	public void exposicionSeleccionada(int idExposicionSeleccionada) {
 		exposicionesSeleccionadas
 				.add(sedeSeleccionada.encontrarExposicionTemporalYVigentePorId(idExposicionSeleccionada));
 		// Con que se seleccione una exposición, se puede continuar con el caso de uso.
@@ -180,11 +182,11 @@ public class ControladorReservaVisita {
 	/**
 	 * Método que toma una exposición y la quita de la lista de exposiciones seleccionadas, y se continúa
 	 * con el caso de uso pidiéndole a la pantalla que solicite el ingreso de la fecha y hora de la reserva.
-	 * @param idExposicionSeleccionada el id de la exposición a quitar.
+	 * @param idExposicionDeseleccionada el id de la exposición a quitar.
 	 */
-	public void exposicionDeseleccionada(int idExposicionSeleccionada){
+	public void exposicionDeseleccionada(int idExposicionDeseleccionada) {
 		exposicionesSeleccionadas
-				.remove(sedeSeleccionada.encontrarExposicionTemporalYVigentePorId(idExposicionSeleccionada));
+				.remove(sedeSeleccionada.encontrarExposicionTemporalYVigentePorId(idExposicionDeseleccionada));
 		// Si la lista de exposiciones seleccionadas tiene al menos un elemento, se continúa con el caso de uso.
 		if (exposicionesSeleccionadas.size() == 1)
 			pantallaReservaVisita.solicitarFechaYHoraReserva();
@@ -197,7 +199,7 @@ public class ControladorReservaVisita {
 	 * Método que toma y guarda en un atributo la fecha y hora ingresados por el usuario.
 	 * @param fechaYHoraIngresados la fecha y hora ingresados por el usuario.
 	 */
-	public void fechaYHoraReservaIngresados(LocalDateTime fechaYHoraIngresados){
+	public void fechaYHoraReservaIngresados(LocalDateTime fechaYHoraIngresados) {
 		fechaYHoraReserva = fechaYHoraIngresados;
 		calcularDuracionEstimada();
 		pantallaReservaVisita.presentarDuracionEstimada(duracionEstimadaExposicion.toString());
@@ -213,7 +215,7 @@ public class ControladorReservaVisita {
 	/**
 	 * Método que calcula la duración estimada para la visita, a partir de las exposiciones seleccionadas.
 	 */
-	public void calcularDuracionEstimada(){
+	public void calcularDuracionEstimada() {
 		duracionEstimadaExposicion = estrategiaCalculoDuracionReserva
 				.calcularDuracionEstimadaVisita(exposicionesSeleccionadas);
 	}
@@ -223,7 +225,7 @@ public class ControladorReservaVisita {
 	 * @return verdadero si la visita supera el límite de visitantes para la sede para la duración de la visita,
 	 * y falso en cualquier otro caso.
 	 */
-	public boolean superaLimiteVisitantes(){
+	public boolean superaLimiteVisitantes() {
 		// Se obtienen todas las reservas de todas las sedes para pasarlas por parámetro.
 		List<ReservaVisita> reservasDeVisita = reservaVisitaServicio.listarReservasVisita();
 		return sedeSeleccionada.superaLimiteVisitantesParaFechaYHora(
@@ -233,20 +235,22 @@ public class ControladorReservaVisita {
 	/**
 	 * Método que busca todos los guías disponibles según la fecha y hora de reserva ingresados.
 	 */
-	public void buscarGuiasDisponiblesPorHorarioReserva(){
+	public void buscarGuiasDisponiblesPorHorarioReserva() {
 		List<Empleado> empleados = empleadoServicio.listarEmpleados();
 		List<AsignacionGuia> asignacionesDeGuia = asignacionGuiaServicio.listarAsignacionesGuia();
-		String[][] guiasDisponibles = sedeSeleccionada.buscarGuiasDisponiblesPorHorarioDeReserva(
+		guiasDisponibles = sedeSeleccionada.listarGuiasDisponiblesPorHorarioDeReserva(
+				fechaYHoraReserva, empleados, asignacionesDeGuia);
+		String[][] datosGuiasDisponibles = sedeSeleccionada.buscarGuiasDisponiblesPorHorarioDeReserva(
 				fechaYHoraReserva, empleados, asignacionesDeGuia);
 		calcularGuiasNecesarios();
-		pantallaReservaVisita.presentarGuiasDisponibles(guiasDisponibles, cantGuiasNecesarios);
+		pantallaReservaVisita.presentarGuiasDisponibles(datosGuiasDisponibles, cantGuiasNecesarios);
 		pantallaReservaVisita.solicitarSeleccionGuiasDisponibles();
 	}
 
 	/**
 	 * Método que calcula los guías necesarios para la visita según la capacidad de visitantes por guía de la sede.
 	 */
-	public void calcularGuiasNecesarios(){
+	public void calcularGuiasNecesarios() {
 		cantGuiasNecesarios = sedeSeleccionada.
 				calcularGuiasNecesariosParaVisitantesIngresados(cantidadVisitantes);
 	}
@@ -255,23 +259,38 @@ public class ControladorReservaVisita {
 	 * Método que toma un guía seleccionado y lo añade a la lista de guías seleccionados.
 	 * @param idGuia el id del guía seleccionado.
 	 */
-	public void guiaDisponibleSeleccionado(int idGuia){
-		guiasSeleccionados.add(empleadoServicio.encontrarEmpleadoPorId(idGuia));
+	public void guiaDisponibleSeleccionado(int idGuia) {
+		for (Empleado guia:
+			 guiasDisponibles) {
+			if (guia.getIdEmpleado() == idGuia)
+				guiasSeleccionados.add(guia);
+		}
 		// Si la lista se llena con la cantidad de guías necesarios, se procede con el caso de uso.
-		if (guiasSeleccionados.size() == cantGuiasNecesarios)
+		int cantGuiasSeleccionados = guiasSeleccionados.size();
+		if (cantGuiasSeleccionados == cantGuiasNecesarios)
 			pantallaReservaVisita.solicitarConfirmacionReserva();
+		else if (cantGuiasSeleccionados > cantGuiasNecesarios) {
+			pantallaReservaVisita.informarGuiasExcedidos();
+			pantallaReservaVisita.ocultarConfirmacionReserva();
+		}
 	}
 
 	/**
 	 * Método que toma un guía deseleccionado y lo quita de la lista de guías seleccionados.
-	 * @param idEmpleado el id del guía seleccionado.
+	 * @param idGuia el id del gutomasía seleccionado.
 	 */
-	public void guiaDisponibleDeseleccionado(int idEmpleado){
-		// Método que toma un guía seleccionado y lo quita de la lista de guías seleccionados.
-		guiasSeleccionados.remove(empleadoServicio.encontrarEmpleadoPorId(idEmpleado));
+	public void guiaDisponibleDeseleccionado(int idGuia) {
+		for (Empleado guia:
+				guiasDisponibles) {
+			if (guia.getIdEmpleado() == idGuia)
+				guiasSeleccionados.remove(guia);
+		}
+		int cantGuiasSeleccionados = guiasSeleccionados.size();
 		// Si la lista se llena con la cantidad de guías necesarios, se procede con el caso de uso.
-		if (guiasSeleccionados.size() == cantGuiasNecesarios)
+		if (cantGuiasSeleccionados == cantGuiasNecesarios)
 			pantallaReservaVisita.solicitarConfirmacionReserva();
+		else
+			pantallaReservaVisita.ocultarConfirmacionReserva();
 	}
 
 	/**

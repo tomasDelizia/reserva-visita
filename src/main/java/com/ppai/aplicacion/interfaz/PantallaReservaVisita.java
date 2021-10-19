@@ -2,19 +2,13 @@ package com.ppai.aplicacion.interfaz;
 
 import com.ppai.aplicacion.controlador.ControladorReservaVisita;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
 
 /**
  * Clase de interfaz que se encarga de la lógica de presentación para el CU Registrar Reserva de Visita Guiada.
@@ -30,8 +24,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	private TextField txtCantidadVisitantes, txtHoraVisita, txtMinutoVisita, txtDuracionEstimada;
 
 	@FXML
-	private Label lblCantidadValida, lblAvisoTipoDeVisita, lblErrorHora, lblCantidadGuias, lblErrorLimiteSedeSuperado,
-			lblReservaRegistrada, lblErrorGuiasExcedidos;
+	private Label lblSeleccionVisitantes;
 
 	@FXML
 	private TableView<String[]> tablaDatosExposiciones, tablaDatosGuias;
@@ -42,9 +35,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	@FXML
 	private DatePicker dateFechaVisita;
 
-	@FXML
-	private TimeSpinner timeSpinnerHoraVisita;
-
+	private int cantidadGuiasRequeridos;
 
 
 	@Autowired
@@ -63,7 +54,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que inicia el caso de uso, una vez autenticado el usuario.
 	 */
-	public void opcionNuevaReservaVisita(){
+	public void opcionNuevaReservaVisita() {
 		habilitarPantalla();
 		controladorReservaVisita.opcionRegistrarReservaVisita();
 	}
@@ -71,7 +62,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método para habilitar la pantalla de Registar Reserva de Visita.
 	 */
-	public void habilitarPantalla(){
+	public void habilitarPantalla() {
 		stageManager.switchScene(FxmlView.RESERVA_VISITA);
 	}
 
@@ -86,21 +77,21 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que habilita la selección de una escuela para el usuario.
 	 */
-	public void solicitarSeleccionEscuela(){
+	public void solicitarSeleccionEscuela() {
 		cboEscuelas.setDisable(false);
 	}
 
 	/**
 	 * Método que toma la selección de una escuela.
 	 */
-	public void tomarSeleccionEscuela(){
+	public void tomarSeleccionEscuela() {
 		controladorReservaVisita.escuelaSeleccionada(cboEscuelas.getValue());
 	}
 
 	/**
 	 * Método que habilita para el usuario el ingreso de la cantidad de visitantes.
 	 */
-	public void solicitarCantidadVisitantes(){
+	public void solicitarCantidadVisitantes() {
 		if (txtCantidadVisitantes.isDisabled())
 			txtCantidadVisitantes.setDisable(false);
 	}
@@ -108,15 +99,17 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que toma la cantidad de visitantes y verifica que sea una cantidad correcta.
 	 */
-	public void tomarCantidadVisitantes(){
+	public void tomarCantidadVisitantes() {
 		try {
 			int cantidadVisitantes = Integer.parseInt(txtCantidadVisitantes.getText());
-			lblCantidadValida.setVisible(cantidadVisitantes < 1);
+			if (cantidadVisitantes < 1) {
+				informarError("Error", "Ingrese una cantidad mayor a cero.");
+				return;
+			}
 			// Si la cantidad es correcta, se procede con el caso de uso.
-			if (cantidadVisitantes > 0)
-				controladorReservaVisita.cantidadDeVisitantesIngresados(cantidadVisitantes);
+			controladorReservaVisita.cantidadDeVisitantesIngresados(cantidadVisitantes);
 		} catch (NumberFormatException e) {
-			txtCantidadVisitantes.setText("");
+			informarError("Error","Ingrese una cantidad numérica");
 		}
 	}
 
@@ -124,14 +117,14 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * Método que recibe por parámetro una lista de sedes y las muestra al usuario para su selección.
 	 * @param sedes la lista con los nombres de las sedes a mostrar.
 	 */
-	public void presentarSedes(String[] sedes){
+	public void presentarSedes(String[] sedes) {
 		cargarComboBox(cboSedes, sedes);
 	}
 
 	/**
 	 * Método que habilita la selección de una sede por parte del usuario.
 	 */
-	public void solicitarSeleccionSede(){
+	public void solicitarSeleccionSede() {
 		if (cboSedes.isDisabled())
 			cboSedes.setDisable(false);
 	}
@@ -139,7 +132,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que toma la selección de una sede por parte del usuario.
 	 */
-	public void tomarSede(){
+	public void tomarSede() {
 		controladorReservaVisita.sedeSeleccionada(cboSedes.getValue());
 	}
 
@@ -154,7 +147,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que habilita la selección de un tipo de visita.
 	 */
-	public void solicitarSeleccionTipoVisita(){
+	public void solicitarSeleccionTipoVisita() {
 		if (cboTiposVisita.isDisabled())
 			cboTiposVisita.setDisable(false);
 	}
@@ -162,9 +155,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que toma el tipo de visita seleccionado y se lo pasa al objeto controlador.
 	 */
-	public void tomarTipoVisita(){
-		if (lblAvisoTipoDeVisita.isVisible())
-			lblAvisoTipoDeVisita.setVisible(false);
+	public void tomarTipoVisita() {
 		controladorReservaVisita.tipoVisitaSeleccionado(cboTiposVisita.getValue());
 	}
 
@@ -172,7 +163,8 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * Método que informa que se cambie el tipo de visita seleccionado a "Por Exposición".
 	 */
 	public void informarSeleccionTipoVisitaPorExposicion() {
-		lblAvisoTipoDeVisita.setVisible(true);
+		mostrarAdvertencia("Advertencia",
+				"Aplicación en etapa de desarrollo. Seleccione el tipo de visita 'Por Exposición' para continuar");
 	}
 
 	/**
@@ -188,7 +180,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que habilita la selección de las exposiciones.
 	 */
-	public void solicitarSeleccionExposiciones(){
+	public void solicitarSeleccionExposiciones() {
 		if (tablaDatosExposiciones.isDisabled())
 			tablaDatosExposiciones.setDisable(false);
 	}
@@ -250,8 +242,6 @@ public class PantallaReservaVisita extends PantallaBase {
 			informarErrorFechaYHora();
 		// Si es válida, se continúa con el caso de uso.
 		else {
-			if (lblErrorHora.isVisible())
-				lblErrorHora.setVisible(false);
 			LocalTime horaIngresada = LocalTime.of(horaVisita, minutoVisita);
 			controladorReservaVisita.fechaYHoraReservaIngresados(LocalDateTime.of(fechaIngresada, horaIngresada));
 		}
@@ -261,8 +251,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * Método que informa error de un ingreso de fecha y hora no válidos.
 	 */
 	public void informarErrorFechaYHora() {
-		if (!lblErrorHora.isVisible())
-			lblErrorHora.setVisible(true);
+		informarError("Error", "Ingrese una fecha y hora válidos.");
 	}
 
 	/**
@@ -279,7 +268,8 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * para la duración de la exposición.
 	 */
 	public void informarLimiteVisitantesSuperado() {
-		lblErrorLimiteSedeSuperado.setVisible(true);
+		informarError("Error", "Se ha superado el límite de visitantes de la sede para la cantidad de" +
+				"visitantes ingresados.");
 	}
 
 	/**
@@ -287,28 +277,27 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * @param datosGuiasDisponibles la lista con los nombres y apellidos de los guías disponibles para seleccionar.
 	 * @param cantidadGuiasNecesarios la cantidad de guías necesarios a seleccionar.
 	 */
-	public void presentarGuiasDisponibles(String[][] datosGuiasDisponibles, int cantidadGuiasNecesarios){
-		if (lblErrorLimiteSedeSuperado.isVisible())
-			lblErrorLimiteSedeSuperado.setVisible(false);
+	public void presentarGuiasDisponibles(String[][] datosGuiasDisponibles, int cantidadGuiasNecesarios) {
 		tablaDatosGuias.getItems().clear();
 		// Inicializamos columnas.
 		String[] titulos = {"Id", "Nombre", "Apellido"};
 		cargarTabla(tablaDatosGuias, datosGuiasDisponibles, titulos);
+		lblSeleccionVisitantes.setText("Guías de la visita (seleccione " + cantidadGuiasNecesarios + "):");
+		cantidadGuiasRequeridos = cantidadGuiasNecesarios;
 		tomarSeleccionGuiaDisponible();
-		lblCantidadGuias.setText(String.valueOf(cantidadGuiasNecesarios));
 	}
 
 	/**
 	 * Método que habilita la selección de guías disponibles.
 	 */
-	public void solicitarSeleccionGuiasDisponibles(){
+	public void solicitarSeleccionGuiasDisponibles() {
 		tablaDatosGuias.setDisable(false);
 	}
 
 	/**
 	 * Método que toma la selección o deselección de un guía por parte del usuario y se lo pasa al controlador.
 	 */
-	public void tomarSeleccionGuiaDisponible(){
+	public void tomarSeleccionGuiaDisponible() {
 		TableColumn<String[], CheckBox> seleccion = new TableColumn<>("Selección");
 		seleccion.setCellValueFactory(
 				guiaBooleanCellDataFeatures -> {
@@ -316,36 +305,12 @@ public class PantallaReservaVisita extends PantallaBase {
 					CheckBox checkBox = new CheckBox();
 					checkBox.selectedProperty().setValue(false);
 					checkBox.selectedProperty().addListener((observableValue, valorAnterior, valorNuevo) -> {
-						int cantGuiasASeleccionar = Integer.parseInt(lblCantidadGuias.getText());
 						// Toma la selección de un guía.
-						if (valorNuevo) {
-							// Actualizamos la cantidad hasta que no se llegue a la cantidad requerida.
-							if (cantGuiasASeleccionar > 0) {
-								ocultarGuiasExcedidos();
-								ocultarConfirmacionReserva();
-								cantGuiasASeleccionar --;
-								lblCantidadGuias.setText(Integer.toString(cantGuiasASeleccionar));
-								controladorReservaVisita
-										.guiaDisponibleSeleccionado(Integer.parseInt(datosGuia[0]));
-							}
-							// Se informa un error cuando se seleccionan más guías de los requeridos.
-							else if (cantGuiasASeleccionar == 0) {
-								informarGuiasExcedidos();
-								ocultarConfirmacionReserva();
-							}
-						}
-
+						if (valorNuevo)
+							controladorReservaVisita.guiaDisponibleSeleccionado(Integer.parseInt(datosGuia[0]));
 						// Toma la deselección de un guía.
-						if (!valorNuevo) {
-							// Actualizamos la cantidad hasta que no se llegue a la cantidad requerida.
-							if (cantGuiasASeleccionar >= 0) {
-								ocultarConfirmacionReserva();
-								cantGuiasASeleccionar ++;
-								lblCantidadGuias.setText(Integer.toString(cantGuiasASeleccionar));
-								controladorReservaVisita
-										.guiaDisponibleDeseleccionado(Integer.parseInt(datosGuia[0]));
-							}
-						}
+						if (!valorNuevo)
+							controladorReservaVisita.guiaDisponibleDeseleccionado(Integer.parseInt(datosGuia[0]));
 					});
 					return new SimpleObjectProperty<>(checkBox);
 				});
@@ -372,23 +337,16 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * Método que informa que se seleccionaron más guías de los necesarios.
 	 */
 	public void informarGuiasExcedidos() {
-		if (!lblErrorGuiasExcedidos.isVisible())
-			lblErrorGuiasExcedidos.setVisible(true);
-	}
-
-	/**
-	 * Método que quita el mensaje que informa que se seleccionaron más guías de los necesarios.
-	 */
-	public void ocultarGuiasExcedidos() {
-		if (lblErrorGuiasExcedidos.isVisible())
-			lblErrorGuiasExcedidos.setVisible(false);
+		informarError("Error", "Se seleccionaron más guías de los necesarios. Seleccione la cantidad " +
+				"necesaria para continuar.");
 	}
 
 	/**
 	 * Método que toma la selección de la confirmación por parte del usuario.
 	 */
 	public void tomarConfirmacionReserva() {
-		controladorReservaVisita.confirmacionReservaSeleccionada();
+		if (informarConfirmacion("Confirmación", "¿Desea confirmar la transacción?"))
+			controladorReservaVisita.confirmacionReservaSeleccionada();
 	}
 
 	/**
@@ -397,6 +355,6 @@ public class PantallaReservaVisita extends PantallaBase {
 	public void informarReservaRegistrada() {
 		btnConfirmar.setDisable(true);
 		btnCancelar.setDisable(true);
-		lblReservaRegistrada.setVisible(true);
+		informarAviso("Confirmación", "Reserva confirmada con éxito");
 	}
 }//end PantallaReservaVisita

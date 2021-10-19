@@ -107,15 +107,15 @@ public class Sede {
     }
 
     /**
-     * Método para encontrar la exposición temporal y vigente con el nombre pasado por parámetro.
-     * @param idExposicion el nombre de la exposición temporal y vigente que deseo encontrar.
-     * @return la exposición con el nombre buscado si se encuentra o nulo si no se encuentra.
+     * Método para encontrar la exposición temporal y vigente con el id pasado por parámetro.
+     * @param idExposicion el id de la exposición temporal y vigente que deseo encontrar.
+     * @return la exposición con el id buscado si se encuentra o nulo si no se encuentra.
      */
     public Exposicion encontrarExposicionTemporalYVigentePorId(int idExposicion) {
         // Creo la lista con las exposiciones temporales y vigentes.
-        List<Exposicion> listaExposicioneTemporalesYVigentes = listarExposicionesTemporalesYVigentes();
+        List<Exposicion> listaExposicionesTemporalesYVigentes = listarExposicionesTemporalesYVigentes();
         for (Exposicion exposicion:
-             listaExposicioneTemporalesYVigentes) {
+             listaExposicionesTemporalesYVigentes) {
             // Si el id coincide, devuelvo esa exposición.
             if (exposicion.esTuId(idExposicion))
                 return exposicion;
