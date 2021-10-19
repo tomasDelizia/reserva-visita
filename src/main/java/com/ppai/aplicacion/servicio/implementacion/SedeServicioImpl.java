@@ -1,4 +1,4 @@
-package com.ppai.aplicacion.servicio.impl;
+package com.ppai.aplicacion.servicio.implementacion;
 
 import com.ppai.aplicacion.negocio.Sede;
 import com.ppai.aplicacion.repo.SedeRepositorio;
@@ -28,5 +28,16 @@ public class SedeServicioImpl implements SedeServicio {
     @Transactional(readOnly = true)
     public Sede encontrarPorNombre(String nombreSede) {
         return sedeRepositorio.findByNombre(nombreSede);
+    }
+
+    @Override
+    public String[] buscarSedes() {
+        List<Sede> listaSedes = listarSedes();
+        int cantSedes = listaSedes.size();
+        String[] sedes = new String[cantSedes];
+        for (int i = 0; i < cantSedes; i++) {
+            sedes[i] = listaSedes.get(i).getNombre();
+        }
+        return sedes;
     }
 }

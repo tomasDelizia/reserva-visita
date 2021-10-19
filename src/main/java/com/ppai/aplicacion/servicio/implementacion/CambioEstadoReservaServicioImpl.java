@@ -1,4 +1,4 @@
-package com.ppai.aplicacion.servicio.impl;
+package com.ppai.aplicacion.servicio.implementacion;
 
 import com.ppai.aplicacion.negocio.CambioEstadoReserva;
 import com.ppai.aplicacion.repo.CambioEstadoReservaRepositorio;

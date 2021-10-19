@@ -35,4 +35,12 @@ public class TipoVisita {
     public boolean esPorExposicion() {
         return nombre.equals("Por Exposición");
     }
+
+    /**
+     * Método para saber si el tipo de visita es "Completa".
+     * @return verdadero si el tipo de visita es "Completa", y falso en cualquier otro caso.
+     */
+    public boolean esCompleta() {
+        return nombre.equals("Completa");
+    }
 }//end TipoDeVisita

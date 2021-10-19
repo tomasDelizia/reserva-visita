@@ -87,6 +87,14 @@ public class Empleado {
     private final List<HorarioEmpleado> horarioEmpleado = new ArrayList<>();
 
     /**
+     * Método que devuelve el id del empleado.
+     * @return el id del empleado.
+     */
+    public int getIdEmpleado() {
+        return idEmpleado;
+    }
+
+    /**
      * Método que devuelve el nombre del empleado.
      * @return el nombre del empleado como cadena de texto.
      */

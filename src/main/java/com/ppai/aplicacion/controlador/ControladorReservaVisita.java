@@ -3,6 +3,7 @@ package com.ppai.aplicacion.controlador;
 import com.ppai.aplicacion.interfaz.PantallaReservaVisita;
 import com.ppai.aplicacion.negocio.*;
 import com.ppai.aplicacion.servicio.*;
+import com.ppai.aplicacion.servicio.implementacion.EstrategiaVisitaPorExposicion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import java.time.LocalDateTime;
@@ -17,20 +18,18 @@ import java.util.List;
 @Controller
 public class ControladorReservaVisita {
 	private PantallaReservaVisita pantallaReservaVisita;
-	private final List<String> escuelas = new ArrayList<>();
+	private String[] escuelas, sedes, tiposVisita;
 	private Escuela escuelaSeleccionada;
-	private final List<String> sedes = new ArrayList<>();
 	private Sede sedeSeleccionada;
-	private final List<String> tiposVisita = new ArrayList<>();
 	private int cantGuiasNecesarios, cantidadVisitantes, numeroReserva;
 	private String[][] exposicionesTemporalesYVigentes;
-	private final List<Exposicion> exposicionesSeleccionadas = new ArrayList<>();
+	private final List<Exposicion> exposicionesSeleccionadas;
 	private LocalDateTime fechaYHoraReserva, fechaYHoraActual;
 	private LocalTime duracionEstimadaExposicion;
-	private final List<Empleado> guiasSeleccionados = new ArrayList<>();
+	private final List<Empleado> guiasSeleccionados;
 	private EstadoReserva estadoPendienteDeConfirmacion;
 	private Empleado empleadoEnSesion;
-	private Sesion sesionActual;
+	private EstrategiaCalculoDuracionReserva estrategiaCalculoDuracionReserva;
 	private final EscuelaServicio escuelaServicio;
 	private final SedeServicio sedeServicio;
 	private final TipoVisitaServicio tipoVisitaServicio;
@@ -38,6 +37,7 @@ public class ControladorReservaVisita {
 	private final EmpleadoServicio empleadoServicio;
 	private final AsignacionGuiaServicio asignacionGuiaServicio;
 	private final EstadoReservaServicio estadoReservaServicio;
+	private final SesionServicio sesionServicio;
 
 	@Autowired
 	public ControladorReservaVisita(EscuelaServicio escuelaServicio, SedeServicio sedeServicio,
@@ -45,7 +45,8 @@ public class ControladorReservaVisita {
 									ReservaVisitaServicio reservaVisitaServicio,
 									EmpleadoServicio empleadoServicio,
 									AsignacionGuiaServicio asignacionGuiaServicio,
-									EstadoReservaServicio estadoReservaServicio) {
+									EstadoReservaServicio estadoReservaServicio,
+									SesionServicio sesionServicio) {
 		this.escuelaServicio = escuelaServicio;
 		this.sedeServicio = sedeServicio;
 		this.tipoVisitaServicio = tipoVisitaServicio;
@@ -53,19 +54,14 @@ public class ControladorReservaVisita {
 		this.empleadoServicio = empleadoServicio;
 		this.asignacionGuiaServicio = asignacionGuiaServicio;
 		this.estadoReservaServicio = estadoReservaServicio;
+		this.sesionServicio = sesionServicio;
+		exposicionesSeleccionadas = new ArrayList<>();
+		guiasSeleccionados = new ArrayList<>();
 	}
 
 	@Autowired
 	public void setPantallaReservaVisita(PantallaReservaVisita pantallaReservaVisita) {
 		this.pantallaReservaVisita = pantallaReservaVisita;
-	}
-
-	/**
-	 * Método que guarda como atributo sesionActual a un objeto sesión pasado por parámetro.
-	 * @param sesionActual la sesión pasada por parámetro.
-	 */
-	public void setSesionActual(Sesion sesionActual) {
-		this.sesionActual = sesionActual;
 	}
 
 	/**
@@ -82,11 +78,7 @@ public class ControladorReservaVisita {
 	 * Método que busca y guarda en el atributo escuelas el nombre de todas las escuelas existentes.
 	 */
 	public void buscarEscuelas() {
-		List<Escuela> listaEscuelas = escuelaServicio.listarEscuelas();
-		for (Escuela escuela:
-				listaEscuelas) {
-			escuelas.add(escuela.getNombre());
-		}
+		escuelas = escuelaServicio.buscarEscuelas();
 	}
 
 	/**
@@ -114,11 +106,7 @@ public class ControladorReservaVisita {
 	 * Método que busca y guarda en una lista el nombre de todas las sedes existentes.
 	 */
 	public void buscarSedes(){
-		List<Sede> listaSedes = sedeServicio.listarSedes();
-		for (Sede sede:
-			 listaSedes) {
-			sedes.add(sede.getNombre());
-		}
+		sedes = sedeServicio.buscarSedes();
 	}
 
 	/**
@@ -128,6 +116,10 @@ public class ControladorReservaVisita {
 	 */
 	public void sedeSeleccionada(String sedeSeleccionada){
 		this.sedeSeleccionada = sedeServicio.encontrarPorNombre(sedeSeleccionada);
+		if (exposicionesSeleccionadas.size() > 0)
+			exposicionesSeleccionadas.clear();
+		if (guiasSeleccionados.size() > 0)
+			guiasSeleccionados.clear();
 		buscarTiposDeVisita();
 		pantallaReservaVisita.presentarTiposVisita(tiposVisita);
 		pantallaReservaVisita.solicitarSeleccionTipoVisita();
@@ -137,29 +129,31 @@ public class ControladorReservaVisita {
 	 * Método que busca el nombre de todos los tipos de visita existentes y los guarda en una lista como atributo.
 	 */
 	public void buscarTiposDeVisita() {
-		List<TipoVisita> listaTiposDeVisita = tipoVisitaServicio.listarTiposVisita();
-		for (TipoVisita tipoVisita:
-			 listaTiposDeVisita) {
-			tiposVisita.add(tipoVisita.getNombre());
-		}
+		tiposVisita = tipoVisitaServicio.buscarTiposVisita();
 	}
 
 	/**
 	 * Método que toma el nombre el tipo de visita seleccionado, verifica que sea "Por Exposición", lo guarda y
 	 * continúa pidiéndole a la pantalla que busque y muestre las exposiciones temporales y vigentes para su selección.
-	 * @param nombreTipoVisita el nombre del tipo de visita seleccionado por el usuario.
+	 * @param tipoVisitaSeleccionado el nombre del tipo de visita seleccionado por el usuario.
 	 */
-	public void tipoVisitaSeleccionado(String nombreTipoVisita){
-		TipoVisita tipoVisitaSeleccionado = tipoVisitaServicio.encontrarPorNombre(nombreTipoVisita);
-		// Si se selecciona el tipo de visita "Por Exposición", se continúa con el caso de uso.
-		if (tipoVisitaSeleccionado.esPorExposicion()) {
+	public void tipoVisitaSeleccionado(String tipoVisitaSeleccionado) {
+		TipoVisita tipoVisitaIngresado = tipoVisitaServicio.encontrarPorNombre(tipoVisitaSeleccionado);
+		crearEstrategia(tipoVisitaIngresado);
+		if (tipoVisitaIngresado.esPorExposicion()) {
 			buscarExposicionesTemporalesYVigentes();
 			pantallaReservaVisita.presentarExposicionesTemporalesYVigentes(exposicionesTemporalesYVigentes);
 			pantallaReservaVisita.solicitarSeleccionExposiciones();
 		}
 		// Si se selecciona el tipo de visita "Completa", se informa que seleccione "Por Exposición".
-		else
+		else if (tipoVisitaIngresado.esCompleta())
 			pantallaReservaVisita.informarSeleccionTipoVisitaPorExposicion();
+	}
+
+	private void crearEstrategia(TipoVisita tipoVisitaIngresado) {
+		// Si se selecciona el tipo de visita "Por Exposición", se continúa con el caso de uso.
+		if (tipoVisitaIngresado.esPorExposicion())
+			estrategiaCalculoDuracionReserva = new EstrategiaVisitaPorExposicion();
 	}
 
 	/**
@@ -173,11 +167,11 @@ public class ControladorReservaVisita {
 	/**
 	 * Método que toma una exposición y la añade a la lista de exposiciones seleccionadas, y se continúa
 	 * con el caso de uso pidiéndole a la pantalla que solicite el ingreso de la fecha y hora de la reserva.
-	 * @param nombreExposicionSeleccionada el nombre de la exposición a añadir.
+	 * @param idExposicionSeleccionada el id de la exposición a añadir.
 	 */
-	public void exposicionSeleccionada(String nombreExposicionSeleccionada){
+	public void exposicionSeleccionada(int idExposicionSeleccionada){
 		exposicionesSeleccionadas
-				.add(sedeSeleccionada.encontrarExposicionTemporalYVigentePorNombre(nombreExposicionSeleccionada));
+				.add(sedeSeleccionada.encontrarExposicionTemporalYVigentePorId(idExposicionSeleccionada));
 		// Con que se seleccione una exposición, se puede continuar con el caso de uso.
 		if (exposicionesSeleccionadas.size() == 1)
 			pantallaReservaVisita.solicitarFechaYHoraReserva();
@@ -186,11 +180,11 @@ public class ControladorReservaVisita {
 	/**
 	 * Método que toma una exposición y la quita de la lista de exposiciones seleccionadas, y se continúa
 	 * con el caso de uso pidiéndole a la pantalla que solicite el ingreso de la fecha y hora de la reserva.
-	 * @param nombreExposicionSeleccionada el nombre de la exposición a quitar.
+	 * @param idExposicionSeleccionada el id de la exposición a quitar.
 	 */
-	public void exposicionDeseleccionada(String nombreExposicionSeleccionada){
+	public void exposicionDeseleccionada(int idExposicionSeleccionada){
 		exposicionesSeleccionadas
-				.remove(sedeSeleccionada.encontrarExposicionTemporalYVigentePorNombre(nombreExposicionSeleccionada));
+				.remove(sedeSeleccionada.encontrarExposicionTemporalYVigentePorId(idExposicionSeleccionada));
 		// Si la lista de exposiciones seleccionadas tiene al menos un elemento, se continúa con el caso de uso.
 		if (exposicionesSeleccionadas.size() == 1)
 			pantallaReservaVisita.solicitarFechaYHoraReserva();
@@ -206,7 +200,7 @@ public class ControladorReservaVisita {
 	public void fechaYHoraReservaIngresados(LocalDateTime fechaYHoraIngresados){
 		fechaYHoraReserva = fechaYHoraIngresados;
 		calcularDuracionEstimada();
-		pantallaReservaVisita.presentarDuracionEstimada(duracionEstimadaExposicion);
+		pantallaReservaVisita.presentarDuracionEstimada(duracionEstimadaExposicion.toString());
 		/* Se verifica que la cantidad de visitantes ingresados no sobrepase el límite de visitantes de la sede para
 		   la duración de la visita en la fecha y hora ingresados. Si no lo supera, se continua con el caso de uso. */
 		if (!superaLimiteVisitantes())
@@ -217,11 +211,11 @@ public class ControladorReservaVisita {
 	}
 
 	/**
-	 * Método que calcula la duración estimada para la visita en una sede, a partir de las exposiciones seleccionadas.
+	 * Método que calcula la duración estimada para la visita, a partir de las exposiciones seleccionadas.
 	 */
 	public void calcularDuracionEstimada(){
-		duracionEstimadaExposicion = sedeSeleccionada.
-				calcularDuracionEstimadaVisita(exposicionesSeleccionadas);
+		duracionEstimadaExposicion = estrategiaCalculoDuracionReserva
+				.calcularDuracionEstimadaVisita(exposicionesSeleccionadas);
 	}
 
 	/**
@@ -259,11 +253,10 @@ public class ControladorReservaVisita {
 
 	/**
 	 * Método que toma un guía seleccionado y lo añade a la lista de guías seleccionados.
-	 * @param nombreGuia el nombre del guía seleccionado.
-	 * @param apellidoGuia el apellido del guía seleccionado.
+	 * @param idGuia el id del guía seleccionado.
 	 */
-	public void guiaDisponibleSeleccionado(String nombreGuia, String apellidoGuia){
-		guiasSeleccionados.add(empleadoServicio.encontrarEmpleadoPorNombreYApellido(nombreGuia, apellidoGuia));
+	public void guiaDisponibleSeleccionado(int idGuia){
+		guiasSeleccionados.add(empleadoServicio.encontrarEmpleadoPorId(idGuia));
 		// Si la lista se llena con la cantidad de guías necesarios, se procede con el caso de uso.
 		if (guiasSeleccionados.size() == cantGuiasNecesarios)
 			pantallaReservaVisita.solicitarConfirmacionReserva();
@@ -271,12 +264,11 @@ public class ControladorReservaVisita {
 
 	/**
 	 * Método que toma un guía deseleccionado y lo quita de la lista de guías seleccionados.
-	 * @param nombreGuia el nombre del guía deseleccionado.
-	 * @param apellidoGuia el apellido del guía deseleccionado.
+	 * @param idEmpleado el id del guía seleccionado.
 	 */
-	public void guiaDisponibleDeseleccionado(String nombreGuia, String apellidoGuia){
+	public void guiaDisponibleDeseleccionado(int idEmpleado){
 		// Método que toma un guía seleccionado y lo quita de la lista de guías seleccionados.
-		guiasSeleccionados.remove(empleadoServicio.encontrarEmpleadoPorNombreYApellido(nombreGuia, apellidoGuia));
+		guiasSeleccionados.remove(empleadoServicio.encontrarEmpleadoPorId(idEmpleado));
 		// Si la lista se llena con la cantidad de guías necesarios, se procede con el caso de uso.
 		if (guiasSeleccionados.size() == cantGuiasNecesarios)
 			pantallaReservaVisita.solicitarConfirmacionReserva();
@@ -334,7 +326,7 @@ public class ControladorReservaVisita {
 	 * Método que obtiene el empleado en la sesión actual.
 	 */
 	public void getEmpleadoEnSesion() {
-		empleadoEnSesion = sesionActual.getEmpleadoEnSesion();
+		empleadoEnSesion = sesionServicio.getEmpleadoEnSesion();
 	}
 
 	/**

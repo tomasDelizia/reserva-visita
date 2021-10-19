@@ -55,6 +55,6 @@ public class Usuario {
      * otro caso.
      */
     public boolean correspondeAResponsableDeVisitas() {
-        return this.empleado.esResponsableDeVisitas();
+        return empleado.esResponsableDeVisitas();
     }
 }//end Usuario

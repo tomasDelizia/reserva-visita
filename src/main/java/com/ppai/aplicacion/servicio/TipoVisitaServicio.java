@@ -7,4 +7,6 @@ public interface TipoVisitaServicio {
     List<TipoVisita> listarTiposVisita();
 
     TipoVisita encontrarPorNombre(String nombreTipoVisita);
+
+    String[] buscarTiposVisita();
 }

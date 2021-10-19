@@ -1,6 +1,7 @@
 package com.ppai.aplicacion.negocio;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 /**
  * Clase que representa las entidades persistentes Detalles de Exposición.
@@ -22,5 +23,21 @@ public class DetalleExposicion {
 
     public Obra getObra() {
         return obra;
+    }
+
+    /**
+     * Método que devuelve la duración resumida de la obra.
+     * @return la duración resumida de la obra en formato de fecha.
+     */
+    public LocalTime getDuracionResumida() {
+        return obra.getDuracionResumida();
+    }
+
+    /**
+     * Método que devuelve la duración extendida de la obra.
+     * @return la duración extendida de la obra en formato de fecha.
+     */
+    public LocalTime getDuracionExtendida() {
+        return obra.getDuracionExtendida();
     }
 }//end DetalleExposicion

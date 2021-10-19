@@ -7,4 +7,6 @@ public interface SedeServicio {
     List<Sede> listarSedes();
 
     Sede encontrarPorNombre(String nombreSede);
+
+    String[] buscarSedes();
 }

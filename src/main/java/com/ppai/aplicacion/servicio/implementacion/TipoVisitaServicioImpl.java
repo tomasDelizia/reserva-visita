@@ -1,5 +1,6 @@
-package com.ppai.aplicacion.servicio.impl;
+package com.ppai.aplicacion.servicio.implementacion;
 
+import com.ppai.aplicacion.negocio.Sede;
 import com.ppai.aplicacion.negocio.TipoVisita;
 import com.ppai.aplicacion.repo.TipoVisitaRepositorio;
 import com.ppai.aplicacion.servicio.TipoVisitaServicio;
@@ -28,5 +29,16 @@ public class TipoVisitaServicioImpl implements TipoVisitaServicio {
     @Transactional(readOnly = true)
     public TipoVisita encontrarPorNombre(String nombreTipoVisita) {
         return tipoVisitaRepositorio.findByNombre(nombreTipoVisita);
+    }
+
+    @Override
+    public String[] buscarTiposVisita() {
+        List<TipoVisita> listaTiposVisita = listarTiposVisita();
+        int cantTiposVisita = listaTiposVisita.size();
+        String[] tiposVisita = new String[cantTiposVisita];
+        for (int i = 0; i < cantTiposVisita; i++) {
+            tiposVisita[i] = listaTiposVisita.get(i).getNombre();
+        }
+        return tiposVisita;
     }
 }

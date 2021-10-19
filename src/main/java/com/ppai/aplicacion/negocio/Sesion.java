@@ -35,7 +35,7 @@ public class Sesion {
     public Sesion() {}
 
     /**
-     * Método que devuelve el empleado al que pertenece el usuario en sesión.
+     * Método que devuelve el empleado al que que tiene asociado el usuario en sesión.
      * @return el empleado logueado.
      */
     public Empleado getEmpleadoEnSesion() {

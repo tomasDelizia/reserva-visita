@@ -1,4 +1,4 @@
-package com.ppai.aplicacion.servicio.impl;
+package com.ppai.aplicacion.servicio.implementacion;
 
 import com.ppai.aplicacion.negocio.AsignacionGuia;
 import com.ppai.aplicacion.repo.AsignacionGuiaRepositorio;

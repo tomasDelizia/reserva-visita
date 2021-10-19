@@ -3,7 +3,6 @@ package com.ppai.aplicacion.negocio;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -57,7 +56,10 @@ public class Sede {
             inverseJoinColumns = @JoinColumn(name = "id_horario"))
     private final List<HorarioSede> horarioSede = new ArrayList<>();
 
-
+    /**
+     * Método para obtener el nombre de la sede.
+     * @return el nombre de la sede.
+     */
     public String getNombre() {
         return nombre;
     }
@@ -88,14 +90,15 @@ public class Sede {
         // Se genera la lista de exposiciones temporales y vigentes.
         List<Exposicion> listaExposicionesTempYVig = listarExposicionesTemporalesYVigentes();
         // Se inicializa una lista para almacenar dichas exposiciones con sus datos generales.
-        String[][] datosExposicionesTempYVig = new String[listaExposicionesTempYVig.size()][4];
+        String[][] datosExposicionesTempYVig = new String[listaExposicionesTempYVig.size()][5];
         // Para cada elemento de la lista, creo un objeto exposición con sus datos generales y lo agrego a la lista.
         for (int i = 0; i < listaExposicionesTempYVig.size(); i++) {
             String[] exposicionTempYVig = {
+                    String.valueOf(listaExposicionesTempYVig.get(i).getIdExposicion()),
                     listaExposicionesTempYVig.get(i).getNombre(),
                     listaExposicionesTempYVig.get(i).getPublicoDestino(),
-                    listaExposicionesTempYVig.get(i).getHoraApertura(),
-                    listaExposicionesTempYVig.get(i).getHoraCierre()
+                    listaExposicionesTempYVig.get(i).getHoraApertura().toString(),
+                    listaExposicionesTempYVig.get(i).getHoraCierre().toString()
             };
             datosExposicionesTempYVig[i] = exposicionTempYVig;
         }
@@ -105,49 +108,20 @@ public class Sede {
 
     /**
      * Método para encontrar la exposición temporal y vigente con el nombre pasado por parámetro.
-     * @param nombreExposicion el nombre de la exposición temporal y vigente que deseo encontrar.
+     * @param idExposicion el nombre de la exposición temporal y vigente que deseo encontrar.
      * @return la exposición con el nombre buscado si se encuentra o nulo si no se encuentra.
      */
-    public Exposicion encontrarExposicionTemporalYVigentePorNombre(String nombreExposicion) {
-        // Creo la lista con las exposicione temporales y vigentes.
+    public Exposicion encontrarExposicionTemporalYVigentePorId(int idExposicion) {
+        // Creo la lista con las exposiciones temporales y vigentes.
         List<Exposicion> listaExposicioneTemporalesYVigentes = listarExposicionesTemporalesYVigentes();
         for (Exposicion exposicion:
              listaExposicioneTemporalesYVigentes) {
-            // Si el nombre coincide, devuelvo esa exposición.
-            if (exposicion.esTuNombre(nombreExposicion))
+            // Si el id coincide, devuelvo esa exposición.
+            if (exposicion.esTuId(idExposicion))
                 return exposicion;
         }
         // Si no se encuentra, devuelve vacío.
         return null;
-    }
-
-    /**
-     * Método que calcula la duración estimada de la visita para unas exposiciones determinadas.
-     * @param listaExposiciones las exposiciones que serán parte de la visita guiada.
-     * @return la duración estimada de la visita en un objeto LocalTime.
-     */
-    public LocalTime calcularDuracionEstimadaVisita(List<Exposicion> listaExposiciones){
-        // Se inicializan los contadores de horas, minutos y segundos totales.
-        int horasTotales = 0;
-        int minutosTotales = 0;
-        int segundosTotales = 0;
-        // Mientras haya exposiciones, obtenemos sus duraciones.
-        for (Exposicion exposicion:
-             listaExposiciones) {
-            LocalTime duracionExposicion = exposicion.calcularDuracionExposicion();
-            // Añadimos la duración (horas, minutos y segundos) de cada exposición a los contadores.
-            horasTotales += duracionExposicion.getHour();
-            minutosTotales += duracionExposicion.getMinute();
-            segundosTotales += duracionExposicion.getSecond();
-        }
-        // Creamos un objeto duración para obtener la duración total sumando los 3 contadores.
-        Duration duracionTotal = Duration.
-                ofHours(horasTotales).
-                plusMinutes(minutosTotales).
-                plusSeconds(segundosTotales);
-        // Retornamos el objeto duración convertido apropiadamente al tipo LocalTime.
-        return LocalTime.of(
-                duracionTotal.toHoursPart(), duracionTotal.toMinutesPart(), duracionTotal.toSecondsPart());
     }
 
     /**
@@ -247,6 +221,7 @@ public class Sede {
         String[][] datosGuiasDisponibles = new String[listaGuiasDisponibles.size()][2];
         for (int i = 0; i < listaGuiasDisponibles.size(); i++) {
             String[] guiaDisponible = {
+                    String.valueOf(listaGuiasDisponibles.get(i).getIdEmpleado()),
                     listaGuiasDisponibles.get(i).getNombre(),
                     listaGuiasDisponibles.get(i).getApellido(),
             };

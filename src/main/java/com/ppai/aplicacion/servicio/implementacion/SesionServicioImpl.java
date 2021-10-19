@@ -1,5 +1,6 @@
-package com.ppai.aplicacion.servicio.impl;
+package com.ppai.aplicacion.servicio.implementacion;
 
+import com.ppai.aplicacion.negocio.Empleado;
 import com.ppai.aplicacion.negocio.Sesion;
 import com.ppai.aplicacion.negocio.Usuario;
 import com.ppai.aplicacion.repo.SesionRepositorio;
@@ -17,6 +18,8 @@ public class SesionServicioImpl implements SesionServicio {
 
     private final UsuarioServicio usuarioServicio;
 
+    private static Sesion sesionActual;
+
     @Autowired
     public SesionServicioImpl(SesionRepositorio sesionRepositorio, UsuarioServicio usuarioServicio) {
         this.sesionRepositorio = sesionRepositorio;
@@ -24,15 +27,20 @@ public class SesionServicioImpl implements SesionServicio {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Sesion> listarSesiones() {
-        return sesionRepositorio.findAll();
-    }
-
-    @Override
     @Transactional
     public void guardarSesion(Sesion sesion) {
         sesionRepositorio.save(sesion);
+    }
+
+    /**
+     * @inheritDoc
+     * Implementación del método getEmpleadoEnSesion().
+     * Método que devuelve el empleado que tiene asociado el usuario de la sesión actual.
+     * @return el empleado logueado.
+     */
+    @Override
+    public Empleado getEmpleadoEnSesion() {
+        return sesionActual.getEmpleadoEnSesion();
     }
 
     /**
@@ -45,7 +53,7 @@ public class SesionServicioImpl implements SesionServicio {
     public Sesion iniciarSesion(String nombreUsuario, String contrasenia) {
         // Primero, se obtienen todos los usuarios.
         List<Usuario> listaUsuarios = usuarioServicio.listarUsuarios();
-        Sesion sesionActual = null;
+        sesionActual = null;
         /* Mientras haya usuarios, le pregunto a cada uno si coinciden con el usuario y contraseña, y
            si además su empleado correspondiente es Responsable de visitas. */
         for (Usuario usuario:
@@ -55,5 +63,14 @@ public class SesionServicioImpl implements SesionServicio {
                 sesionActual = new Sesion(LocalDateTime.now(), usuario);
         }
         return sesionActual;
+    }
+
+    /**
+     * @inheritDoc
+     * Implementación del método guardarSesion().
+     */
+    public void cerrarSesion() {
+        sesionActual.setFechaYHoraFin(LocalDateTime.now());
+        guardarSesion(sesionActual);
     }
 }

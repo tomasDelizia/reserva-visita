@@ -1,4 +1,4 @@
-package com.ppai.aplicacion.servicio.impl;
+package com.ppai.aplicacion.servicio.implementacion;
 
 import com.ppai.aplicacion.negocio.Escuela;
 import com.ppai.aplicacion.repo.EscuelaRepositorio;
@@ -27,5 +27,16 @@ public class EscuelaServicioImpl implements EscuelaServicio {
     @Transactional(readOnly = true)
     public Escuela encontrarPorNombre(String nombreEscuela) {
         return escuelaRepositorio.findByNombre(nombreEscuela);
+    }
+
+    @Override
+    public String[] buscarEscuelas() {
+        List<Escuela> listaEscuelas = listarEscuelas();
+        int cantEscuelas = listaEscuelas.size();
+        String[] escuelas = new String[cantEscuelas];
+        for (int i = 0; i < cantEscuelas; i++) {
+            escuelas[i] = listaEscuelas.get(i).getNombre();
+        }
+        return escuelas;
     }
 }

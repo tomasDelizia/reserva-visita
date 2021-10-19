@@ -11,7 +11,7 @@
     </Region>
     <Label layoutX="14.0" layoutY="113.0" text="Seleccione una escuela:">
     </Label>
-    <ComboBox fx:id="cboEscuelas" disable="true" layoutX="152.0" layoutY="109.0" onAction="#tomarSeleccionEscuela" prefHeight="27.0" prefWidth="220.0" promptText="Escuela..." style="-fx-border-color: #000000;">
+    <ComboBox fx:id="cboEscuelas" disable="true" layoutX="152.0" layoutY="109.0" onAction="#tomarSeleccionEscuela" prefHeight="27.0" prefWidth="220.0" promptText="Selección" style="-fx-border-color: #000000;">
     </ComboBox>
     <TextField fx:id="txtCantidadVisitantes" alignment="CENTER" disable="true" layoutX="570.0" layoutY="111.0" onAction="#tomarCantidadVisitantes" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: white; -fx-border-color: #000000;">
 
@@ -26,7 +26,7 @@
     </Label>
     <Label layoutX="28.0" layoutY="183.0" text="Seleccione una sede a visitar:">
     </Label>
-    <ComboBox fx:id="cboSedes" disable="true" layoutX="216.0" layoutY="179.0" onAction="#tomarSede" prefHeight="27.0" prefWidth="200.0" promptText="Sede..." style="-fx-border-color: #000000;">
+    <ComboBox fx:id="cboSedes" disable="true" layoutX="216.0" layoutY="179.0" onAction="#tomarSede" prefHeight="27.0" prefWidth="200.0" promptText="Selección" style="-fx-border-color: #000000;">
     </ComboBox>
     <Label layoutX="27.0" layoutY="219.0" text="Seleccione un tipo de visita:">
     </Label>
@@ -106,7 +106,7 @@
           <Font name="System Bold" size="15.0" />
         </font>
     </Label>
-   <ComboBox fx:id="cboTiposVisita" disable="true" layoutX="216.0" layoutY="215.0" onAction="#tomarTipoVisita" prefHeight="25.0" prefWidth="200.0" promptText="Tipo de visita..." />
+   <ComboBox fx:id="cboTiposVisita" disable="true" layoutX="216.0" layoutY="215.0" onAction="#tomarTipoVisita" prefHeight="25.0" prefWidth="200.0" promptText="Selección" />
    <Label fx:id="lblErrorGuiasExcedidos" layoutX="231.0" layoutY="500.0" text="Seleccione menos guías" textFill="#fa4d4d" visible="false">
       <font>
          <Font name="System Bold Italic" size="14.0" />

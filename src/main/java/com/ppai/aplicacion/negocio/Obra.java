@@ -75,4 +75,12 @@ public class Obra {
     public LocalTime getDuracionExtendida() {
         return duracionExtendida;
     }
+
+    /**
+     * Método que devuelve la duración resumida de la obra.
+     * @return la duración resumida de la obra en formato de fecha.
+     */
+    public LocalTime getDuracionResumida() {
+        return duracionResumida;
+    }
 }//end Obra

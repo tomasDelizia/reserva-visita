@@ -7,4 +7,6 @@ public interface EscuelaServicio {
     List<Escuela> listarEscuelas();
 
     Escuela encontrarPorNombre(String nombreEscuela);
+
+    String[] buscarEscuelas();
 }

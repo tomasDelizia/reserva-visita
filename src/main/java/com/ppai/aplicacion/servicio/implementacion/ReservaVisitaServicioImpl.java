@@ -1,4 +1,4 @@
-package com.ppai.aplicacion.servicio.impl;
+package com.ppai.aplicacion.servicio.implementacion;
 
 import com.ppai.aplicacion.negocio.ReservaVisita;
 import com.ppai.aplicacion.repo.ReservaVisitaRepositorio;

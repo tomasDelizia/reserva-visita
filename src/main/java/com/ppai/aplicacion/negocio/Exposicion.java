@@ -69,9 +69,16 @@ public class Exposicion {
     private Empleado empleadoCreo;
 
     /**
+     * Método que devuelve el id de la exposición.
+     * @return el id de la exposición.
+     */
+    public int getIdExposicion() {
+        return idExposicion;
+    }
+
+    /**
      * Método que devuelve el nombre de la exposición.
-     *
-     * @return el nombre de la exposición en formato de cadena de texto.
+     * @return el nombre de la exposición.
      */
     public String getNombre() {
         return nombre;
@@ -79,19 +86,18 @@ public class Exposicion {
 
     /**
      * Método que devuelve la hora de apertura de la exposición.
-     *
-     * @return la hora de apertura de la exposición en formato de cadena de texto.
+     * @return la hora de apertura de la exposición.
      */
-    public String getHoraApertura() {
-        return horaApertura.toString();
+    public LocalTime getHoraApertura() {
+        return horaApertura;
     }
 
     /**
      * Método que devuelve la hora de cierre de la exposición.
-     * @return la hora de cierre de la exposición en formato de cadena de texto.
+     * @return la hora de cierre de la exposición.
      */
-    public String getHoraCierre() {
-        return horaCierre.toString();
+    public LocalTime getHoraCierre() {
+        return horaCierre;
     }
 
     /**
@@ -140,10 +146,10 @@ public class Exposicion {
     }
 
     /**
-     * Método para obtener la duración de una exposición.
-     * @return la duración en horas, minutos y segundos en un objeto de tipo LocalTime de la exposición.
+     * Método para obtener la duración extendida de una exposición.
+     * @return la duración extendida en horas, minutos y segundos en un objeto de tipo LocalTime de la exposición.
      */
-    public LocalTime calcularDuracionExposicion() {
+    public LocalTime calcularDuracionExtendida() {
         // Se inicializan contadores para horas, minutos y segundos.
         int horasTotales = 0;
         int minutosTotales = 0;
@@ -151,7 +157,7 @@ public class Exposicion {
         // Mientras la exposición tenga detalles de exposición, obtenemos su duración extendida.
         for (DetalleExposicion detalleExpo:
              detalleExposicion) {
-            LocalTime duracionObra = detalleExpo.getObra().getDuracionExtendida();
+            LocalTime duracionObra = detalleExpo.getDuracionExtendida();
             // Añadimos la duración (horas, minutos y segundos) de cada detalle a los contadores.
             horasTotales += duracionObra.getHour();
             minutosTotales += duracionObra.getMinute();
@@ -168,10 +174,38 @@ public class Exposicion {
     }
 
     /**
-     * Método para saber si la exposición tiene el mismo nombre que el pasado por parámetro.
-     * @return verdadero si su nombre coincide con el pasado por parámetro, y falso en cualquier otro caso.
+     * Método para obtener la duración resumida de una exposición.
+     * @return la duración resumida en horas, minutos y segundos en un objeto de tipo LocalTime de la exposición.
      */
-    public boolean esTuNombre(String nombreExposicion) {
-        return nombre.equals(nombreExposicion);
+    public LocalTime calcularDuracionResumida() {
+        // Se inicializan contadores para horas, minutos y segundos.
+        int horasTotales = 0;
+        int minutosTotales = 0;
+        int segundosTotales = 0;
+        // Mientras la exposición tenga detalles de exposición, obtenemos su duración extendida.
+        for (DetalleExposicion detalleExpo:
+                detalleExposicion) {
+            LocalTime duracionObra = detalleExpo.getDuracionResumida();
+            // Añadimos la duración (horas, minutos y segundos) de cada detalle a los contadores.
+            horasTotales += duracionObra.getHour();
+            minutosTotales += duracionObra.getMinute();
+            segundosTotales += duracionObra.getSecond();
+        }
+        // Creamos un objeto duración para obtener la duración total sumando los 3 contadores.
+        Duration duracionTotal = Duration.
+                ofHours(horasTotales).
+                plusMinutes(minutosTotales).
+                plusSeconds(segundosTotales);
+        // Retornamos el objeto duración convertido apropiadamente al tipo LocalTime.
+        return LocalTime.of(
+                duracionTotal.toHoursPart(), duracionTotal.toMinutesPart(), duracionTotal.toSecondsPart());
+    }
+
+    /**
+     * Método para saber si la exposición tiene el mismo id que el pasado por parámetro.
+     * @return verdadero si su id coincide con el pasado por parámetro, y falso en cualquier otro caso.
+     */
+    public boolean esTuId(int idExposicion) {
+        return this.idExposicion == idExposicion;
     }
 }//end Exposicion

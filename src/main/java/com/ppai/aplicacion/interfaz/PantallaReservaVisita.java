@@ -2,15 +2,19 @@ package com.ppai.aplicacion.interfaz;
 
 import com.ppai.aplicacion.controlador.ControladorReservaVisita;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 
 /**
  * Clase de interfaz que se encarga de la lógica de presentación para el CU Registrar Reserva de Visita Guiada.
@@ -37,6 +41,10 @@ public class PantallaReservaVisita extends PantallaBase {
 
 	@FXML
 	private DatePicker dateFechaVisita;
+
+	@FXML
+	private TimeSpinner timeSpinnerHoraVisita;
+
 
 
 	@Autowired
@@ -69,11 +77,10 @@ public class PantallaReservaVisita extends PantallaBase {
 
 	/**
 	 * Método que recibe una lista de escuelas y las muestra por pantalla.
-	 * @param listaEscuelas la lista con los nombres de las escuelas a mostrar.
+	 * @param escuelas la lista con los nombres de las escuelas a mostrar.
 	 */
-	public void presentarEscuelas(List<String> listaEscuelas) {
-		cboEscuelas.getItems().clear();
-		cboEscuelas.setItems(FXCollections.observableArrayList(listaEscuelas));
+	public void presentarEscuelas(String[] escuelas) {
+		cargarComboBox(cboEscuelas, escuelas);
 	}
 
 	/**
@@ -94,35 +101,39 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * Método que habilita para el usuario el ingreso de la cantidad de visitantes.
 	 */
 	public void solicitarCantidadVisitantes(){
-		txtCantidadVisitantes.setDisable(false);
+		if (txtCantidadVisitantes.isDisabled())
+			txtCantidadVisitantes.setDisable(false);
 	}
 
 	/**
 	 * Método que toma la cantidad de visitantes y verifica que sea una cantidad correcta.
 	 */
 	public void tomarCantidadVisitantes(){
-		int visitantes = Integer.parseInt(txtCantidadVisitantes.getText());
-		lblCantidadValida.setVisible(visitantes < 1);
-		// Si la cantidad es correcta, se procede con el caso de uso.
-		if (visitantes > 0) {
-			controladorReservaVisita.cantidadDeVisitantesIngresados(visitantes);
+		try {
+			int cantidadVisitantes = Integer.parseInt(txtCantidadVisitantes.getText());
+			lblCantidadValida.setVisible(cantidadVisitantes < 1);
+			// Si la cantidad es correcta, se procede con el caso de uso.
+			if (cantidadVisitantes > 0)
+				controladorReservaVisita.cantidadDeVisitantesIngresados(cantidadVisitantes);
+		} catch (NumberFormatException e) {
+			txtCantidadVisitantes.setText("");
 		}
 	}
 
 	/**
 	 * Método que recibe por parámetro una lista de sedes y las muestra al usuario para su selección.
-	 * @param listaSedes la lista con los nombres de las sedes a mostrar.
+	 * @param sedes la lista con los nombres de las sedes a mostrar.
 	 */
-	public void presentarSedes(List<String> listaSedes){
-		cboSedes.getItems().clear();
-		cboSedes.setItems(FXCollections.observableArrayList(listaSedes));
+	public void presentarSedes(String[] sedes){
+		cargarComboBox(cboSedes, sedes);
 	}
 
 	/**
 	 * Método que habilita la selección de una sede por parte del usuario.
 	 */
 	public void solicitarSeleccionSede(){
-		cboSedes.setDisable(false);
+		if (cboSedes.isDisabled())
+			cboSedes.setDisable(false);
 	}
 
 	/**
@@ -134,18 +145,18 @@ public class PantallaReservaVisita extends PantallaBase {
 
 	/**
 	 * Método que recibe por parámetro una lista de tipos de visita y las muestra al usuario para su selección.
-	 * @param listaTiposVisita la lista con los tipos de visita a mostrar.
+	 * @param tiposVisita la lista con los tipos de visita a mostrar.
 	 */
-	public void presentarTiposVisita(List<String> listaTiposVisita) {
-		cboTiposVisita.getItems().clear();
-		cboTiposVisita.setItems(FXCollections.observableArrayList(listaTiposVisita));
+	public void presentarTiposVisita(String[] tiposVisita) {
+		cargarComboBox(cboTiposVisita, tiposVisita);
 	}
 
 	/**
 	 * Método que habilita la selección de un tipo de visita.
 	 */
 	public void solicitarSeleccionTipoVisita(){
-		cboTiposVisita.setDisable(false);
+		if (cboTiposVisita.isDisabled())
+			cboTiposVisita.setDisable(false);
 	}
 
 	/**
@@ -166,22 +177,20 @@ public class PantallaReservaVisita extends PantallaBase {
 
 	/**
 	 * Método que recibe una lista de exposiciones y las muestra por pantalla.
-	 * @param datosExposiciones las exposiciones con sus datos generales a mostrar para la selección del usuario.
+	 * @param exposiciones las exposiciones con sus datos generales a mostrar para la selección del usuario.
 	 */
-	public void presentarExposicionesTemporalesYVigentes(String[][] datosExposiciones) {
-		tablaDatosExposiciones.getItems().clear();
-		// Inicializamos columnas
-		String[] titulos = {"Exposición", "Públicos Destino", "Hora apertura", "Hora cierre"};
-		inicializarTabla(tablaDatosExposiciones, datosExposiciones, titulos);
+	public void presentarExposicionesTemporalesYVigentes(String[][] exposiciones) {
+		String[] titulosColumnas = {"Id", "Exposición", "Públicos Destino", "Hora apertura", "Hora cierre"};
+		cargarTabla(tablaDatosExposiciones, exposiciones, titulosColumnas);
 		tomarSeleccionExposicion();
-
 	}
 
 	/**
 	 * Método que habilita la selección de las exposiciones.
 	 */
 	public void solicitarSeleccionExposiciones(){
-		tablaDatosExposiciones.setDisable(false);
+		if (tablaDatosExposiciones.isDisabled())
+			tablaDatosExposiciones.setDisable(false);
 	}
 
 	/**
@@ -189,6 +198,9 @@ public class PantallaReservaVisita extends PantallaBase {
 	 */
 	public void tomarSeleccionExposicion() {
 		TableColumn<String[], CheckBox> seleccion = new TableColumn<>("Selección");
+		seleccion.prefWidthProperty().bind(tablaDatosExposiciones.widthProperty()
+				.divide(tablaDatosExposiciones.getColumns().size()));
+		seleccion.setResizable(false);
 		seleccion.setCellValueFactory(
 				exposicionBooleanCellDataFeatures -> {
 					String[] datosExpo = exposicionBooleanCellDataFeatures.getValue();
@@ -197,10 +209,10 @@ public class PantallaReservaVisita extends PantallaBase {
 					checkBox.selectedProperty().addListener((observableValue, valorAnterior, valorNuevo) -> {
 						// Toma la selección de una exposición.
 						if (valorNuevo)
-							controladorReservaVisita.exposicionSeleccionada(datosExpo[0]);
+							controladorReservaVisita.exposicionSeleccionada(Integer.parseInt(datosExpo[0]));
 						// Toma la deselección de una exposición.
 						if (!valorNuevo)
-							controladorReservaVisita.exposicionDeseleccionada(datosExpo[0]);
+							controladorReservaVisita.exposicionDeseleccionada(Integer.parseInt(datosExpo[0]));
 					});
 					return new SimpleObjectProperty<>(checkBox);
 				});
@@ -210,7 +222,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que habilita el ingreso de una fecha y hora para la reserva.
 	 */
-	public void solicitarFechaYHoraReserva(){
+	public void solicitarFechaYHoraReserva() {
 		dateFechaVisita.setDisable(false);
 		txtHoraVisita.setDisable(false);
 		txtMinutoVisita.setDisable(false);
@@ -219,7 +231,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que deshabilita el ingreso de una fecha y hora para la reserva.
 	 */
-	public void deshabilitarSeleccionFechaYHoraReserva(){
+	public void deshabilitarSeleccionFechaYHoraReserva() {
 		dateFechaVisita.setDisable(true);
 		txtHoraVisita.setDisable(true);
 		txtMinutoVisita.setDisable(true);
@@ -228,7 +240,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	/**
 	 * Método que toma la fecha y hora ingresados y verifica que sean válidos.
 	 */
-	public void tomarFechaYHoraReserva(){
+	public void tomarFechaYHoraReserva() {
 		int horaVisita = Integer.parseInt(txtHoraVisita.getText());
 		int minutoVisita = Integer.parseInt(txtMinutoVisita.getText());
 		LocalDate fechaIngresada = dateFechaVisita.getValue();
@@ -257,9 +269,9 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * Método que muestra la duración estimada de la exposición por pantalla.
 	 * @param duracionEstimada la duración estima de la exposición a mostrar.
 	 */
-	public void presentarDuracionEstimada(LocalTime duracionEstimada) {
+	public void presentarDuracionEstimada(String duracionEstimada) {
 		txtDuracionEstimada.setDisable(false);
-		txtDuracionEstimada.setText(duracionEstimada.toString());
+		txtDuracionEstimada.setText(duracionEstimada);
 	}
 
 	/**
@@ -275,24 +287,15 @@ public class PantallaReservaVisita extends PantallaBase {
 	 * @param datosGuiasDisponibles la lista con los nombres y apellidos de los guías disponibles para seleccionar.
 	 * @param cantidadGuiasNecesarios la cantidad de guías necesarios a seleccionar.
 	 */
-	public void presentarGuiasDisponibles(String[][] datosGuiasDisponibles, Integer cantidadGuiasNecesarios){
+	public void presentarGuiasDisponibles(String[][] datosGuiasDisponibles, int cantidadGuiasNecesarios){
 		if (lblErrorLimiteSedeSuperado.isVisible())
 			lblErrorLimiteSedeSuperado.setVisible(false);
 		tablaDatosGuias.getItems().clear();
 		// Inicializamos columnas.
-		String[] titulos = {"Nombre", "Apellido"};
-		inicializarTabla(tablaDatosGuias, datosGuiasDisponibles, titulos);
-		tomarSeleccionGuiaDisponible(cantidadGuiasNecesarios);
-	}
-
-	/**
-	 * Método que informa que se seleccionaron más guías de los necesarios.
-	 */
-	public void informarGuiasExcedidos() {
-		if (!lblErrorGuiasExcedidos.isVisible()) {
-			lblErrorGuiasExcedidos.setVisible(true);
-			btnConfirmar.setDisable(true);
-		}
+		String[] titulos = {"Id", "Nombre", "Apellido"};
+		cargarTabla(tablaDatosGuias, datosGuiasDisponibles, titulos);
+		tomarSeleccionGuiaDisponible();
+		lblCantidadGuias.setText(String.valueOf(cantidadGuiasNecesarios));
 	}
 
 	/**
@@ -304,9 +307,8 @@ public class PantallaReservaVisita extends PantallaBase {
 
 	/**
 	 * Método que toma la selección o deselección de un guía por parte del usuario y se lo pasa al controlador.
-	 * @param cantidadGuiasNecesarios la cantidad actual de guías que se necesitan seleccionar.
 	 */
-	public void tomarSeleccionGuiaDisponible(Integer cantidadGuiasNecesarios){
+	public void tomarSeleccionGuiaDisponible(){
 		TableColumn<String[], CheckBox> seleccion = new TableColumn<>("Selección");
 		seleccion.setCellValueFactory(
 				guiaBooleanCellDataFeatures -> {
@@ -314,59 +316,72 @@ public class PantallaReservaVisita extends PantallaBase {
 					CheckBox checkBox = new CheckBox();
 					checkBox.selectedProperty().setValue(false);
 					checkBox.selectedProperty().addListener((observableValue, valorAnterior, valorNuevo) -> {
+						int cantGuiasASeleccionar = Integer.parseInt(lblCantidadGuias.getText());
 						// Toma la selección de un guía.
 						if (valorNuevo) {
 							// Actualizamos la cantidad hasta que no se llegue a la cantidad requerida.
-							if (Integer.parseInt(lblCantidadGuias.getText()) > 0) {
-								if (!lblErrorGuiasExcedidos.isVisible())
-									lblErrorGuiasExcedidos.setVisible(false);
-								if (!btnConfirmar.isDisabled())
-									btnConfirmar.setDisable(true);
-								int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
-								lblCantidadGuias.setText(Integer.toString(cantidadGuias));
+							if (cantGuiasASeleccionar > 0) {
+								ocultarGuiasExcedidos();
+								ocultarConfirmacionReserva();
+								cantGuiasASeleccionar --;
+								lblCantidadGuias.setText(Integer.toString(cantGuiasASeleccionar));
 								controladorReservaVisita
-										.guiaDisponibleSeleccionado(datosGuia[0], datosGuia[1]);
+										.guiaDisponibleSeleccionado(Integer.parseInt(datosGuia[0]));
 							}
 							// Se informa un error cuando se seleccionan más guías de los requeridos.
-							else if (Integer.parseInt(lblCantidadGuias.getText()) == 0) {
+							else if (cantGuiasASeleccionar == 0) {
 								informarGuiasExcedidos();
-								int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) - 1;
-								lblCantidadGuias.setText(Integer.toString(cantidadGuias));
+								ocultarConfirmacionReserva();
 							}
 						}
+
 						// Toma la deselección de un guía.
 						if (!valorNuevo) {
 							// Actualizamos la cantidad hasta que no se llegue a la cantidad requerida.
-							if (Integer.parseInt(lblCantidadGuias.getText()) >= 0) {
-								int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) + 1;
-								lblCantidadGuias.setText(Integer.toString(cantidadGuias));
+							if (cantGuiasASeleccionar >= 0) {
+								ocultarConfirmacionReserva();
+								cantGuiasASeleccionar ++;
+								lblCantidadGuias.setText(Integer.toString(cantGuiasASeleccionar));
 								controladorReservaVisita
-										.guiaDisponibleDeseleccionado(datosGuia[0], datosGuia[1]);
-							}
-							else {
-								int cantidadGuias = Integer.parseInt(lblCantidadGuias.getText()) + 1;
-								lblCantidadGuias.setText(Integer.toString(cantidadGuias));
-								if (cantidadGuias == 0) {
-									lblErrorGuiasExcedidos.setVisible(false);
-									btnConfirmar.setDisable(false);
-								}
+										.guiaDisponibleDeseleccionado(Integer.parseInt(datosGuia[0]));
 							}
 						}
 					});
 					return new SimpleObjectProperty<>(checkBox);
 				});
 		tablaDatosGuias.getColumns().add(seleccion);
-		lblCantidadGuias.setText(cantidadGuiasNecesarios.toString());
 	}
 
 	/**
 	 * Método que habilita el botón de confirmación de la reserva.
 	 */
 	public void solicitarConfirmacionReserva() {
-		if (lblErrorGuiasExcedidos.isVisible())
-			lblErrorGuiasExcedidos.setVisible(false);
 		if (btnConfirmar.isDisabled())
 			btnConfirmar.setDisable(false);
+	}
+
+	/**
+	 * Método que oculta el botón de confirmación de la reserva.
+	 */
+	public void ocultarConfirmacionReserva() {
+		if (!btnConfirmar.isDisabled())
+			btnConfirmar.setDisable(true);
+	}
+
+	/**
+	 * Método que informa que se seleccionaron más guías de los necesarios.
+	 */
+	public void informarGuiasExcedidos() {
+		if (!lblErrorGuiasExcedidos.isVisible())
+			lblErrorGuiasExcedidos.setVisible(true);
+	}
+
+	/**
+	 * Método que quita el mensaje que informa que se seleccionaron más guías de los necesarios.
+	 */
+	public void ocultarGuiasExcedidos() {
+		if (lblErrorGuiasExcedidos.isVisible())
+			lblErrorGuiasExcedidos.setVisible(false);
 	}
 
 	/**

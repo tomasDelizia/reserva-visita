@@ -1,4 +1,4 @@
-package com.ppai.aplicacion.servicio.impl;
+package com.ppai.aplicacion.servicio.implementacion;
 
 import com.ppai.aplicacion.negocio.Empleado;
 import com.ppai.aplicacion.repo.EmpleadoRepositorio;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpleadoServicioImpl implements EmpleadoServicio {
@@ -26,7 +27,7 @@ public class EmpleadoServicioImpl implements EmpleadoServicio {
 
     @Override
     @Transactional(readOnly = true)
-    public Empleado encontrarEmpleadoPorNombreYApellido(String nombreEmpleado, String apellidoEmpleado) {
-        return empleadoRepositorio.findByNombreAndApellido(nombreEmpleado, apellidoEmpleado);
+    public Empleado encontrarEmpleadoPorId(int idEmpleado) {
+        return empleadoRepositorio.findById(idEmpleado).orElse(null);
     }
 }

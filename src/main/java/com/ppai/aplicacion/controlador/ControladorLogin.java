@@ -45,10 +45,8 @@ public class ControladorLogin {
         Sesion sesionActual = sesionServicio.iniciarSesion(nombreUsuario, contrasenia);
 
         // Si se encontró el usuario correspondiente, se informa un mensaje de éxito en la pantalla.
-        if (sesionActual != null) {
-            controladorNuevaReservaVisita.setSesionActual(sesionActual);
+        if (sesionActual != null)
             pantallaPrincipal.habilitarPantalla();
-        }
 
         // Si no, se informa un mensaje de ingreso fallido.
         else
