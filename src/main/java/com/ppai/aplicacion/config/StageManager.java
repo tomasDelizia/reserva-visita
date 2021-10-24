@@ -2,7 +2,7 @@ package com.ppai.aplicacion.config;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import java.util.Objects;
-import com.ppai.aplicacion.interfaz.FxmlView;
+import com.ppai.aplicacion.presentacion.FxmlView;
 import org.slf4j.Logger;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -34,8 +34,6 @@ public class StageManager {
     
     private void show(final Parent rootnode, String title) {
         Scene scene = prepareScene(rootnode);
-        // scene.getStylesheets().add("/styles/Styles.css");
-        // primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
@@ -75,10 +73,8 @@ public class StageManager {
         return rootNode;
     }
     
-    
     private void logAndExit(String errorMsg, Exception exception) {
         LOG.error(errorMsg, exception, exception.getCause());
         Platform.exit();
     }
-
 }//end StageManager

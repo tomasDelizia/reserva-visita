@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="360.0" prefWidth="753.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.interfaz.PantallaLogin">
+<AnchorPane prefHeight="360.0" prefWidth="753.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.presentacion.presentacion_usuarios.PantallaLogin">
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0f0f0f" height="414.0" layoutX="282.0" stroke="WHITE" strokeType="INSIDE" width="475.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="282.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0" />
     <Label layoutX="426.0" layoutY="44.0" text="Bienvenido" textFill="DIMGRAY">
         <font>
