@@ -1,7 +1,7 @@
 package com.ppai.aplicacion.presentacion.presentacion_usuarios;
 
 import com.ppai.aplicacion.negocio.usuario.controlador.ControladorLogin;
-import com.ppai.aplicacion.presentacion.PantallaBase;
+import com.ppai.aplicacion.presentacion.Pantalla;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class PantallaLogin extends PantallaBase {
+public class PantallaLogin extends Pantalla {
     private ControladorLogin controladorLogin;
 
     @FXML

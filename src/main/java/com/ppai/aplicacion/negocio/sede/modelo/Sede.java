@@ -244,4 +244,13 @@ public class Sede {
         else
             return cantidadVisitantes / cantidadMaximaVisitantesPorGuia;
     }
+
+    /**
+     * Método para saber si el nombre de la sede pasada por parámetro corresponde al nombre de esta sede.
+     * @param nombreSede el nombre de la sede.
+     * @return verdadero si el nombre es igual al nombre de la sede.
+     */
+    public boolean esTuNombre(String nombreSede) {
+        return nombre.equals(nombreSede);
+    }
 }//end Sede

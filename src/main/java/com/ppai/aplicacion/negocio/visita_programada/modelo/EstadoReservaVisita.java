@@ -1,11 +1,6 @@
 package com.ppai.aplicacion.negocio.visita_programada.modelo;
 
-import com.ppai.aplicacion.negocio.empleado.modelo.Empleado;
-import com.ppai.aplicacion.negocio.exposicion.modelo.Exposicion;
-import com.ppai.aplicacion.negocio.sede.modelo.Sede;
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -30,20 +25,6 @@ public abstract class EstadoReservaVisita {
 
 
     public EstadoReservaVisita() {}
-
-    public void crearReservaVisita(
-            int numeroReserva,
-            int cantidadAlumnos,
-            LocalDateTime fechaYHoraCreacion,
-            LocalDateTime fechaYHoraReserva,
-            LocalTime duracionEstimada,
-            Escuela escuela,
-            Sede sede,
-            Empleado empleadoCreo,
-            List<Exposicion> exposicion,
-            List<Empleado> guiasSeleccionados,
-            ReservaVisita reservaVisita
-    ) {}
 
     public void notificarEscuelas(List<Escuela> escuelasANotificar, ReservaVisita reservaVisita) {}
 

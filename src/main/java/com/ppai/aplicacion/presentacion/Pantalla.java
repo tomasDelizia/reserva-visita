@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public abstract class PantallaBase implements Initializable {
+public abstract class Pantalla implements Initializable {
     protected StageManager stageManager;
 
     @Lazy

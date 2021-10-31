@@ -1,11 +1,8 @@
 package com.ppai.aplicacion.presentacion.presentacion_visitas_programadas;
 
 import com.ppai.aplicacion.negocio.visita_programada.controlador.ControladorReservaVisita;
-import com.ppai.aplicacion.negocio.visita_programada.estrategia.EstrategiaCalculoDuracionReserva;
-import com.ppai.aplicacion.negocio.visita_programada.estrategia.EstrategiaVisitaCompleta;
-import com.ppai.aplicacion.negocio.visita_programada.estrategia.EstrategiaVisitaPorExposicion;
 import com.ppai.aplicacion.presentacion.FxmlView;
-import com.ppai.aplicacion.presentacion.PantallaBase;
+import com.ppai.aplicacion.presentacion.Pantalla;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -21,7 +18,7 @@ import java.time.LocalTime;
  * Clase de interfaz que se encarga de la lógica de presentación para el CU Registrar Reserva de Visita Guiada.
  */
 @Controller
-public class PantallaReservaVisita extends PantallaBase {
+public class PantallaReservaVisita extends Pantalla {
 	private ControladorReservaVisita controladorReservaVisita;
 
 	@FXML
@@ -166,10 +163,6 @@ public class PantallaReservaVisita extends PantallaBase {
 	 */
 	public void tomarTipoVisita() {
 		String tipoVisita = cboTiposVisita.getValue();
-//		switch (tipoVisita) {
-//			case "Completa" -> controladorReservaVisita.setEstrategia(new EstrategiaVisitaCompleta());
-//			case "Por Exposición" -> controladorReservaVisita.setEstrategia(new EstrategiaVisitaPorExposicion());
-//		}
 		controladorReservaVisita.tipoVisitaSeleccionado(tipoVisita);
 	}
 
@@ -178,7 +171,7 @@ public class PantallaReservaVisita extends PantallaBase {
 	 */
 	public void informarSeleccionTipoVisitaPorExposicion() {
 		mostrarAdvertencia("Advertencia",
-				"Aplicación en etapa de desarrollo. Seleccione el tipo de visita 'Por Exposición' para continuar");
+				"Aplicación en etapa de desarrollo. Seleccione el tipo de visita 'Por Exposición' para continuar.");
 	}
 
 	/**

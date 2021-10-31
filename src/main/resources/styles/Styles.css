@@ -8,3 +8,7 @@
 	-fx-background-color: DODGERBLUE;
 }
 
+.fuente{
+	-fx-font-family: "Century Gothic";
+	-fx-font-size: 14;
+}

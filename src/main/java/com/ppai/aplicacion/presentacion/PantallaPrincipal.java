@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class PantallaPrincipal extends PantallaBase {
+public class PantallaPrincipal extends Pantalla {
     private PantallaReservaVisita pantallaReservaVisita;
     private ControladorPrincipal controladorPrincipal;
 

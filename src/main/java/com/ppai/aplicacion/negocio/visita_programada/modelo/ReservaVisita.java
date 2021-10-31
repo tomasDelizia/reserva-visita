@@ -4,6 +4,7 @@ import com.ppai.aplicacion.negocio.empleado.modelo.AsignacionGuia;
 import com.ppai.aplicacion.negocio.empleado.modelo.Empleado;
 import com.ppai.aplicacion.negocio.exposicion.modelo.Exposicion;
 import com.ppai.aplicacion.negocio.sede.modelo.Sede;
+import com.ppai.aplicacion.negocio.visita_programada.estado.PendienteDeConfirmacion;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clase que representa las entidades persistentes Reservas dde Visita Guiada.
+ * Clase que representa las entidades persistentes Reservas de Visita Guiada.
  */
 @Entity
 @Table(name = "RESERVAS_DE_VISITA", schema = "dbo", catalog = "MUSEO_PICTORICO")
@@ -69,7 +70,7 @@ public class ReservaVisita {
             name = "EXPOSICIONES_X_RESERVAS",
             joinColumns = @JoinColumn(name = "id_reserva"),
             inverseJoinColumns = @JoinColumn(name = "id_exposicion"))
-    private List<Exposicion> exposicion;
+    private List<Exposicion> exposicion = new ArrayList<>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.ALL)
@@ -77,7 +78,7 @@ public class ReservaVisita {
             name = "CAMBIOS_DE_ESTADO_DE_RESERVAS",
             joinColumns = @JoinColumn(name = "id_reserva"),
             inverseJoinColumns = @JoinColumn(name = "id_cambio_de_estado"))
-    private List<CambioEstadoReserva> cambioEstadoReserva;
+    private List<CambioEstadoReserva> cambioEstadoReserva = new ArrayList<>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.ALL)
@@ -85,7 +86,7 @@ public class ReservaVisita {
             name = "CAMBIOS_DE_ESTADO_DE_RESERVAS",
             joinColumns = @JoinColumn(name = "id_reserva"),
             inverseJoinColumns = @JoinColumn(name = "id_cambio_de_estado"))
-    private List<CambioEstadoReservaVisita> cambioEstadoReservaVisita;
+    private List<CambioEstadoReservaVisita> cambioEstadoReservaVisita = new ArrayList<>();
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.ALL)
@@ -93,13 +94,10 @@ public class ReservaVisita {
             name = "ASIGNACIONES_DE_GUIA_X_RESERVA",
             joinColumns = @JoinColumn(name = "id_reserva"),
             inverseJoinColumns = @JoinColumn(name = "id_asignacion"))
-    private List<AsignacionGuia> asignacionGuia;
+    private List<AsignacionGuia> asignacionGuia = new ArrayList<>();
 
 
-    public ReservaVisita(){
-        cambioEstadoReservaVisita = new ArrayList<>();
-        asignacionGuia = new ArrayList<>();
-    };
+    public ReservaVisita(){};
 
     /**
      * Método contructor de la una reserva de visita.
@@ -137,16 +135,12 @@ public class ReservaVisita {
         this.empleadoCreo = empleadoCreo;
         this.exposicion = exposicion;
 
-        cambioEstadoReserva = new ArrayList<>();
         CambioEstadoReserva nuevoCambioEstado =
                 new CambioEstadoReserva(estadoPendiente, fechaYHoraCreacion);
         cambioEstadoReserva.add(nuevoCambioEstado);
 
-        LocalDateTime fechaYHoraFinReserva = fechaYHoraReserva
-                .plusHours(duracionEstimada.getHour())
-                .plusMinutes(duracionEstimada.getMinute());
+        LocalDateTime fechaYHoraFinReserva = getFechaYHoraFinReserva();
 
-        asignacionGuia = new ArrayList<>();
         for (Empleado guia :
                 guiasSeleccionados) {
             AsignacionGuia asignacionGuia = new AsignacionGuia(
@@ -177,25 +171,29 @@ public class ReservaVisita {
                          Sede sede,
                          Empleado empleadoCreo,
                          List<Exposicion> exposicionesAVisitar,
-                         List<Empleado> guiasSeleccionados,
-                         EstadoReservaVisita estadoInicial
+                         List<Empleado> guiasSeleccionados
     ) {
-        cambioEstadoReservaVisita = new ArrayList<>();
-        asignacionGuia = new ArrayList<>();
+        this.numeroReserva = numeroReserva;
+        this.cantidadAlumnos = cantidadAlumnos;
+        this.fechaYHoraCreacion = fechaYHoraCreacion;
+        this.fechaYHoraReserva = fechaYHoraReserva;
+        this.duracionEstimada = duracionEstimada;
+        this.escuela = escuela;
+        this.sede = sede;
+        this.empleadoCreo = empleadoCreo;
+        this.exposicion = exposicionesAVisitar;
 
-        estadoInicial.crearReservaVisita(
-                numeroReserva,
-                cantidadAlumnos,
-                fechaYHoraCreacion,
-                fechaYHoraReserva,
-                duracionEstimada,
-                escuela,
-                sede,
-                empleadoCreo,
-                exposicionesAVisitar,
-                guiasSeleccionados,
-                this
-                );
+        LocalDateTime fechaYHoraFinReserva = getFechaYHoraFinReserva();
+
+        for (Empleado guia :
+                guiasSeleccionados) {
+            AsignacionGuia asignacionGuia = new AsignacionGuia(guia, fechaYHoraReserva, fechaYHoraFinReserva);
+            addAsignacionGuia(asignacionGuia);
+        }
+
+        EstadoReservaVisita estadoInicial = new PendienteDeConfirmacion();
+        CambioEstadoReservaVisita cambioEstado = new CambioEstadoReservaVisita(estadoInicial, fechaYHoraCreacion);
+        addCambioEstado(cambioEstado);
     }
 
     /**
@@ -286,79 +284,7 @@ public class ReservaVisita {
      * @return verdadero si esta reserva de visita corresponde a la sede.
      */
     public boolean esTuSede(Sede sede) {
-        return sede.getNombre().equals(this.sede.getNombre());
-    }
-
-    /**
-     * Método para tomar el número de reserva de la visita.
-     * @param numeroReserva el número de reserva de la visita.
-     */
-    public void setNumeroReserva(int numeroReserva) {
-        this.numeroReserva = numeroReserva;
-    }
-
-    /**
-     * Método para tomar la cantidad de alumnos de la visita.
-     * @param cantidadAlumnos la cantidad de alumnos de la visita.
-     */
-    public void setCantidadAlumnos(int cantidadAlumnos) {
-        this.cantidadAlumnos = cantidadAlumnos;
-    }
-
-    /**
-     * Método para tomar la fecha y hora de creación de la visita.
-     * @param fechaYHoraCreacion la fecha y hora de creación de la visita.
-     */
-    public void setFechaYHoraCreacion(LocalDateTime fechaYHoraCreacion) {
-        this.fechaYHoraCreacion = fechaYHoraCreacion;
-    }
-
-    /**
-     * Método para tomar la fecha y hora de la reserva.
-     * @param fechaYHoraReserva la fecha y hora de la reserva.
-     */
-    public void setFechaYHoraReserva(LocalDateTime fechaYHoraReserva) {
-        this.fechaYHoraReserva = fechaYHoraReserva;
-    }
-
-    /**
-     * Método para tomar la duración estimada de la visita.
-     * @param duracionEstimada la duración estimada de la visita.
-     */
-    public void setDuracionEstimada(LocalTime duracionEstimada) {
-        this.duracionEstimada = duracionEstimada;
-    }
-
-    /**
-     * Método para tomar la escuela que realizará la visita.
-     * @param escuela la escuela que realizará la visita.
-     */
-    public void setEscuela(Escuela escuela) {
-        this.escuela = escuela;
-    }
-
-    /**
-     * Método para tomar la sede donde se realizará la visita.
-     * @param sede la sede donde se realizará la visita.
-     */
-    public void setSede(Sede sede) {
-        this.sede = sede;
-    }
-
-    /**
-     * Método para tomar el responsable de visitas que registró la visita.
-     * @param empleadoCreo el responsable de visitas que registró la visita.
-     */
-    public void setEmpleadoCreo(Empleado empleadoCreo) {
-        this.empleadoCreo = empleadoCreo;
-    }
-
-    /**
-     * Métoodo para tomar la lista de exposiciones que se visitarán.
-     * @param exposicion la lista de exposiciones que se visitarán.
-     */
-    public void setExposicion(List<Exposicion> exposicion) {
-        this.exposicion = exposicion;
+        return sede.esTuNombre(this.sede.getNombre());
     }
 
     /**

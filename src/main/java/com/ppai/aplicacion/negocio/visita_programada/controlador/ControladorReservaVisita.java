@@ -5,8 +5,6 @@ import com.ppai.aplicacion.negocio.empleado.servicio.EmpleadoServicio;
 import com.ppai.aplicacion.negocio.sede.servicio.SedeServicio;
 import com.ppai.aplicacion.negocio.usuario.servicio.SesionServicio;
 import com.ppai.aplicacion.negocio.venta_entradas.servicio.TipoVisitaServicio;
-import com.ppai.aplicacion.negocio.visita_programada.estado.PendienteDeConfirmacion;
-import com.ppai.aplicacion.negocio.visita_programada.modelo.EstadoReservaVisita;
 import com.ppai.aplicacion.negocio.visita_programada.servicio.EscuelaServicio;
 import com.ppai.aplicacion.negocio.visita_programada.servicio.EstadoReservaServicio;
 import com.ppai.aplicacion.negocio.visita_programada.servicio.ReservaVisitaServicio;
@@ -159,6 +157,7 @@ public class ControladorReservaVisita {
 	public void tipoVisitaSeleccionado(String tipoVisitaSeleccionado) {
 		TipoVisita tipoVisitaIngresado = tipoVisitaServicio.encontrarPorNombre(tipoVisitaSeleccionado);
 		crearEstrategia(tipoVisitaIngresado);
+		// Solo si se selecciona el tipo de visita "Por Exposición" se continúa con el caso de uso.
 		if (tipoVisitaIngresado.esPorExposicion()) {
 			buscarExposicionesTemporalesYVigentes();
 			pantallaReservaVisita.presentarExposicionesTemporalesYVigentes(exposicionesTemporalesYVigentes);
@@ -169,18 +168,14 @@ public class ControladorReservaVisita {
 			pantallaReservaVisita.informarSeleccionTipoVisitaPorExposicion();
 	}
 
-	private void crearEstrategia(TipoVisita tipoVisitaIngresado) {
-		// Si se selecciona el tipo de visita "Por Exposición", se continúa con el caso de uso.
-		if (tipoVisitaIngresado.esPorExposicion())
-			estrategiaCalculoDuracionReserva = new EstrategiaVisitaPorExposicion();
-	}
-
 	/**
-	 * Método para tomar la estrategia de cálculo de la duración de la reserva.
-	 * @param estrategiaCalculoDuracionReserva
+	 * Método para crear la estrategia apropiada de cálculo de duración de reserva en función del tipo de visita.
+	 * @param tipoVisitaIngresado el tipo de visita ingresado.
 	 */
-	public void setEstrategia(EstrategiaCalculoDuracionReserva estrategiaCalculoDuracionReserva) {
-		this.estrategiaCalculoDuracionReserva = estrategiaCalculoDuracionReserva;
+	private void crearEstrategia(TipoVisita tipoVisitaIngresado) {
+		// Si se selecciona el tipo de visita "Por Exposición", se asigna la estrategia correspondiente.
+		if (tipoVisitaIngresado.esPorExposicion())
+			this.estrategiaCalculoDuracionReserva = new EstrategiaVisitaPorExposicion();
 	}
 
 	/**
@@ -333,7 +328,6 @@ public class ControladorReservaVisita {
 		generarNroReserva();
 		getFechaYHoraActual();
 		getEmpleadoEnSesion();
-		buscarEstadoPendienteDeConfirmacion();
 		// Se genera una nueva reserva de visita con todos los datos obtenidos.
 		ReservaVisita nuevaReserva = new ReservaVisita(
 				numeroReserva,
@@ -345,34 +339,7 @@ public class ControladorReservaVisita {
 				sedeSeleccionada,
 				empleadoEnSesion,
 				exposicionesSeleccionadas,
-				estadoPendienteDeConfirmacion,
 				guiasSeleccionados
-				);
-		// Se guarda la visita en la base de datos.
-		reservaVisitaServicio.guardarReservaVisita(nuevaReserva);
-	}
-
-	/**
-	 * Método que crea una nueva reserva a partir de los datos ingresados por el usuario, aplicando patrón State.
-	 */
-	public void crearReservaState() {
-		generarNroReserva();
-		getFechaYHoraActual();
-		getEmpleadoEnSesion();
-		EstadoReservaVisita estadoInicial = new PendienteDeConfirmacion();
-		// Se genera una nueva reserva de visita con todos los datos obtenidos.
-		ReservaVisita nuevaReserva = new ReservaVisita(
-				numeroReserva,
-				cantidadVisitantes,
-				fechaYHoraActual,
-				fechaYHoraReserva,
-				duracionEstimadaExposicion,
-				escuelaSeleccionada,
-				sedeSeleccionada,
-				empleadoEnSesion,
-				exposicionesSeleccionadas,
-				guiasSeleccionados,
-				estadoInicial
 		);
 		// Se guarda la visita en la base de datos.
 		reservaVisitaServicio.guardarReservaVisita(nuevaReserva);
