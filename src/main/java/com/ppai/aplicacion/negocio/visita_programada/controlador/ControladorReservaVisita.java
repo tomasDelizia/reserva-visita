@@ -6,7 +6,6 @@ import com.ppai.aplicacion.negocio.sede.servicio.SedeServicio;
 import com.ppai.aplicacion.negocio.usuario.servicio.SesionServicio;
 import com.ppai.aplicacion.negocio.venta_entradas.servicio.TipoVisitaServicio;
 import com.ppai.aplicacion.negocio.visita_programada.servicio.EscuelaServicio;
-import com.ppai.aplicacion.negocio.visita_programada.servicio.EstadoReservaServicio;
 import com.ppai.aplicacion.negocio.visita_programada.servicio.ReservaVisitaServicio;
 import com.ppai.aplicacion.presentacion.presentacion_visitas_programadas.PantallaReservaVisita;
 import com.ppai.aplicacion.negocio.empleado.modelo.AsignacionGuia;
@@ -15,7 +14,6 @@ import com.ppai.aplicacion.negocio.exposicion.modelo.Exposicion;
 import com.ppai.aplicacion.negocio.sede.modelo.Sede;
 import com.ppai.aplicacion.negocio.venta_entradas.modelo.TipoVisita;
 import com.ppai.aplicacion.negocio.visita_programada.modelo.Escuela;
-import com.ppai.aplicacion.negocio.visita_programada.modelo.EstadoReserva;
 import com.ppai.aplicacion.negocio.visita_programada.modelo.ReservaVisita;
 import com.ppai.aplicacion.negocio.visita_programada.estrategia.EstrategiaCalculoDuracionReserva;
 import com.ppai.aplicacion.negocio.visita_programada.estrategia.EstrategiaVisitaPorExposicion;
@@ -38,11 +36,11 @@ public class ControladorReservaVisita {
 	private Sede sedeSeleccionada;
 	private int cantGuiasNecesarios, cantidadVisitantes, numeroReserva;
 	private String[][] exposicionesTemporalesYVigentes;
-	private final List<Exposicion> exposicionesSeleccionadas;
+	private final List<Exposicion> exposicionesSeleccionadas = new ArrayList<>();
 	private LocalDateTime fechaYHoraReserva, fechaYHoraActual;
 	private LocalTime duracionEstimadaExposicion;
-	private final List<Empleado> guiasSeleccionados;
-	private EstadoReserva estadoPendienteDeConfirmacion;
+	private final List<Empleado> guiasSeleccionados = new ArrayList<>();
+	private List<Empleado> guiasDisponibles = new ArrayList<>();
 	private Empleado empleadoEnSesion;
 	private EstrategiaCalculoDuracionReserva estrategiaCalculoDuracionReserva;
 	private final EscuelaServicio escuelaServicio;
@@ -51,9 +49,8 @@ public class ControladorReservaVisita {
 	private final ReservaVisitaServicio reservaVisitaServicio;
 	private final EmpleadoServicio empleadoServicio;
 	private final AsignacionGuiaServicio asignacionGuiaServicio;
-	private final EstadoReservaServicio estadoReservaServicio;
 	private final SesionServicio sesionServicio;
-	private List<Empleado> guiasDisponibles;
+
 
 	@Autowired
 	public ControladorReservaVisita(EscuelaServicio escuelaServicio, SedeServicio sedeServicio,
@@ -61,7 +58,6 @@ public class ControladorReservaVisita {
 									ReservaVisitaServicio reservaVisitaServicio,
 									EmpleadoServicio empleadoServicio,
 									AsignacionGuiaServicio asignacionGuiaServicio,
-									EstadoReservaServicio estadoReservaServicio,
 									SesionServicio sesionServicio) {
 		this.escuelaServicio = escuelaServicio;
 		this.sedeServicio = sedeServicio;
@@ -69,11 +65,7 @@ public class ControladorReservaVisita {
 		this.reservaVisitaServicio = reservaVisitaServicio;
 		this.empleadoServicio = empleadoServicio;
 		this.asignacionGuiaServicio = asignacionGuiaServicio;
-		this.estadoReservaServicio = estadoReservaServicio;
 		this.sesionServicio = sesionServicio;
-		exposicionesSeleccionadas = new ArrayList<>();
-		guiasSeleccionados = new ArrayList<>();
-		guiasDisponibles = new ArrayList<>();
 	}
 
 	@Autowired
@@ -221,7 +213,7 @@ public class ControladorReservaVisita {
 	 */
 	public void fechaYHoraReservaIngresados(LocalDateTime fechaYHoraIngresadas) {
 		fechaYHoraReserva = fechaYHoraIngresadas;
-		calcularDuracionEstimada();
+		calcularDuracionEstimadaVisita();
 		pantallaReservaVisita.presentarDuracionEstimada(duracionEstimadaExposicion.toString());
 		/* Se verifica que la cantidad de visitantes ingresados no sobrepase el límite de visitantes de la sede para
 		   la duración de la visita en la fecha y hora ingresados. Si no lo supera, se continua con el caso de uso. */
@@ -235,7 +227,7 @@ public class ControladorReservaVisita {
 	/**
 	 * Método que calcula la duración estimada para la visita, a partir de las exposiciones seleccionadas.
 	 */
-	public void calcularDuracionEstimada() {
+	public void calcularDuracionEstimadaVisita() {
 		duracionEstimadaExposicion = estrategiaCalculoDuracionReserva
 				.calcularDuracionEstimadaVisita(exposicionesSeleccionadas);
 	}
@@ -372,13 +364,6 @@ public class ControladorReservaVisita {
 	 */
 	public void getFechaYHoraActual() {
 		fechaYHoraActual = LocalDateTime.now();
-	}
-
-	/**
-	 * Método que busca el estado "Pendiente de Confirmación" de entre todos los estados existentes.
-	 */
-	public void buscarEstadoPendienteDeConfirmacion() {
-		estadoPendienteDeConfirmacion = estadoReservaServicio.buscarEstadoPendienteDeConfirmacion();
 	}
 
 	/**

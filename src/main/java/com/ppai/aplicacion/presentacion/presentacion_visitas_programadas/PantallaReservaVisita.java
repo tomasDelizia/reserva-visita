@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -68,6 +67,7 @@ public class PantallaReservaVisita extends Pantalla {
 	 */
 	public void habilitarPantalla() {
 		stageManager.switchScene(FxmlView.RESERVA_VISITA);
+		stageManager.maximize();
 	}
 
 	/**
@@ -318,6 +318,9 @@ public class PantallaReservaVisita extends Pantalla {
 	 */
 	public void tomarSeleccionGuiaDisponible() {
 		TableColumn<String[], CheckBox> seleccion = new TableColumn<>("Selección");
+		seleccion.prefWidthProperty().bind(tablaDatosGuias.widthProperty()
+				.divide(tablaDatosGuias.getColumns().size()));
+		seleccion.setResizable(false);
 		seleccion.setCellValueFactory(
 				guiaBooleanCellDataFeatures -> {
 					String[] datosGuia = guiaBooleanCellDataFeatures.getValue();
