@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -214,7 +215,9 @@ public class ControladorReservaVisita {
 	public void fechaYHoraReservaIngresados(LocalDateTime fechaYHoraIngresadas) {
 		fechaYHoraReserva = fechaYHoraIngresadas;
 		calcularDuracionEstimadaVisita();
-		pantallaReservaVisita.presentarDuracionEstimada(duracionEstimadaExposicion.toString());
+		String duracion = duracionEstimadaExposicion.getHour() + "h " +
+				duracionEstimadaExposicion.getMinute() + "m " + duracionEstimadaExposicion.getSecond() + "s";
+		pantallaReservaVisita.presentarDuracionEstimada(duracion);
 		/* Se verifica que la cantidad de visitantes ingresados no sobrepase el límite de visitantes de la sede para
 		   la duración de la visita en la fecha y hora ingresados. Si no lo supera, se continua con el caso de uso. */
 		if (!superaLimiteVisitantes())
@@ -228,8 +231,7 @@ public class ControladorReservaVisita {
 	 * Método que calcula la duración estimada para la visita, a partir de las exposiciones seleccionadas.
 	 */
 	public void calcularDuracionEstimadaVisita() {
-		duracionEstimadaExposicion = estrategiaCalculoDuracionReserva
-				.calcularDuracionEstimadaVisita(exposicionesSeleccionadas);
+		duracionEstimadaExposicion = estrategiaCalculoDuracionReserva.calcularDuracionEstimadaVisita(exposicionesSeleccionadas);
 	}
 
 	/**
@@ -263,8 +265,9 @@ public class ControladorReservaVisita {
 	 * Método que calcula los guías necesarios para la visita según la capacidad de visitantes por guía de la sede.
 	 */
 	public void calcularGuiasNecesarios() {
-		cantGuiasNecesarios = sedeSeleccionada.
+		int cantGuiasNecesarios = sedeSeleccionada.
 				calcularGuiasNecesariosParaVisitantesIngresados(cantidadVisitantes);
+		this.cantGuiasNecesarios = Math.min(cantGuiasNecesarios, guiasDisponibles.size());
 	}
 
 	/**

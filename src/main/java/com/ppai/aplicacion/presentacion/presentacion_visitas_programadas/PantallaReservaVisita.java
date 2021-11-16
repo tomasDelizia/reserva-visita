@@ -200,6 +200,7 @@ public class PantallaReservaVisita extends Pantalla {
 		seleccion.prefWidthProperty().bind(tablaDatosExposiciones.widthProperty()
 				.divide(tablaDatosExposiciones.getColumns().size()));
 		seleccion.setResizable(false);
+		seleccion.setStyle( "-fx-alignment: CENTER;");
 		seleccion.setCellValueFactory(
 				exposicionBooleanCellDataFeatures -> {
 					String[] datosExpo = exposicionBooleanCellDataFeatures.getValue();
@@ -321,6 +322,7 @@ public class PantallaReservaVisita extends Pantalla {
 		seleccion.prefWidthProperty().bind(tablaDatosGuias.widthProperty()
 				.divide(tablaDatosGuias.getColumns().size()));
 		seleccion.setResizable(false);
+		seleccion.setStyle( "-fx-alignment: CENTER;");
 		seleccion.setCellValueFactory(
 				guiaBooleanCellDataFeatures -> {
 					String[] datosGuia = guiaBooleanCellDataFeatures.getValue();

@@ -53,6 +53,7 @@ public abstract class Pantalla implements Initializable {
             columna.setCellValueFactory(p -> new SimpleStringProperty((p.getValue()[numeroColumna])));
             columna.prefWidthProperty().bind(tabla.widthProperty().divide(titulos.length));
             columna.setResizable(false);
+            columna.setStyle( "-fx-alignment: CENTER;");
             tabla.getColumns().add(columna);
         }
         // Seteo de la primera columna ("Id") como no visible.

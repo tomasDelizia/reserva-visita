@@ -18,8 +18,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="360" minWidth="566.0" prefHeight="650.0" prefWidth="826.0" style="-fx-background-color: #696969;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.presentacion.presentacion_visitas_programadas.PantallaReservaVisita">
-    <Region layoutX="-7.0" prefHeight="630.0" prefWidth="840.0" style="-fx-background-color: #0F0F0F;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
+<AnchorPane minHeight="630.0" minWidth="840.0" prefHeight="630.0" prefWidth="840.0" style="-fx-background-color: #696969;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ppai.aplicacion.presentacion.presentacion_visitas_programadas.PantallaReservaVisita">
+    <Region layoutX="-7.0" minHeight="630.0" minWidth="840.0" prefHeight="630.0" prefWidth="840.0" style="-fx-background-color: #0F0F0F;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
     </Region>
    <Label layoutX="17.0" layoutY="22.0" text="Datos de la reserva" textFill="DIMGRAY" AnchorPane.leftAnchor="17.0">
       <font>
@@ -31,12 +31,12 @@
          <Image url="@../img/gpc_azul.png" />
       </image>
    </ImageView>
-   <GridPane layoutY="70.0" prefHeight="534.0" prefWidth="826.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+   <GridPane layoutY="70.0" minHeight="534.0" minWidth="826.0" prefHeight="534.0" prefWidth="826.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
      <columnConstraints>
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="134.0" />
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="416.0" minWidth="10.0" prefWidth="221.0" />
-       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="359.0" minWidth="0.0" prefWidth="205.0" />
-       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="461.0" minWidth="10.0" prefWidth="266.0" />
+         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="200.0" minWidth="180.0" prefWidth="150.0" />
+         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="300.0" minWidth="220.0" prefWidth="220.0" />
+       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
+       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="220.0" prefWidth="220.0" />
      </columnConstraints>
      <rowConstraints>
        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
@@ -53,25 +53,28 @@
          <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="120.0" valignment="CENTER" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
-          <Label text="Escuela:" textFill="WHITE">
+          <Label text="Escuela:" textFill="WHITE" GridPane.halignment="LEFT">
             <font>
                <Font name="Century Gothic" size="16.0" />
             </font>
             <GridPane.margin>
-               <Insets />
+               <Insets left="20.0" />
             </GridPane.margin>
          </Label>
-          <ComboBox fx:id="cboEscuelas" disable="true" onAction="#tomarSeleccionEscuela" prefHeight="30.0" prefWidth="230.0" promptText="Selección" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnIndex="1">
+          <ComboBox fx:id="cboEscuelas" disable="true" onAction="#tomarSeleccionEscuela" prefHeight="30.0" prefWidth="230.0" promptText="Selección" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnIndex="1" GridPane.halignment="LEFT">
             <GridPane.margin>
-               <Insets left="20.0" right="20.0" />
+               <Insets right="20.0" />
             </GridPane.margin>
          </ComboBox>
-          <Label alignment="TOP_LEFT" text="Cantidad de visitantes:" textFill="WHITE" GridPane.columnIndex="2">
+          <Label alignment="TOP_LEFT" text="Cantidad de visitantes:" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT">
             <font>
                <Font name="Century Gothic" size="16.0" />
             </font>
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
          </Label>
-          <TextField fx:id="txtCantidadVisitantes" alignment="CENTER" disable="true" onAction="#tomarCantidadVisitantes" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #F4F4F4;" GridPane.columnIndex="3">
+          <TextField fx:id="txtCantidadVisitantes" alignment="CENTER" disable="true" maxWidth="200.0" onAction="#tomarCantidadVisitantes" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #F4F4F4;" GridPane.columnIndex="3" GridPane.halignment="LEFT">
             <font>
                <Font name="Century Gothic" size="14.0" />
             </font>
@@ -82,32 +85,38 @@
                <Insets left="20.0" right="20.0" />
             </GridPane.margin>
          </TextField>
-          <ComboBox fx:id="cboSedes" disable="true" onAction="#tomarSede" prefHeight="30.0" prefWidth="230.0" promptText="Selección" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
+          <ComboBox fx:id="cboSedes" disable="true" onAction="#tomarSede" prefHeight="30.0" prefWidth="230.0" promptText="Selección" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
             <GridPane.margin>
-               <Insets left="20.0" right="20.0" />
+               <Insets right="20.0" />
             </GridPane.margin>
          </ComboBox>
-          <Label styleClass="font" text="Tipo de visita:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+          <Label styleClass="font" text="Tipo de visita:" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
             <font>
                <Font name="Century Gothic" size="16.0" />
             </font>
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
          </Label>
-         <ComboBox fx:id="cboTiposVisita" disable="true" onAction="#tomarTipoVisita" prefHeight="30.0" prefWidth="200.0" promptText="Selección" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <ComboBox fx:id="cboTiposVisita" disable="true" onAction="#tomarTipoVisita" prefHeight="30.0" prefWidth="200.0" promptText="Selección" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2">
             <GridPane.margin>
                <Insets left="20.0" right="20.0" />
             </GridPane.margin>
          </ComboBox>
-          <Label text="Sede a visitar:" textFill="WHITE" GridPane.rowIndex="2">
+          <Label text="Sede a visitar:" textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="2">
             <font>
                <Font name="Century Gothic" size="16.0" />
             </font>
+            <padding>
+               <Insets left="20.0" />
+            </padding>
          </Label>
           <Label styleClass="font" text="Exposiciones a visitar:" textFill="WHITE" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
             <font>
                <Font name="Century Gothic" size="18.0" />
             </font>
          </Label>
-         <TableView fx:id="tablaDatosExposiciones" disable="true" prefHeight="81.0" prefWidth="100.0" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
+         <TableView fx:id="tablaDatosExposiciones" disable="true" maxWidth="1200.0" prefHeight="81.0" prefWidth="100.0" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
             <GridPane.margin>
                <Insets left="20.0" right="20.0" />
             </GridPane.margin>
@@ -122,30 +131,32 @@
                <Insets left="20.0" right="20.0" />
             </GridPane.margin>
          </Separator>
-          <Label styleClass="font" text="Fecha de visita:" textFill="WHITE" GridPane.rowIndex="7">
-            <font>
-               <Font name="Century Gothic" size="16.0" />
-            </font>
-         </Label>
-          <DatePicker fx:id="dateFechaVisita" disable="true" prefHeight="25.0" prefWidth="147.0" style="-fx-background-color: #F4F4F4;" GridPane.columnIndex="1" GridPane.rowIndex="7">
-    </DatePicker>
-          <Label styleClass="font" text="Hora de visita:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="7">
-            <font>
-               <Font name="Century Gothic" size="16.0" />
-            </font>
-         </Label>
-          <Label prefWidth="134.0" styleClass="font" text="Duración:" textFill="WHITE" GridPane.rowIndex="8">
+          <Label styleClass="font" text="Fecha de visita:" textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="7">
             <font>
                <Font name="Century Gothic" size="16.0" />
             </font>
             <GridPane.margin>
-               <Insets />
-            </GridPane.margin>
-            <padding>
                <Insets left="20.0" />
-            </padding>
+            </GridPane.margin>
          </Label>
-          <TextField fx:id="txtDuracionEstimada" disable="true" editable="false" prefHeight="28.0" prefWidth="133.0" style="-fx-background-color: #F4F4F4;" GridPane.columnIndex="1" GridPane.rowIndex="8">
+          <DatePicker fx:id="dateFechaVisita" disable="true" minHeight="30.0" minWidth="140.0" prefHeight="30.0" prefWidth="190.0" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <GridPane.margin>
+               <Insets />
+            </GridPane.margin></DatePicker>
+          <Label styleClass="font" text="Hora de visita:" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+            <font>
+               <Font name="Century Gothic" size="16.0" />
+            </font>
+         </Label>
+          <Label prefHeight="20.0" prefWidth="180.0" styleClass="font" text="Duración estimada:" textFill="WHITE" GridPane.halignment="LEFT" GridPane.rowIndex="8">
+            <font>
+               <Font name="Century Gothic" size="16.0" />
+            </font>
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
+         </Label>
+          <TextField fx:id="txtDuracionEstimada" alignment="CENTER" disable="true" editable="false" maxWidth="220.0" prefHeight="30.0" prefWidth="238.0" style="-fx-background-color: #F4F4F4;" GridPane.columnIndex="1" GridPane.rowIndex="8">
               <cursor>
                 <Cursor fx:constant="DEFAULT" />
               </cursor>
@@ -159,14 +170,14 @@
          <GridPane GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
            <columnConstraints>
                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="90.0" />
-             <ColumnConstraints hgrow="SOMETIMES" maxWidth="91.0" minWidth="0.0" prefWidth="13.0" />
+             <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="0.0" prefWidth="10.0" />
              <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="90.0" />
            </columnConstraints>
            <rowConstraints>
              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-                <TextField fx:id="txtHoraVisita" disable="true" prefHeight="27.0" prefWidth="96.0" style="-fx-background-color: #F4F4F4;" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                <TextField fx:id="txtHoraVisita" alignment="CENTER" disable="true" maxWidth="100.0" prefHeight="30.0" prefWidth="50.0" promptText="HH" style="-fx-background-color: #F4F4F4;" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                   <font>
                      <Font name="Century Gothic" size="14.0" />
                   </font>
@@ -174,12 +185,12 @@
                      <Insets left="20.0" right="20.0" />
                   </GridPane.margin>
                </TextField>
-                <Label prefHeight="18.0" prefWidth="1.0" text=":" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                <Label maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" text=":" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                   <font>
                      <Font name="Century Gothic" size="16.0" />
                   </font>
                </Label>
-                <TextField fx:id="txtMinutoVisita" disable="true" onAction="#tomarFechaYHoraReserva" prefHeight="28.0" prefWidth="110.0" style="-fx-background-color: #F4F4F4;" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+                <TextField fx:id="txtMinutoVisita" alignment="CENTER" disable="true" maxWidth="100.0" onAction="#tomarFechaYHoraReserva" prefHeight="30.0" prefWidth="50.0" promptText="mm" style="-fx-background-color: #F4F4F4;" GridPane.columnIndex="2" GridPane.halignment="LEFT">
                   <font>
                      <Font name="Century Gothic" size="14.0" />
                   </font>
@@ -204,21 +215,21 @@
                <Font name="Century Gothic" size="18.0" />
             </font>
          </Label>
-         <TableView fx:id="tablaDatosGuias" disable="true" prefHeight="119.0" prefWidth="330.0" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnSpan="2147483647" GridPane.rowIndex="11">
+         <TableView fx:id="tablaDatosGuias" disable="true" maxWidth="690.0" prefHeight="119.0" prefWidth="330.0" style="-fx-background-color: #F4F4F4;" styleClass="fuente" stylesheets="@../styles/Styles.css" GridPane.columnSpan="2147483647" GridPane.rowIndex="11">
             <GridPane.margin>
                <Insets left="20.0" right="20.0" />
             </GridPane.margin>
          </TableView>
       </children>
    </GridPane>
-    <Button fx:id="btnConfirmar" disable="true" layoutX="629.0" layoutY="610.0" mnemonicParsing="false" onAction="#tomarConfirmacionReserva" style="-fx-border-color: #000000;" text="Confirmar" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="109.0">
+    <Button fx:id="btnConfirmar" alignment="CENTER" disable="true" layoutX="596.0" layoutY="609.0" mnemonicParsing="false" onAction="#tomarConfirmacionReserva" style="-fx-border-color: #000000;" text="Confirmar" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="128.0">
       <font>
-         <Font size="15.0" />
+         <Font name="Century Gothic" size="16.0" />
       </font>
    </Button>
-    <Button fx:id="btnCancelar" layoutX="727.0" layoutY="610.0" mnemonicParsing="false" onAction="#cancelar" style="-fx-border-color: #000000;" text="Cancelar" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="20.0">
+    <Button fx:id="btnCancelar" alignment="CENTER" layoutX="727.0" layoutY="610.0" mnemonicParsing="false" onAction="#cancelar" style="-fx-border-color: #000000;" text="Cancelar" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="20.0">
       <font>
-         <Font size="15.0" />
+         <Font name="Century Gothic" size="16.0" />
       </font>
    </Button>
 </AnchorPane>

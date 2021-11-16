@@ -16,6 +16,7 @@ public class EstrategiaVisitaPorExposicion implements EstrategiaCalculoDuracionR
         // Mientras haya exposiciones, obtenemos sus duraciones.
         for (Exposicion exposicion:
                 listaExposiciones) {
+            // Para el tipo de visita 'Por Exposición', se suman las duraciones resumidas.
             LocalTime duracionExposicion = exposicion.calcularDuracionExtendida();
             // Añadimos la duración (horas, minutos y segundos) de cada exposición a los contadores.
             horasTotales += duracionExposicion.getHour();
