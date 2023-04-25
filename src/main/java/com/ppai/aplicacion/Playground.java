@@ -1,10 +1,5 @@
 package com.ppai.aplicacion;
 
-import com.ppai.aplicacion.negocio.empleado.servicio.EmpleadoServicio;
-import com.ppai.aplicacion.negocio.sede.servicio.SedeServicio;
-import com.ppai.aplicacion.negocio.visita_programada.servicio.EscuelaServicio;
-import com.ppai.aplicacion.negocio.visita_programada.servicio.ReservaVisitaServicio;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -2,7 +2,7 @@ package com.ppai.aplicacion.config;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import java.util.Objects;
-import com.ppai.aplicacion.presentacion.FxmlView;
+import com.ppai.aplicacion.modulos.inicio.presentacion.FxmlView;
 import org.slf4j.Logger;
 import javafx.application.Platform;
 import javafx.scene.Parent;
